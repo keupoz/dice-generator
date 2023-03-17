@@ -1,4 +1,4 @@
-import { BufferedGeom3 } from "@/BufferedGeom3";
+import { BufferedGeom3, isBufferedGeom3 } from "@/BufferedGeom3";
 import { RenderMode, RenderOperation } from "@/dice/renderMode";
 import { createBoolean } from "@/hooks/controls/createBoolean";
 import { createFolder } from "@/hooks/controls/createFolder";
@@ -101,8 +101,19 @@ export function createDie<T extends Record<string, unknown>>(
     ...extraOptions,
   };
 
-  const base = baseOptions.base.bind(null, accessorOptions);
-  const facesBase = baseOptions.facesBase?.bind(null, accessorOptions) ?? base;
+  const base = createMemo<Geom3>((prev) => {
+    if (prev !== undefined && isBufferedGeom3(prev)) {
+      prev.polygons.buffer.dispose();
+    }
+
+    const geom = baseOptions.base(accessorOptions);
+
+    return geom;
+  });
+
+  const facesBase = createMemo(() => {
+    return baseOptions.facesBase?.(accessorOptions) ?? base();
+  });
 
   const faces = parseFaces(
     folder,
