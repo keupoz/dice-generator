@@ -11,6 +11,7 @@ import { createD4I } from "@/dice/shapes/d4i";
 import { createD4P } from "@/dice/shapes/d4p";
 import { createD6 } from "@/dice/shapes/d6";
 import { createD8 } from "@/dice/shapes/d8";
+import { useDropzone } from "@/hooks/useDropzone";
 import { cad2mesh } from "@/utils/3d/convert/cad2three";
 import { measureDimensions } from "@jscad/modeling/src/measurements";
 import { saveAs } from "file-saver";
@@ -36,12 +37,8 @@ import { createPane } from "../hooks/controls/createPane";
 import { createSelect } from "../hooks/controls/createSelect";
 import { createSlider } from "../hooks/controls/createSlider";
 import { createFontSelect } from "../hooks/createFontSelect";
-import { createGoogleFontSelect } from "../hooks/createGoogleFontSelect";
 import { createThree } from "../hooks/createThree";
 import { BASE_MATERIAL, FONT_MATERIAL } from "../materials";
-import { GoogleFonts, loadGoogleFonts } from "../utils/loadGoogleFonts";
-
-const API_KEY = import.meta.env.VITE_GOOGLE_FONTS_API_KEY;
 
 const LOCAL_FONTS = import.meta.glob("../fonts/*.ttf", {
   eager: true,
@@ -60,8 +57,6 @@ function handleError(err: unknown): JSX.Element {
 
 export const App: Component = () => {
   const [fonts] = createResource(async () => {
-    const googleFonts = loadGoogleFonts(API_KEY);
-
     const localFonts = Object.values(LOCAL_FONTS).map(async (url) => {
       const r = await fetch(url);
       const buffer = await r.arrayBuffer();
@@ -70,22 +65,19 @@ export const App: Component = () => {
       return font;
     });
 
-    return Promise.all([googleFonts, ...localFonts]);
+    return Promise.all(localFonts);
   });
 
   return (
     <ErrorBoundary fallback={handleError}>
       <Show when={fonts()} fallback="Loading ..." keyed>
-        {([googleFonts, ...localFonts]) => (
-          <AppInternal googleFonts={googleFonts} fonts={localFonts} />
-        )}
+        {(localFonts) => <AppInternal fonts={localFonts} />}
       </Show>
     </ErrorBoundary>
   );
 };
 
 interface AppInternalProps {
-  googleFonts: GoogleFonts;
   fonts: Font[];
 }
 
@@ -111,8 +103,6 @@ const AppInternal: Component<AppInternalProps> = (props) => {
   const [renderElement, addObjects, initRenderer, render] =
     createThree(showGrid);
 
-  const googleFont = createGoogleFontSelect(rootFolder, props.googleFonts);
-
   const dieFolder = createFolder(rootFolder, "Shared die options");
 
   const [textFont, addTextFonts] = createFontSelect(
@@ -120,24 +110,21 @@ const AppInternal: Component<AppInternalProps> = (props) => {
     props.fonts,
     "Text font"
   );
+
   const [markFont, addMarkFonts] = createFontSelect(
     dieFolder,
     props.fonts,
     "Mark font"
   );
 
-  createEffect(
-    on(
-      googleFont,
-      (font) => {
-        if (font !== undefined) {
-          addTextFonts([font]);
-          addMarkFonts([font]);
-        }
-      },
-      { defer: true }
-    )
-  );
+  useDropzone((buffers) => {
+    const fonts = buffers.map((buffer) => {
+      return opentype.parse(buffer);
+    });
+
+    addTextFonts(fonts);
+    addMarkFonts(fonts);
+  });
 
   const [fontScale] = createSlider(
     dieFolder,
