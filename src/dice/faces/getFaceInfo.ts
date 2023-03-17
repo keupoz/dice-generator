@@ -61,8 +61,6 @@ export function getFaceInfo(
   if (customCenter !== undefined) {
     const targetPoint = getTargetPoint(points, customCenter.target);
     center = vec3.lerp(vec3.create(), faceCenter, targetPoint, customCenter.t);
-
-    console.log(center);
   }
 
   return { area, center, rotationMatrix, points };
