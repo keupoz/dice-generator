@@ -40,10 +40,22 @@ import { createFontSelect } from "../hooks/createFontSelect";
 import { createThree } from "../hooks/createThree";
 import { BASE_MATERIAL, FONT_MATERIAL } from "../materials";
 
-const LOCAL_FONTS = import.meta.glob("../fonts/*.ttf", {
-  eager: true,
-  as: "url",
-});
+const FONTS = [
+  // Roboto Regular
+  "https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Me5WZLCzYlKw.ttf",
+
+  // Roboto SLab
+  "https://fonts.gstatic.com/s/robotoslab/v24/BngbUXZYTXPIvIBgJJSb6s3BzlRRfKOFbvjojISWaG5iddG-1A.ttf",
+
+  // Lobster
+  "https://fonts.gstatic.com/s/lobster/v28/neILzCirqoswsqX9_oWsMqEzSJQ.ttf",
+
+  // Righteous
+  "https://fonts.gstatic.com/s/righteous/v13/1cXxaUPXBpj2rGoU7C9mj3uEicG01A.ttf",
+
+  // Edu NSW ACT Foundation
+  "https://fonts.gstatic.com/s/edunswactfoundation/v2/raxRHjqJtsNBFUi8WO0vUBgc9D-2lV_oQdCAYlt_QTQ0vUxJki9tovGLeC-sfguJ.ttf",
+];
 
 function handleError(err: unknown): JSX.Element {
   console.error(err);
@@ -57,7 +69,7 @@ function handleError(err: unknown): JSX.Element {
 
 export const App: Component = () => {
   const [fonts] = createResource(async () => {
-    const localFonts = Object.values(LOCAL_FONTS).map(async (url) => {
+    const localFonts = FONTS.map(async (url) => {
       const r = await fetch(url);
       const buffer = await r.arrayBuffer();
       const font = opentype.parse(buffer);
