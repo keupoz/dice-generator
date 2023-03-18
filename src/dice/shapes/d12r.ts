@@ -11,29 +11,125 @@ export function createD12r(x: number, y: number, options: DieOptions) {
       faceScale: 0.6,
       faces: [
         // 1
-        { faceIndex: 11, target: { type: "vertex", index: 2 } },
+        {
+          instances: [
+            {
+              faceIndex: 11,
+              from: { type: "vertex", index: 0 },
+              to: { type: "vertex", index: 2 },
+            },
+          ],
+        },
         // 2
-        { faceIndex: 9, target: { type: "vertex", index: 0 } },
+        {
+          instances: [
+            {
+              faceIndex: 9,
+              from: { type: "vertex", index: 2 },
+              to: { type: "vertex", index: 0 },
+            },
+          ],
+        },
         // 3
-        { faceIndex: 4 },
+        {
+          instances: [
+            {
+              faceIndex: 4,
+              from: { type: "vertex", index: 2 },
+              to: { type: "vertex", index: 0 },
+            },
+          ],
+        },
         // 4
-        { faceIndex: 0, target: { type: "vertex", index: 0 } },
+        {
+          instances: [
+            {
+              faceIndex: 0,
+              from: { type: "vertex", index: 2 },
+              to: { type: "vertex", index: 0 },
+            },
+          ],
+        },
         // 5
-        { faceIndex: 5, target: { type: "vertex", index: 0 } },
+        {
+          instances: [
+            {
+              faceIndex: 5,
+              from: { type: "vertex", index: 2 },
+              to: { type: "vertex", index: 0 },
+            },
+          ],
+        },
         // 6
-        { faceIndex: 10, target: { type: "vertex", index: 0 } },
+        {
+          instances: [
+            {
+              faceIndex: 10,
+              from: { type: "vertex", index: 2 },
+              to: { type: "vertex", index: 0 },
+            },
+          ],
+        },
         // 7
-        { faceIndex: 1, target: { type: "vertex", index: 0 } },
+        {
+          instances: [
+            {
+              faceIndex: 1,
+              from: { type: "vertex", index: 2 },
+              to: { type: "vertex", index: 0 },
+            },
+          ],
+        },
         // 8
-        { faceIndex: 2, target: { type: "vertex", index: 2 } },
+        {
+          instances: [
+            {
+              faceIndex: 2,
+              from: { type: "vertex", index: 0 },
+              to: { type: "vertex", index: 2 },
+            },
+          ],
+        },
         // 9
-        { faceIndex: 6, target: { type: "vertex", index: 0 } },
+        {
+          instances: [
+            {
+              faceIndex: 6,
+              from: { type: "vertex", index: 2 },
+              to: { type: "vertex", index: 0 },
+            },
+          ],
+        },
         // 10
-        { faceIndex: 7 },
+        {
+          instances: [
+            {
+              faceIndex: 7,
+              from: { type: "vertex", index: 2 },
+              to: { type: "vertex", index: 0 },
+            },
+          ],
+        },
         // 11
-        { faceIndex: 3, target: { type: "vertex", index: 0 } },
+        {
+          instances: [
+            {
+              faceIndex: 3,
+              from: { type: "vertex", index: 2 },
+              to: { type: "vertex", index: 0 },
+            },
+          ],
+        },
         // 12
-        { faceIndex: 8, target: { type: "vertex", index: 2 } },
+        {
+          instances: [
+            {
+              faceIndex: 8,
+              from: { type: "vertex", index: 0 },
+              to: { type: "vertex", index: 2 },
+            },
+          ],
+        },
       ],
       extraOptions() {
         return {};

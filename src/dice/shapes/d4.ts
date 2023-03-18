@@ -9,70 +9,85 @@ export function createD4(x: number, y: number, options: DieOptions) {
     {
       name: "d4",
       defaultSize: 16,
-      faceScale: 1 / 3,
+      faceScale: 0.5,
       faces: [
+        // 1
         {
-          faceIndex: 3,
-          center: { t: 0.5, target: { type: "vertex", index: 1 } },
-          extraInstances: [
+          instances: [
+            {
+              faceIndex: 3,
+              from: { type: "vertex", index: 1 },
+              to: { type: "center" },
+            },
             {
               faceIndex: 1,
-              center: { t: 0.5, target: { type: "vertex", index: 1 } },
+              from: { type: "vertex", index: 1 },
+              to: { type: "center" },
             },
             {
               faceIndex: 2,
-              center: { t: 0.5, target: { type: "vertex", index: 0 } },
+              from: { type: "vertex", index: 0 },
+              to: { type: "center" },
             },
           ],
         },
+        // 2
         {
-          faceIndex: 3,
-          target: { type: "edge", index: 2 },
-          center: { t: 0.5, target: { type: "vertex", index: 0 } },
-          extraInstances: [
+          instances: [
+            {
+              faceIndex: 3,
+              from: { type: "vertex", index: 0 },
+              to: { type: "center" },
+            },
             {
               faceIndex: 0,
-              target: { type: "edge", index: 2 },
-              center: { t: 0.5, target: { type: "vertex", index: 0 } },
+              from: { type: "vertex", index: 0 },
+              to: { type: "center" },
             },
             {
               faceIndex: 2,
-              target: { type: "edge", index: 0 },
-              center: { t: 0.5, target: { type: "vertex", index: 1 } },
+              from: { type: "vertex", index: 1 },
+              to: { type: "center" },
             },
           ],
         },
+        // 3
         {
-          faceIndex: 3,
-          target: { type: "edge", index: 1 },
-          center: { t: 0.5, target: { type: "vertex", index: 2 } },
-          extraInstances: [
+          instances: [
+            {
+              faceIndex: 3,
+              from: { type: "vertex", index: 2 },
+              to: { type: "center" },
+            },
+            {
+              faceIndex: 1,
+              from: { type: "vertex", index: 0 },
+              to: { type: "center" },
+            },
             {
               faceIndex: 0,
-              target: { type: "edge", index: 0 },
-              center: { t: 0.5, target: { type: "vertex", index: 1 } },
-            },
-            {
-              faceIndex: 1,
-              target: { type: "edge", index: 2 },
-              center: { t: 0.5, target: { type: "vertex", index: 0 } },
+              from: { type: "vertex", index: 1 },
+              to: { type: "center" },
             },
           ],
         },
+        // 4
         {
-          faceIndex: 0,
-          target: { type: "edge", index: 1 },
-          center: { t: 0.5, target: { type: "vertex", index: 2 } },
-          extraInstances: [
+          instances: [
+            {
+              faceIndex: 0,
+              from: { type: "vertex", index: 2 },
+              to: { type: "center" },
+            },
             {
               faceIndex: 1,
-              target: { type: "edge", index: 1 },
-              center: { t: 0.5, target: { type: "vertex", index: 2 } },
+              from: { type: "vertex", index: 2 },
+              to: { type: "center" },
             },
             {
               faceIndex: 2,
-              target: { type: "edge", index: 1 },
-              center: { t: 0.5, target: { type: "vertex", index: 2 } },
+              from: { type: "vertex", index: 2 },
+              to: { type: "center" },
             },
           ],
         },

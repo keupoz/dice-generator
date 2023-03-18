@@ -11,29 +11,137 @@ export function createD12(x: number, y: number, options: DieOptions) {
       faceScale: 0.6,
       faces: [
         // 1
-        { faceIndex: 8 },
+        {
+          instances: [
+            {
+              faceIndex: 8,
+              polygonCenter: true,
+              from: { type: "vertex", index: 2 },
+              to: { type: "edge", index: 0 },
+            },
+          ],
+        },
         // 2
-        { faceIndex: 7, target: { type: "edge", index: 0 } },
+        {
+          instances: [
+            {
+              faceIndex: 7,
+              polygonCenter: true,
+              from: { type: "vertex", index: 2 },
+              to: { type: "edge", index: 0 },
+            },
+          ],
+        },
         // 3
-        { faceIndex: 4, target: { type: "edge", index: 2 } },
+        {
+          instances: [
+            {
+              faceIndex: 4,
+              polygonCenter: true,
+              from: { type: "vertex", index: 4 },
+              to: { type: "edge", index: 2 },
+            },
+          ],
+        },
         // 4
-        { faceIndex: 6, target: { type: "edge", index: 1 } },
+        {
+          instances: [
+            {
+              faceIndex: 6,
+              polygonCenter: true,
+              from: { type: "vertex", index: 3 },
+              to: { type: "edge", index: 1 },
+            },
+          ],
+        },
         // 5
-        { faceIndex: 2, target: { type: "edge", index: 4 } },
+        {
+          instances: [
+            {
+              faceIndex: 2,
+              polygonCenter: true,
+              from: { type: "vertex", index: 1 },
+              to: { type: "edge", index: 4 },
+            },
+          ],
+        },
         // 6
-        { faceIndex: 5, target: { type: "edge", index: 3 } },
+        {
+          instances: [
+            {
+              faceIndex: 5,
+              polygonCenter: true,
+              from: { type: "vertex", index: 0 },
+              to: { type: "edge", index: 3 },
+            },
+          ],
+        },
         // 7
-        { faceIndex: 10, target: { type: "edge", index: 1 } },
+        {
+          instances: [
+            {
+              faceIndex: 10,
+              polygonCenter: true,
+              from: { type: "vertex", index: 3 },
+              to: { type: "edge", index: 1 },
+            },
+          ],
+        },
         // 8
-        { faceIndex: 11, target: { type: "edge", index: 0 } },
+        {
+          instances: [
+            {
+              faceIndex: 11,
+              polygonCenter: true,
+              from: { type: "vertex", index: 2 },
+              to: { type: "edge", index: 0 },
+            },
+          ],
+        },
         // 9
-        { faceIndex: 1 },
+        {
+          instances: [
+            {
+              faceIndex: 1,
+              polygonCenter: true,
+              from: { type: "vertex", index: 0 },
+              to: { type: "edge", index: 3 },
+            },
+          ],
+        },
         // 10
-        { faceIndex: 0, target: { type: "edge", index: 2 } },
+        {
+          instances: [
+            {
+              faceIndex: 0,
+              polygonCenter: true,
+              from: { type: "vertex", index: 4 },
+              to: { type: "edge", index: 2 },
+            },
+          ],
+        },
         // 11
-        { faceIndex: 3, target: { type: "edge", index: 4 } },
+        {
+          instances: [
+            {
+              faceIndex: 3,
+              polygonCenter: true,
+              from: { type: "vertex", index: 1 },
+              to: { type: "edge", index: 4 },
+            },
+          ],
+        },
         // 12
-        { faceIndex: 9, target: { type: "edge", index: 4 } },
+        {
+          instances: [
+            {
+              faceIndex: 9,
+              polygonCenter: true,
+              from: { type: "vertex", index: 1 },
+              to: { type: "edge", index: 4 },
+            },
+          ],
+        },
       ],
       extraOptions() {
         return {};

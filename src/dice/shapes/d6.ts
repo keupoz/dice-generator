@@ -10,17 +10,65 @@ export function createD6(x: number, y: number, options: DieOptions) {
       defaultSize: 16,
       faces: [
         // 1
-        { faceIndex: 5, target: { type: "edge", index: 1 } },
+        {
+          instances: [
+            {
+              faceIndex: 5,
+              from: { type: "edge", index: 3 },
+              to: { type: "edge", index: 1 },
+            },
+          ],
+        },
         // 2
-        { faceIndex: 2, target: { type: "edge", index: 2 } },
+        {
+          instances: [
+            {
+              faceIndex: 2,
+              from: { type: "edge", index: 0 },
+              to: { type: "edge", index: 2 },
+            },
+          ],
+        },
         // 3
-        { faceIndex: 1, target: { type: "edge", index: 3 } },
+        {
+          instances: [
+            {
+              faceIndex: 1,
+              from: { type: "edge", index: 1 },
+              to: { type: "edge", index: 3 },
+            },
+          ],
+        },
         // 4
-        { faceIndex: 0, target: { type: "edge", index: 3 } },
+        {
+          instances: [
+            {
+              faceIndex: 0,
+              from: { type: "edge", index: 1 },
+              to: { type: "edge", index: 3 },
+            },
+          ],
+        },
         // 5
-        { faceIndex: 3 },
+        {
+          instances: [
+            {
+              faceIndex: 3,
+              from: { type: "edge", index: 2 },
+              to: { type: "edge", index: 0 },
+            },
+          ],
+        },
         // 6
-        { faceIndex: 4 },
+        {
+          instances: [
+            {
+              faceIndex: 4,
+              from: { type: "edge", index: 3 },
+              to: { type: "edge", index: 1 },
+            },
+          ],
+        },
       ],
       extraOptions() {
         return {};

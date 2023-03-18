@@ -30,39 +30,49 @@ export function createD3(x: number, y: number, options: DieOptions) {
     {
       name: "d3",
       defaultSize: 16,
-      faceScale: 1 / 3,
       faces: [
+        // 1
         {
-          faceIndex: 0,
-          center: { t: 0.5, target: { type: "edge", index: 0 } },
-          extraInstances: [
+          instances: [
+            {
+              faceIndex: 0,
+              from: { type: "edge", index: 0 },
+              to: { type: "center" },
+            },
             {
               faceIndex: 1,
-              center: { t: 0.5, target: { type: "edge", index: 2 } },
+              from: { type: "edge", index: 2 },
+              to: { type: "center" },
             },
           ],
         },
+        // 2
         {
-          faceIndex: 1,
-          target: { type: "edge", index: 2 },
-          center: { t: 0.5, target: { type: "edge", index: 0 } },
-          extraInstances: [
+          instances: [
+            {
+              faceIndex: 1,
+              from: { type: "edge", index: 0 },
+              to: { type: "center" },
+            },
             {
               faceIndex: 2,
-              target: { type: "edge", index: 0 },
-              center: { t: 0.5, target: { type: "edge", index: 2 } },
+              from: { type: "edge", index: 2 },
+              to: { type: "center" },
             },
           ],
         },
+        // 3
         {
-          faceIndex: 0,
-          target: { type: "edge", index: 0 },
-          center: { t: 0.5, target: { type: "edge", index: 2 } },
-          extraInstances: [
+          instances: [
+            {
+              faceIndex: 0,
+              from: { type: "edge", index: 2 },
+              to: { type: "center" },
+            },
             {
               faceIndex: 2,
-              target: { type: "edge", index: 2 },
-              center: { t: 0.5, target: { type: "edge", index: 0 } },
+              from: { type: "edge", index: 0 },
+              to: { type: "center" },
             },
           ],
         },

@@ -2,7 +2,7 @@ import { createSlider } from "@/hooks/controls/createSlider";
 import { polyhedron } from "@jscad/modeling/src/primitives";
 import { createDie, DieOptions } from "../createDie";
 
-const t = 1 / 3;
+const t = 2 / 3;
 
 export function createD4P(x: number, y: number, options: DieOptions) {
   return createDie(
@@ -11,30 +11,50 @@ export function createD4P(x: number, y: number, options: DieOptions) {
     {
       name: "d4p",
       defaultSize: 14,
-      faceScale: 2 / 3,
       faces: [
         // 1
         {
-          faceIndex: 2,
-          center: { t, target: { type: "edge", index: 1 } },
+          instances: [
+            {
+              faceIndex: 2,
+              from: { type: "edge", index: 1 },
+              to: { type: "center" },
+              t,
+            },
+          ],
         },
         // 2
         {
-          faceIndex: 3,
-          target: { type: "vertex", index: 2 },
-          center: { t, target: { type: "edge", index: 1 } },
+          instances: [
+            {
+              faceIndex: 3,
+              from: { type: "edge", index: 1 },
+              to: { type: "center" },
+              t,
+            },
+          ],
         },
         // 3
         {
-          faceIndex: 1,
-          target: { type: "vertex", index: 2 },
-          center: { t, target: { type: "edge", index: 1 } },
+          instances: [
+            {
+              faceIndex: 1,
+              from: { type: "edge", index: 1 },
+              to: { type: "center" },
+              t,
+            },
+          ],
         },
         // 4
         {
-          faceIndex: 0,
-          target: { type: "vertex", index: 2 },
-          center: { t, target: { type: "edge", index: 1 } },
+          instances: [
+            {
+              faceIndex: 0,
+              from: { type: "edge", index: 1 },
+              to: { type: "center" },
+              t,
+            },
+          ],
         },
       ],
       extraOptions(folder) {

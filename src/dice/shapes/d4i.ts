@@ -17,13 +17,45 @@ export function createD4I(x: number, y: number, options: DieOptions) {
       defaultSize: 16,
       faces: [
         // 1
-        { faceIndex: 1, target: { type: "edge", index: 1 } },
+        {
+          instances: [
+            {
+              faceIndex: 1,
+              from: { type: "edge", index: 3 },
+              to: { type: "edge", index: 1 },
+            },
+          ],
+        },
         // 2
-        { faceIndex: 3, target: { type: "edge", index: 3 } },
+        {
+          instances: [
+            {
+              faceIndex: 3,
+              from: { type: "edge", index: 1 },
+              to: { type: "edge", index: 3 },
+            },
+          ],
+        },
         // 3
-        { faceIndex: 2, target: { type: "edge", index: 2 } },
+        {
+          instances: [
+            {
+              faceIndex: 2,
+              from: { type: "edge", index: 0 },
+              to: { type: "edge", index: 2 },
+            },
+          ],
+        },
         // 4
-        { faceIndex: 0, target: { type: "edge", index: 0 } },
+        {
+          instances: [
+            {
+              faceIndex: 0,
+              from: { type: "edge", index: 2 },
+              to: { type: "edge", index: 0 },
+            },
+          ],
+        },
       ],
       extraOptions(folder, size) {
         const [length] = createSlider(folder, 0, 20, 0.1, 1.4, "Body length");

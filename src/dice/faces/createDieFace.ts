@@ -22,21 +22,12 @@ import { Font } from "opentype.js";
 import { Accessor, createMemo } from "solid-js";
 import { degToRad } from "three/src/math/MathUtils";
 import { FolderApi } from "tweakpane";
-import { FaceCenter, FaceTarget, getFaceInfo } from "./getFaceInfo";
+import { getInstanceFaceInfo, InstanceFaceConfig } from "./getInstanceFaceInfo";
 
 export interface DieFaceConfig {
-  faceIndex: number;
-  target?: FaceTarget;
   text?: string;
   localRotation?: number;
-  center?: FaceCenter;
-  extraInstances?: ExtraConfig[];
-}
-
-export interface ExtraConfig {
-  faceIndex: number;
-  target?: FaceTarget;
-  center?: FaceCenter;
+  instances: InstanceFaceConfig[];
 }
 
 export interface DieFaceGlobalOptions {
@@ -122,57 +113,42 @@ export function createDieFace(
   });
 
   const finalGroup = createMemo(() => {
-    let result = initialGroup();
+    try {
+      let baseGroup = initialGroup();
 
-    const info = getFaceInfo(
-      base(),
-      config.faceIndex,
-      config.target,
-      config.center
-    );
+      const defaultRotation = config.localRotation ?? 0;
+      baseGroup = rotateZ(
+        defaultRotation + degToRad(localRotation()),
+        baseGroup
+      );
+      baseGroup = translate(localOffset(), baseGroup);
 
-    let groupScale = Math.sqrt(info.area);
-    groupScale *= fontScale() * globalOptions.fontScale();
+      const result: BufferedGeom3[] = [];
 
-    /* let groupScale = geomFace().area / baseSize() ** 2;
-    groupScale *= extraScale;
-    groupScale *= baseSize() * globalOptions.fontScale() * fontScale(); */
+      for (const instance of config.instances) {
+        const info = getInstanceFaceInfo(base(), instance);
 
-    const defaultRotation = config.localRotation ?? 0;
-    result = rotateZ(defaultRotation + degToRad(localRotation()), result);
-    result = translate(localOffset(), result);
+        let instanceGroup = baseGroup;
 
-    result = scale([groupScale, groupScale, globalOptions.depth()], result);
-
-    const extras: BufferedGeom3[] = [];
-
-    if (config.extraInstances !== undefined) {
-      for (const extraConfig of config.extraInstances) {
-        const extraInfo = getFaceInfo(
-          base(),
-          extraConfig.faceIndex,
-          extraConfig.target,
-          extraConfig.center
+        let groupScale = info.length;
+        groupScale *= fontScale() * globalOptions.fontScale();
+        instanceGroup = scale(
+          [groupScale, groupScale, globalOptions.depth()],
+          instanceGroup
         );
 
-        let group = result;
-        group = transform(extraInfo.rotationMatrix, group);
-        group = translate(extraInfo.center, group);
+        instanceGroup = transform(info.rotationMatrix, instanceGroup);
+        instanceGroup = translate(info.center, instanceGroup);
 
-        group = forceGroup(group);
+        instanceGroup = forceGroup(instanceGroup);
 
-        extras.push(...group);
+        result.push(...instanceGroup);
       }
+
+      return result;
+    } catch (err) {
+      return [];
     }
-
-    result = transform(info.rotationMatrix, result);
-    result = translate(info.center, result);
-
-    result = forceGroup(result);
-
-    result.push(...extras);
-
-    return result;
   });
 
   return finalGroup;

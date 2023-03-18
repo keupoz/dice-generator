@@ -12,9 +12,25 @@ export function createD2(x: number, y: number, options: DieOptions) {
       defaultSize: 16,
       faces: [
         // 1
-        { faceIndex: 5, target: { type: "edge", index: 1 } },
+        {
+          instances: [
+            {
+              faceIndex: 5,
+              from: { type: "edge", index: 3 },
+              to: { type: "edge", index: 1 },
+            },
+          ],
+        },
         // 2
-        { faceIndex: 4, target: { type: "edge", index: 2 } },
+        {
+          instances: [
+            {
+              faceIndex: 4,
+              from: { type: "edge", index: 0 },
+              to: { type: "edge", index: 2 },
+            },
+          ],
+        },
       ],
       extraOptions(folder) {
         const [height] = createSlider(folder, 1, 40, 1, 3, "Height");

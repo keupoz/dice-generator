@@ -3,6 +3,7 @@ import { RenderMode, RenderOperation } from "@/dice/renderMode";
 import { createBoolean } from "@/hooks/controls/createBoolean";
 import { createFolder } from "@/hooks/controls/createFolder";
 import { createSlider } from "@/hooks/controls/createSlider";
+import { getFirstItem } from "@/utils/getFirstItem";
 import { invertMat4 } from "@/utils/invertMat4";
 import { d180 } from "@/utils/math";
 import { Geom3 } from "@jscad/modeling/src/geometries/types";
@@ -18,7 +19,7 @@ import {
   DieFaceConfig,
   DieFaceGlobalOptions,
 } from "./faces/createDieFace";
-import { getFaceInfo } from "./faces/getFaceInfo";
+import { getInstanceFaceInfo } from "./faces/getInstanceFaceInfo";
 
 export interface DieOptions {
   folder: FolderApi;
@@ -145,11 +146,8 @@ export function createDie<T extends Record<string, unknown>>(
       const alignFace = baseOptions.faces[0];
 
       if (alignFace !== undefined) {
-        const info = getFaceInfo(
-          facesBase(),
-          alignFace.faceIndex,
-          alignFace.target
-        );
+        const instance = getFirstItem(alignFace.instances);
+        const info = getInstanceFaceInfo(facesBase(), instance);
 
         const matrix = invertMat4(mat4.create(), info.rotationMatrix);
         result = transform(matrix, result);

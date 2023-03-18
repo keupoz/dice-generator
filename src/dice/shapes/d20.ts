@@ -11,45 +11,225 @@ export function createD20(x: number, y: number, options: DieOptions) {
       faceScale: 0.5,
       faces: [
         // 1
-        { faceIndex: 0, target: { type: "edge", index: 1 } },
+        {
+          instances: [
+            {
+              faceIndex: 0,
+              polygonCenter: true,
+              from: { type: "vertex", index: 2 },
+              to: { type: "edge", index: 1 },
+            },
+          ],
+        },
         // 2
-        { faceIndex: 16, target: { type: "edge", index: 2 } },
+        {
+          instances: [
+            {
+              faceIndex: 16,
+              polygonCenter: true,
+              from: { type: "vertex", index: 0 },
+              to: { type: "edge", index: 2 },
+            },
+          ],
+        },
         // 3
-        { faceIndex: 12, target: { type: "edge", index: 2 } },
+        {
+          instances: [
+            {
+              faceIndex: 12,
+              polygonCenter: true,
+              from: { type: "vertex", index: 0 },
+              to: { type: "edge", index: 2 },
+            },
+          ],
+        },
         // 4
-        { faceIndex: 18, target: { type: "edge", index: 2 } },
+        {
+          instances: [
+            {
+              faceIndex: 18,
+              polygonCenter: true,
+              from: { type: "vertex", index: 0 },
+              to: { type: "edge", index: 2 },
+            },
+          ],
+        },
         // 5
-        { faceIndex: 3, target: { type: "edge", index: 0 } },
+        {
+          instances: [
+            {
+              faceIndex: 3,
+              polygonCenter: true,
+              from: { type: "vertex", index: 1 },
+              to: { type: "edge", index: 0 },
+            },
+          ],
+        },
         // 6
-        { faceIndex: 7, target: { type: "edge", index: 0 } },
+        {
+          instances: [
+            {
+              faceIndex: 7,
+              polygonCenter: true,
+              from: { type: "vertex", index: 1 },
+              to: { type: "edge", index: 0 },
+            },
+          ],
+        },
         // 7
-        { faceIndex: 1, target: { type: "edge", index: 1 } },
+        {
+          instances: [
+            {
+              faceIndex: 1,
+              polygonCenter: true,
+              from: { type: "vertex", index: 2 },
+              to: { type: "edge", index: 1 },
+            },
+          ],
+        },
         // 8
-        { faceIndex: 5 },
+        {
+          instances: [
+            {
+              faceIndex: 5,
+              polygonCenter: true,
+              from: { type: "vertex", index: 2 },
+              to: { type: "edge", index: 1 },
+            },
+          ],
+        },
         // 9
-        { faceIndex: 10, target: { type: "edge", index: 0 } },
+        {
+          instances: [
+            {
+              faceIndex: 10,
+              polygonCenter: true,
+              from: { type: "vertex", index: 1 },
+              to: { type: "edge", index: 0 },
+            },
+          ],
+        },
         // 10
-        { faceIndex: 14, target: { type: "edge", index: 2 } },
+        {
+          instances: [
+            {
+              faceIndex: 14,
+              polygonCenter: true,
+              from: { type: "vertex", index: 0 },
+              to: { type: "edge", index: 2 },
+            },
+          ],
+        },
         // 11
-        { faceIndex: 19, target: { type: "edge", index: 0 } },
+        {
+          instances: [
+            {
+              faceIndex: 19,
+              polygonCenter: true,
+              from: { type: "vertex", index: 1 },
+              to: { type: "edge", index: 0 },
+            },
+          ],
+        },
         // 12
-        { faceIndex: 15, target: { type: "edge", index: 2 } },
+        {
+          instances: [
+            {
+              faceIndex: 15,
+              polygonCenter: true,
+              from: { type: "vertex", index: 0 },
+              to: { type: "edge", index: 2 },
+            },
+          ],
+        },
         // 13
-        { faceIndex: 4, target: { type: "edge", index: 0 } },
+        {
+          instances: [
+            {
+              faceIndex: 4,
+              polygonCenter: true,
+              from: { type: "vertex", index: 1 },
+              to: { type: "edge", index: 0 },
+            },
+          ],
+        },
         // 14
-        { faceIndex: 8, target: { type: "edge", index: 0 } },
+        {
+          instances: [
+            {
+              faceIndex: 8,
+              polygonCenter: true,
+              from: { type: "vertex", index: 1 },
+              to: { type: "edge", index: 0 },
+            },
+          ],
+        },
         // 15
-        { faceIndex: 2, target: { type: "edge", index: 1 } },
+        {
+          instances: [
+            {
+              faceIndex: 2,
+              polygonCenter: true,
+              from: { type: "vertex", index: 2 },
+              to: { type: "edge", index: 1 },
+            },
+          ],
+        },
         // 16
-        { faceIndex: 6, target: { type: "edge", index: 1 } },
+        {
+          instances: [
+            {
+              faceIndex: 6,
+              polygonCenter: true,
+              from: { type: "vertex", index: 2 },
+              to: { type: "edge", index: 1 },
+            },
+          ],
+        },
         // 17
-        { faceIndex: 13, target: { type: "edge", index: 2 } },
+        {
+          instances: [
+            {
+              faceIndex: 13,
+              polygonCenter: true,
+              from: { type: "vertex", index: 0 },
+              to: { type: "edge", index: 2 },
+            },
+          ],
+        },
         // 18
-        { faceIndex: 17, target: { type: "edge", index: 1 } },
+        {
+          instances: [
+            {
+              faceIndex: 17,
+              polygonCenter: true,
+              from: { type: "vertex", index: 2 },
+              to: { type: "edge", index: 1 },
+            },
+          ],
+        },
         // 19
-        { faceIndex: 11, target: { type: "edge", index: 0 } },
+        {
+          instances: [
+            {
+              faceIndex: 11,
+              polygonCenter: true,
+              from: { type: "vertex", index: 1 },
+              to: { type: "edge", index: 0 },
+            },
+          ],
+        },
         // 20
-        { faceIndex: 9 },
+        {
+          instances: [
+            {
+              faceIndex: 9,
+              polygonCenter: true,
+              from: { type: "vertex", index: 1 },
+              to: { type: "edge", index: 0 },
+            },
+          ],
+        },
       ],
       extraOptions() {
         return {};
