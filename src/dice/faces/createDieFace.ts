@@ -1,6 +1,4 @@
 import { BufferedGeom3 } from "@/BufferedGeom3";
-import { createText1 } from "@/dice/faces/createText1";
-import { createText2 } from "@/dice/faces/createText2";
 import { createBoolean } from "@/hooks/controls/createBoolean";
 import { createFolder } from "@/hooks/controls/createFolder";
 import { createPoint2D } from "@/hooks/controls/createPoint2D";
@@ -22,6 +20,7 @@ import { Font } from "opentype.js";
 import { Accessor, createMemo } from "solid-js";
 import { degToRad } from "three/src/math/MathUtils";
 import { FolderApi } from "tweakpane";
+import { createText } from "../../hooks/3d/createText";
 import { getInstanceFaceInfo, InstanceFaceConfig } from "./getInstanceFaceInfo";
 
 export interface DieFaceConfig {
@@ -65,22 +64,19 @@ export function createDieFace(
     "Text offset"
   );
 
-  const [initialGeom1, offset1] = createText1(
+  const initialTextGeom = createText(
     text,
     globalOptions.textFont,
     globalOptions.segments
   );
-  const initialGeom2 = createText2(
+  const initialMarkGeom = createText(
     mark,
     globalOptions.markFont,
-    globalOptions.segments,
-    offset1,
-    isUnderscore,
-    gap
+    globalOptions.segments
   );
 
   const geom1 = createMemo(() => {
-    let result = initialGeom1();
+    let result = initialTextGeom();
 
     if (result === null) return null;
 
@@ -90,7 +86,7 @@ export function createDieFace(
   });
 
   const geom2 = createMemo(() => {
-    let result = initialGeom2();
+    let result = initialMarkGeom();
 
     if (result === null) return null;
 
