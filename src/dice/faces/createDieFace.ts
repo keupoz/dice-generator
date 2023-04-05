@@ -125,8 +125,8 @@ export function createDieFace(
     const result = mat4.create();
     const defaultRotation = config.localRotation ?? 0;
 
-    mat4.rotateZ(result, result, degToRad(defaultRotation + localRotation()));
     mat4.translate(result, result, [...localOffset(), 0]);
+    mat4.rotateZ(result, result, defaultRotation + degToRad(localRotation()));
 
     return result;
   });
@@ -148,7 +148,7 @@ export function createDieFace(
     const accessedBaseMatrix = baseMatrix();
 
     return instanceMatrices().map((instanceMatrix) => {
-      return mat4.multiply(mat4.create(), accessedBaseMatrix, instanceMatrix);
+      return mat4.multiply(mat4.create(), instanceMatrix, accessedBaseMatrix);
     });
   });
 
