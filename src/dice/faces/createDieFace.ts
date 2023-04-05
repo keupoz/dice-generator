@@ -6,17 +6,17 @@ import { createFolder } from "@/hooks/controls/createFolder";
 import { createPoint2D } from "@/hooks/controls/createPoint2D";
 import { createSlider } from "@/hooks/controls/createSlider";
 import { createString } from "@/hooks/controls/createString";
-import { forceGroup } from "@/utils/forceGroup";
+import { flatPush } from "@/utils/flatPush";
 import { maybePush } from "@/utils/maybePush";
 import { Geom3 } from "@jscad/modeling/src/geometries/types";
-import vec2, { Vec2 } from "@jscad/modeling/src/maths/vec2";
-import { measureBoundingBox } from "@jscad/modeling/src/measurements";
+import mat4 from "@jscad/modeling/src/maths/mat4";
+import vec3 from "@jscad/modeling/src/maths/vec3";
+import { measureDimensions } from "@jscad/modeling/src/measurements";
 import {
   align,
-  rotateZ,
-  scale,
   transform,
   translate,
+  translateY,
 } from "@jscad/modeling/src/operations/transforms";
 import { Font } from "opentype.js";
 import { Accessor, createMemo } from "solid-js";
@@ -65,12 +65,12 @@ export function createDieFace(
     "Text offset"
   );
 
-  const [geom1, offset1] = createText1(
+  const [initialGeom1, offset1] = createText1(
     text,
     globalOptions.textFont,
     globalOptions.segments
   );
-  const geom2 = createText2(
+  const initialGeom2 = createText2(
     mark,
     globalOptions.markFont,
     globalOptions.segments,
@@ -79,76 +79,102 @@ export function createDieFace(
     gap
   );
 
-  const groupOffset = createMemo<Vec2>(() => {
-    // Align group by either text1 or text2 bounding box
-    const geom = geom1() ?? geom2();
+  const geom1 = createMemo(() => {
+    let result = initialGeom1();
 
-    if (geom === null) return vec2.create();
+    if (result === null) return null;
 
-    const bounds = measureBoundingBox(geom);
+    result = align({ modes: ["center", "center", "center"] }, result);
 
-    const x = -(bounds[0][0] + bounds[1][0]) / 2;
-    const y = -(bounds[0][1] + bounds[1][1]) / 2;
+    return result;
+  });
 
-    return vec2.fromValues(x, y);
+  const geom2 = createMemo(() => {
+    let result = initialGeom2();
+
+    if (result === null) return null;
+
+    const accessedGeom1 = geom1();
+
+    if (accessedGeom1 === null) {
+      result = align({ modes: ["center", "center", "center"] }, result);
+    } else {
+      const textDimensions = measureDimensions(accessedGeom1);
+      const textPivot = vec3.scale(vec3.create(), textDimensions, 0.5);
+
+      if (isUnderscore()) {
+        const offset = textPivot[1] + gap();
+
+        result = align({ modes: ["center", "max", "center"] }, result);
+        result = translateY(-offset, result);
+      } else {
+        const offsetX = textPivot[0] + gap();
+        const offsetY = textPivot[1];
+
+        result = align({ modes: ["min", "none", "center"] }, result);
+        result = translate([offsetX, -offsetY], result);
+      }
+    }
+
+    return result;
+  });
+
+  const infos = createMemo(() => {
+    return config.instances.map((instance) => {
+      return getInstanceFaceInfo(base(), instance);
+    });
+  });
+
+  const baseMatrix = createMemo(() => {
+    const result = mat4.create();
+    const defaultRotation = config.localRotation ?? 0;
+
+    mat4.rotateZ(result, result, degToRad(defaultRotation + localRotation()));
+    mat4.translate(result, result, [...localOffset(), 0]);
+
+    return result;
+  });
+
+  const instanceMatrices = createMemo(() => {
+    return infos().map((info) => {
+      const result = mat4.create();
+      const scale = info.length * fontScale();
+
+      mat4.translate(result, result, info.center);
+      mat4.multiply(result, result, info.rotationMatrix);
+      mat4.scale(result, result, [scale, scale, globalOptions.depth()]);
+
+      return result;
+    });
+  });
+
+  const finalMatrices = createMemo(() => {
+    const accessedBaseMatrix = baseMatrix();
+
+    return instanceMatrices().map((instanceMatrix) => {
+      return mat4.multiply(mat4.create(), accessedBaseMatrix, instanceMatrix);
+    });
   });
 
   const initialGroup = createMemo(() => {
-    const geoms: BufferedGeom3[] = [];
+    const result: BufferedGeom3[] = [];
 
-    maybePush(geom1(), geoms);
-    maybePush(geom2(), geoms);
-
-    let result = align(
-      {
-        modes: ["none", "none", "center"],
-        grouped: true,
-      },
-      geoms
-    );
-
-    result = translate(groupOffset(), result);
+    maybePush(geom1(), result);
+    maybePush(geom2(), result);
 
     return result;
   });
 
   const finalGroup = createMemo(() => {
-    try {
-      let baseGroup = initialGroup();
+    const group = initialGroup();
 
-      const defaultRotation = config.localRotation ?? 0;
-      baseGroup = rotateZ(
-        defaultRotation + degToRad(localRotation()),
-        baseGroup
-      );
-      baseGroup = translate(localOffset(), baseGroup);
+    let result: BufferedGeom3[] = [];
 
-      const result: BufferedGeom3[] = [];
-
-      for (const instance of config.instances) {
-        const info = getInstanceFaceInfo(base(), instance);
-
-        let instanceGroup = baseGroup;
-
-        let groupScale = info.length;
-        groupScale *= fontScale() * globalOptions.fontScale();
-        instanceGroup = scale(
-          [groupScale, groupScale, globalOptions.depth()],
-          instanceGroup
-        );
-
-        instanceGroup = transform(info.rotationMatrix, instanceGroup);
-        instanceGroup = translate(info.center, instanceGroup);
-
-        instanceGroup = forceGroup(instanceGroup);
-
-        result.push(...instanceGroup);
-      }
-
-      return result;
-    } catch (err) {
-      return [];
+    for (const matrix of finalMatrices()) {
+      flatPush(transform(matrix, group), result);
     }
+
+    return result;
   });
 
   return finalGroup;
