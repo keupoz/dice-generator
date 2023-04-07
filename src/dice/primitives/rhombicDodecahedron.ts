@@ -5,7 +5,6 @@ const C0 = (3 * Math.sqrt(2)) / 8;
 const C1 = (3 * Math.sqrt(2)) / 4;
 
 export const rhombicDodecahedron = defineScaledPolyhedron({
-  circumscribedRadius: Math.sqrt(2) / 2,
   points: [
     [0.0, 0.0, C1],
     [0.0, 0.0, -C1],
