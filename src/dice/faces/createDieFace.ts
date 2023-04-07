@@ -53,7 +53,7 @@ export function createDieFace(
   const [text] = createString(folder, defaultText, "Text");
   const [mark] = createString(folder, defaultMark, "Mark");
   const [isUnderscore] = createBoolean(folder, true, "Underscore");
-  const [gap] = createSlider(folder, -2, 2, 0.01, 0.1, "Gap");
+  const [markGap] = createSlider(folder, -2, 2, 0.01, 0.1, "Gap");
   const [localRotation] = createSlider(folder, 0, 360, 1, 0, "Rotation");
   const [localOffset] = createPoint2D(
     folder,
@@ -69,13 +69,14 @@ export function createDieFace(
     globalOptions.textFont,
     globalOptions.segments
   );
+
   const initialMarkGeom = createText(
     mark,
     globalOptions.markFont,
     globalOptions.segments
   );
 
-  const geom1 = createMemo(() => {
+  const textGeom = createMemo(() => {
     let result = initialTextGeom();
 
     if (result === null) return null;
@@ -85,26 +86,26 @@ export function createDieFace(
     return result;
   });
 
-  const geom2 = createMemo(() => {
+  const markGeom = createMemo(() => {
     let result = initialMarkGeom();
 
     if (result === null) return null;
 
-    const accessedGeom1 = geom1();
+    const accessedTextGeom = textGeom();
 
-    if (accessedGeom1 === null) {
+    if (accessedTextGeom === null) {
       result = align({ modes: ["center", "center", "center"] }, result);
     } else {
-      const textDimensions = measureDimensions(accessedGeom1);
+      const textDimensions = measureDimensions(accessedTextGeom);
       const textPivot = vec3.scale(vec3.create(), textDimensions, 0.5);
 
       if (isUnderscore()) {
-        const offset = textPivot[1] + gap();
+        const offset = textPivot[1] + markGap();
 
         result = align({ modes: ["center", "max", "center"] }, result);
         result = translateY(-offset, result);
       } else {
-        const offsetX = textPivot[0] + gap();
+        const offsetX = textPivot[0] + markGap();
         const offsetY = textPivot[1];
 
         result = align({ modes: ["min", "none", "center"] }, result);
@@ -155,8 +156,8 @@ export function createDieFace(
   const initialGroup = createMemo(() => {
     const result: BufferedGeom3[] = [];
 
-    maybePush(geom1(), result);
-    maybePush(geom2(), result);
+    maybePush(textGeom(), result);
+    maybePush(markGeom(), result);
 
     return result;
   });
