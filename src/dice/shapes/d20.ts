@@ -235,7 +235,7 @@ export function createD20(x: number, y: number, options: DieOptions) {
         return {};
       },
       base({ size }) {
-        return icosahedron(size());
+        return icosahedron(size() / 2);
       },
     },
     options

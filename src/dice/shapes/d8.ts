@@ -32,7 +32,7 @@ export function createD8(x: number, y: number, options: DieOptions) {
         return {};
       },
       base({ size }) {
-        return octahedron(size());
+        return octahedron(size() / 2);
       },
     },
     options
