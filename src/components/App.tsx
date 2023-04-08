@@ -147,7 +147,7 @@ const AppInternal: Component<AppInternalProps> = (props) => {
     "Global font scale"
   );
 
-  const [segments] = createSlider(dieFolder, 1, 24, 1, 4, "Font quality");
+  const [segments] = createSlider(dieFolder, 4, 360, 1, 24, "Font quality");
 
   const [depth] = createSlider(dieFolder, 0.01, 2, 0.01, 0.7, "Text depth");
 

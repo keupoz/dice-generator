@@ -1,4 +1,3 @@
-import { BufferedGeom3 } from "@/BufferedGeom3";
 import { createBoolean } from "@/hooks/controls/createBoolean";
 import { createFolder } from "@/hooks/controls/createFolder";
 import { createPoint2D } from "@/hooks/controls/createPoint2D";
@@ -154,7 +153,7 @@ export function createDieFace(
   });
 
   const initialGroup = createMemo(() => {
-    const result: BufferedGeom3[] = [];
+    const result: Geom3[] = [];
 
     maybePush(textGeom(), result);
     maybePush(markGeom(), result);
@@ -165,7 +164,7 @@ export function createDieFace(
   const finalGroup = createMemo(() => {
     const group = initialGroup();
 
-    let result: BufferedGeom3[] = [];
+    let result: Geom3[] = [];
 
     for (const matrix of finalMatrices()) {
       flatPush(transform(matrix, group), result);

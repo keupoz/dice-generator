@@ -1,4 +1,6 @@
 export function getArrayItem<T>(arr: T[], index: number): T {
+  index %= arr.length;
+
   if (index < 0) index += arr.length;
 
   const item = arr[index];

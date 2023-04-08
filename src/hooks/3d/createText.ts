@@ -1,10 +1,11 @@
-import { BufferedGeom3 } from "@/BufferedGeom3";
-import { geometry2cad } from "@/utils/3d/convert/three2cad";
-import { parsePathCommands } from "@/utils/cad/paths/parsePathCommands";
+import { interpretCommands } from "@/utils/paths/interpretCommands";
+import { polygons2geom } from "@/utils/paths/polygons2geom";
+import { sortPolygons } from "@/utils/paths/sortPolygons";
+import { Geom3 } from "@jscad/modeling/src/geometries/types";
 import { Font } from "opentype.js";
 import { Accessor, createMemo } from "solid-js";
 
-const cache = new Map<string, BufferedGeom3>();
+const cache = new Map<string, Geom3>();
 let currentFont: Font | null = null;
 let currentSegments: number = -1;
 
@@ -27,13 +28,13 @@ export function createText(
       if (cached) return cached;
     }
 
-    const path = font().getPath(text(), 0, 0, 1);
-    const geometry = parsePathCommands(path.commands, segments(), 2);
+    const { commands } = font().getPath(text(), 0, 0, 1);
+    const polygons = interpretCommands(commands, segments());
+    const sortedPolygons = sortPolygons(polygons);
+    const geom = polygons2geom(sortedPolygons);
 
-    const result = geometry2cad(geometry);
+    cache.set(text(), geom);
 
-    cache.set(text(), result);
-
-    return result;
+    return geom;
   });
 }
