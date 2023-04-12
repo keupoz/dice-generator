@@ -16,7 +16,7 @@ import {
   translate,
   translateY,
 } from "@jscad/modeling/src/operations/transforms";
-import { Font } from "opentype.js";
+import { Font } from "fontkit";
 import { Accessor, createMemo } from "solid-js";
 import { degToRad } from "three/src/math/MathUtils";
 import { FolderApi } from "tweakpane";

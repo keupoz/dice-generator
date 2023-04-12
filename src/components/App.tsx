@@ -14,8 +14,9 @@ import { createD8 } from "@/dice/shapes/d8";
 import { useDropzone } from "@/hooks/useDropzone";
 import { cad2mesh } from "@/utils/3d/convert/cad2three";
 import { measureDimensions } from "@jscad/modeling/src/measurements";
+import { Buffer } from "buffer";
 import { saveAs } from "file-saver";
-import opentype, { Font } from "opentype.js";
+import { create as createFont, Font } from "fontkit";
 import {
   Component,
   createEffect,
@@ -71,8 +72,8 @@ export const App: Component = () => {
   const [fonts] = createResource(async () => {
     const localFonts = FONTS.map(async (url) => {
       const r = await fetch(url);
-      const buffer = await r.arrayBuffer();
-      const font = opentype.parse(buffer);
+      const arrayBuffer = await r.arrayBuffer();
+      const font = createFont(Buffer.from(arrayBuffer));
 
       return font;
     });
@@ -129,9 +130,9 @@ const AppInternal: Component<AppInternalProps> = (props) => {
     "Mark font"
   );
 
-  useDropzone((buffers) => {
-    const fonts = buffers.map((buffer) => {
-      return opentype.parse(buffer);
+  useDropzone((arrayBuffers) => {
+    const fonts = arrayBuffers.map((arrayBuffer) => {
+      return createFont(Buffer.from(arrayBuffer));
     });
 
     addTextFonts(fonts);

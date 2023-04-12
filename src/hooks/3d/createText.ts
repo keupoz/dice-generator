@@ -1,7 +1,8 @@
 import { BufferedGeom3 } from "@/BufferedGeom3";
 import { geometry2cad } from "@/utils/3d/convert/three2cad";
 import { parsePathCommands } from "@/utils/cad/paths/parsePathCommands";
-import { Font } from "opentype.js";
+import { getArrayItem } from "@/utils/getArrayItem";
+import { Font, PathCommand } from "fontkit";
 import { Accessor, createMemo } from "solid-js";
 
 const cache = new Map<string, BufferedGeom3>();
@@ -27,8 +28,23 @@ export function createText(
       if (cached) return cached;
     }
 
-    const path = font().getPath(text(), 0, 0, 1);
-    const geometry = parsePathCommands(path.commands, segments(), 2);
+    const layout = font().layout(text());
+    const scale = 1 / font().unitsPerEm;
+    const commands: PathCommand[] = [];
+
+    let offset = 0;
+
+    layout.glyphs.forEach((glyph, i) => {
+      const position = getArrayItem(layout.positions, i);
+      offset += position.xOffset;
+
+      const path = glyph.path.translate(offset, 0).scale(scale);
+      commands.push(...path.commands);
+
+      offset += position.xAdvance;
+    });
+
+    const geometry = parsePathCommands(commands, segments(), 2);
 
     const result = geometry2cad(geometry);
 
