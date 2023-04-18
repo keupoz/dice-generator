@@ -1,8 +1,10 @@
 import { ListItem } from "@tweakpane/core";
 import { Font } from "fontkit";
-import { Accessor, createEffect, createMemo } from "solid-js";
+import { Accessor, batch, createMemo, createSignal } from "solid-js";
 import { FolderApi } from "tweakpane";
 import { getFirstItem } from "../utils/getFirstItem";
+import { createFolder } from "./controls/createFolder";
+import { createImperativeSelect } from "./controls/createImperativeSelect";
 import { createSelect } from "./controls/createSelect";
 
 export type AddFonts = (fonts: Font[]) => void;
@@ -10,90 +12,85 @@ export type FontSelect = [Accessor<Font>, AddFonts];
 
 export function createFontSelect(
   folder: FolderApi,
-  fonts: Font[],
+  defaultFonts: Font[],
   label: string
 ): FontSelect {
-  debugFonts(fonts);
+  folder = createFolder(folder, label, false);
 
-  const fontsStorage = new Map<string, Font>();
+  const [fonts, setFonts] = createSignal(defaultFonts);
 
-  const fontOptions = createOptions(fonts, fontsStorage);
-  const { value: fontValue } = getFirstItem(fontOptions);
+  const fontsMap = createMemo(() => {
+    const result = new Map<string, Font>();
 
-  const [fontSignal, _setFontSignal, setFontOptions] = createSelect(
-    folder,
-    fontOptions,
-    fontValue,
-    label
-  );
-
-  const variationOptions = createVariationOptions(getFirstItem(fonts));
-  const { value: variationValue } = getFirstItem(variationOptions);
-
-  const [variationSignal, _setVariationSignal, setVariationOptions] =
-    createSelect(
-      folder,
-      variationOptions,
-      variationValue,
-      `${label} variation`
-    );
-
-  const addFonts: AddFonts = (fonts) => {
-    const newOptions = createOptions(fonts, fontsStorage);
-    fontOptions.push(...newOptions);
-
-    setFontOptions(fontOptions, getFirstItem(newOptions).value);
-
-    debugFonts(fonts);
-  };
-
-  const defaultFont = createMemo(() => {
-    const fontName = fontSignal();
-    const font = fontsStorage.get(fontName);
-
-    if (font === undefined) {
-      throw new Error(`Unknown font "${fontName}"`);
+    for (const font of fonts()) {
+      result.set(getFontName(font), font);
     }
 
-    return font;
+    return result;
   });
 
-  createEffect(() => {
-    const variationOptions = createVariationOptions(defaultFont());
-    setVariationOptions(variationOptions);
+  const [currentFont, setCurrentFont] = createSignal(
+    getFirstItem(defaultFonts)
+  );
+
+  const [setFontName, setFontNames] = createImperativeSelect(
+    folder,
+    collectFontNames(defaultFonts),
+    getFontName(currentFont()),
+    "Font family",
+    (e) => {
+      const font = fontsMap().get(e.value);
+
+      if (font === undefined) {
+        throw new Error(`Unknown font "${e.value}"`);
+      }
+
+      batch(() => {
+        setCurrentFont(font);
+        setVariations(collectVariations(font), "Default");
+      });
+    }
+  );
+
+  const [variation, _setVariation, setVariations] = createSelect(
+    folder,
+    collectVariations(currentFont()),
+    null,
+    "Font variation"
+  );
+
+  const finalFont = createMemo(() => {
+    if (variation() === "Default") return currentFont();
+
+    return currentFont().getVariation(variation());
   });
 
-  const font = createMemo(() => {
-    if (variationSignal() === "Default") return defaultFont();
+  const addFonts: AddFonts = (newFonts) => {
+    batch(() => {
+      setFonts((prev) => [...prev, ...newFonts]);
 
-    console.log(
-      variationSignal(),
-      defaultFont().namedVariations[variationSignal()]
-    );
+      const font = getFirstItem(newFonts);
 
-    return defaultFont().getVariation(variationSignal());
-  });
+      setFontNames(collectFontNames(fonts()));
+      setVariations(collectVariations(font));
 
-  return [font, addFonts];
+      setCurrentFont(font);
+      setFontName(getFontName(font));
+    });
+  };
+
+  return [finalFont, addFonts];
 }
 
-function createOptions(fonts: Font[], storage: Map<string, Font>) {
-  const result: ListItem<string>[] = [];
-
-  for (const font of fonts) {
+function collectFontNames(fonts: Font[]): ListItem<string>[] {
+  return fonts.map((font) => {
     const name = font.fullName;
 
-    if (storage.has(name)) continue;
-
-    storage.set(name, font);
-
-    result.push({ value: name, text: name });
-  }
-
-  return result;
+    return { text: name, value: name };
+  });
 }
 
-function createVariationOptions(font: Font): ListItem<string>[] {
+function collectVariations(font: Font): ListItem<string>[] {
   return [
     { value: "Default", text: "Default" },
 
@@ -103,8 +100,6 @@ function createVariationOptions(font: Font): ListItem<string>[] {
   ];
 }
 
-function debugFonts(fonts: Font[]) {
-  for (const font of fonts) {
-    console.log(font.fullName, font, font.variationAxes);
-  }
+function getFontName(font: Font) {
+  return font.fullName;
 }
