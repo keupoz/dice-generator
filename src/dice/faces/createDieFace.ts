@@ -31,7 +31,11 @@ export interface DieFaceConfig {
 
 export interface DieFaceGlobalOptions {
   textFont: Accessor<Font>;
+  textFeatures: Accessor<Record<string, boolean>>;
+
   markFont: Accessor<Font>;
+  markFeatures: Accessor<Record<string, boolean>>;
+
   segments: Accessor<number>;
   depth: Accessor<number>;
   fontScale: Accessor<number>;
@@ -67,12 +71,14 @@ export function createDieFace(
   const initialTextGeom = createText(
     text,
     globalOptions.textFont,
+    globalOptions.textFeatures,
     globalOptions.segments
   );
 
   const initialMarkGeom = createText(
     mark,
     globalOptions.markFont,
+    globalOptions.markFeatures,
     globalOptions.segments
   );
 
@@ -135,7 +141,7 @@ export function createDieFace(
   const instanceMatrices = createMemo(() => {
     return infos().map((info) => {
       const result = mat4.create();
-      const scale = info.length * fontScale();
+      const scale = info.length * fontScale() * globalOptions.fontScale();
 
       mat4.translate(result, result, info.center);
       mat4.multiply(result, result, info.rotationMatrix);

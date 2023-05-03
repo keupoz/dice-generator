@@ -12,6 +12,7 @@ import { createD4P } from "@/dice/shapes/d4p";
 import { createD6 } from "@/dice/shapes/d6";
 import { createD8 } from "@/dice/shapes/d8";
 import { useDropzone } from "@/hooks/useDropzone";
+import { createSettings } from "@/settings";
 import { cad2mesh } from "@/utils/3d/convert/cad2three";
 import { measureDimensions } from "@jscad/modeling/src/measurements";
 import { Buffer } from "buffer";
@@ -31,15 +32,13 @@ import {
 } from "solid-js";
 import { Group, Mesh } from "three";
 import { STLExporter } from "three/examples/jsm/exporters/STLExporter";
-import { RenderMode, RenderOperation } from "../dice/renderMode";
-import { createBoolean } from "../hooks/controls/createBoolean";
-import { createFolder } from "../hooks/controls/createFolder";
-import { createPane } from "../hooks/controls/createPane";
-import { createSelect } from "../hooks/controls/createSelect";
-import { createSlider } from "../hooks/controls/createSlider";
-import { createFontSelect } from "../hooks/createFontSelect";
 import { createThree } from "../hooks/createThree";
 import { BASE_MATERIAL, FONT_MATERIAL } from "../materials";
+
+const LOCAL_FONTS = import.meta.glob("@/fonts/*.ttf", {
+  eager: true,
+  as: "url",
+});
 
 const FONTS = [
   // Roboto Regular
@@ -56,6 +55,11 @@ const FONTS = [
 
   // Edu NSW ACT Foundation
   "https://fonts.gstatic.com/s/edunswactfoundation/v2/raxRHjqJtsNBFUi8WO0vUBgc9D-2lV_oQdCAYlt_QTQ0vUxJki9tovGLeC-sfguJ.ttf",
+
+  // Material Symbols Rounded
+  "https://fonts.gstatic.com/s/materialsymbolsrounded/v106/syl0-zNym6YjUruM-QrEh7-nyTnjDwKNJ_190FjpZIvDmUSVOK7BDJ_vb9vUSzq3wzLK-P0J-V_Zs-QtQth3-jOc7TOVpeRL2w5rwZu2rIelXxc.woff2",
+
+  ...Object.values(LOCAL_FONTS),
 ];
 
 function handleError(err: unknown): JSX.Element {
@@ -71,7 +75,7 @@ function handleError(err: unknown): JSX.Element {
 export const App: Component = () => {
   const [fonts] = createResource(async () => {
     const localFonts = FONTS.map(async (url) => {
-      const r = await fetch(url);
+      const r = await fetch(url, { cache: "force-cache" });
       const arrayBuffer = await r.arrayBuffer();
       const font = createFont(Buffer.from(arrayBuffer));
 
@@ -95,39 +99,49 @@ interface AppInternalProps {
 }
 
 const AppInternal: Component<AppInternalProps> = (props) => {
-  const rootFolder = createPane("Settings");
-  const sceneFolder = createFolder(rootFolder, "Scene options");
+  const settings = createSettings(
+    {
+      onExport() {
+        const prevMode = settings.sceneSettings.renderMode;
 
-  const [showGrid] = createBoolean(sceneFolder, true, "Show grid");
-  const [baseOpacity] = createSlider(
-    sceneFolder,
-    0.1,
-    1,
-    0.1,
-    BASE_MATERIAL.opacity,
-    "Base opacity"
+        settings.sceneSettings.renderMode = "stl";
+
+        rootGroup.rotation.x = 0;
+        rootGroup.updateWorldMatrix(true, true);
+
+        const exporter = new STLExporter();
+        const result = exporter.parse(rootGroup, {
+          binary: true,
+        }) as unknown as DataView;
+
+        rootGroup.rotation.x = -Math.PI / 2;
+
+        const date = new Date();
+
+        let timestamp = `${date.getFullYear()}`.padStart(4, "0");
+        timestamp += "-" + `${date.getMonth()}`.padStart(2, "0");
+        timestamp += "-" + `${date.getDate()}`.padStart(2, "0");
+        timestamp += "_" + `${date.getHours()}`.padStart(2, "0");
+        timestamp += "-" + `${date.getMinutes()}`.padStart(2, "0");
+        timestamp += "-" + `${date.getSeconds()}`.padStart(2, "0");
+
+        saveAs(new Blob([result]), `dice-${timestamp}.stl`);
+
+        settings.sceneSettings.renderMode = prevMode;
+      },
+    },
+    props.fonts
   );
 
+  const rootFolder = settings.pane;
+
   createEffect(() => {
-    BASE_MATERIAL.opacity = baseOpacity();
+    BASE_MATERIAL.opacity = settings.sceneSettings.baseOpacity;
     render();
   });
 
-  const [renderElement, addObjects, initRenderer, render] =
-    createThree(showGrid);
-
-  const dieFolder = createFolder(rootFolder, "Shared die options");
-
-  const [textFont, addTextFonts] = createFontSelect(
-    dieFolder,
-    props.fonts,
-    "Text font"
-  );
-
-  const [markFont, addMarkFonts] = createFontSelect(
-    dieFolder,
-    props.fonts,
-    "Mark font"
+  const [renderElement, addObjects, initRenderer, render] = createThree(
+    () => settings.sceneSettings.showGrid
   );
 
   useDropzone((arrayBuffers) => {
@@ -135,57 +149,24 @@ const AppInternal: Component<AppInternalProps> = (props) => {
       return createFont(Buffer.from(arrayBuffer));
     });
 
-    addTextFonts(fonts);
-    addMarkFonts(fonts);
+    settings.addFonts(fonts);
   });
-
-  const [fontScale] = createSlider(
-    dieFolder,
-    0.01,
-    2,
-    0.01,
-    1,
-    "Global font scale"
-  );
-
-  const [segments] = createSlider(dieFolder, 1, 24, 1, 4, "Font quality");
-
-  const [depth] = createSlider(dieFolder, 0.01, 2, 0.01, 0.7, "Text depth");
-
-  const [renderMode, setRenderMode] = createSelect<RenderMode>(
-    sceneFolder,
-    [
-      { text: "Preview", value: "preview" },
-      { text: "Render", value: "render" },
-      { text: "STL", value: "stl" },
-    ],
-    "preview",
-    "Render mode"
-  );
-
-  const [renderOperation] = createSelect<RenderOperation>(
-    sceneFolder,
-    [
-      { text: "Subtract", value: "subtract" },
-      { text: "Union", value: "union" },
-    ],
-    "subtract",
-    "Render operation"
-  );
-
-  const exportButton = sceneFolder.addButton({ title: "Export STL" });
 
   const dieOptions: DieOptions = {
     folder: rootFolder,
     faceOptions: {
-      textFont,
-      markFont,
-      fontScale,
-      depth,
-      segments,
+      textFont: () => settings.fontsSettings.textFont,
+      textFeatures: () => settings.fontsSettings.textFeatures,
+
+      markFont: () => settings.fontsSettings.markFont,
+      markFeatures: () => settings.fontsSettings.markFeatures,
+
+      fontScale: () => settings.globalDiceSettings.fontScale,
+      depth: () => settings.globalDiceSettings.fontDepth,
+      segments: () => settings.globalDiceSettings.fontQuality,
     },
-    renderMode,
-    renderOperation,
+    renderMode: () => settings.sceneSettings.renderMode,
+    renderOperation: () => settings.sceneSettings.renderOperation,
   };
 
   const dice = [
@@ -271,44 +252,15 @@ const AppInternal: Component<AppInternalProps> = (props) => {
 
   createEffect(on(maxSize, render));
 
+  const rootGroup = new Group();
+
   onMount(() => {
     initRenderer();
-
-    const rootGroup = new Group();
 
     rootGroup.rotation.x = -Math.PI / 2;
 
     rootGroup.add(...dieGroups);
     addObjects(rootGroup);
-
-    exportButton.on("click", () => {
-      const prevMode = renderMode();
-
-      setRenderMode("stl");
-
-      rootGroup.rotation.x = 0;
-      rootGroup.updateWorldMatrix(true, true);
-
-      const exporter = new STLExporter();
-      const result = exporter.parse(rootGroup, {
-        binary: true,
-      }) as unknown as DataView;
-
-      rootGroup.rotation.x = -Math.PI / 2;
-
-      const date = new Date();
-
-      let timestamp = `${date.getFullYear()}`.padStart(4, "0");
-      timestamp += "-" + `${date.getMonth()}`.padStart(2, "0");
-      timestamp += "-" + `${date.getDate()}`.padStart(2, "0");
-      timestamp += "_" + `${date.getHours()}`.padStart(2, "0");
-      timestamp += "-" + `${date.getMinutes()}`.padStart(2, "0");
-      timestamp += "-" + `${date.getSeconds()}`.padStart(2, "0");
-
-      saveAs(new Blob([result]), `dice-${timestamp}.stl`);
-
-      setRenderMode(prevMode);
-    });
   });
 
   return <div class="render-container">{renderElement}</div>;
