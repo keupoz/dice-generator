@@ -110,6 +110,7 @@ export function createFontSettings(
     defaultVariationSettings = {};
 
     initVariationInputs(font);
+    initFeatureInputs(font);
 
     onFont(font);
   }
