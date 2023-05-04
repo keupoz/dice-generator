@@ -1,4 +1,5 @@
 import { BufferedGeom3 } from "@/BufferedGeom3";
+import { FontCache } from "@/FontCache";
 import { createBoolean } from "@/hooks/controls/createBoolean";
 import { createFolder } from "@/hooks/controls/createFolder";
 import { createPoint2D } from "@/hooks/controls/createPoint2D";
@@ -41,6 +42,9 @@ export interface DieFaceGlobalOptions {
   fontScale: Accessor<number>;
 }
 
+const textCache = new FontCache();
+const markCache = new FontCache();
+
 export function createDieFace(
   index: number,
   folder: FolderApi,
@@ -72,14 +76,16 @@ export function createDieFace(
     text,
     globalOptions.textFont,
     globalOptions.textFeatures,
-    globalOptions.segments
+    globalOptions.segments,
+    textCache
   );
 
   const initialMarkGeom = createText(
     mark,
     globalOptions.markFont,
     globalOptions.markFeatures,
-    globalOptions.segments
+    globalOptions.segments,
+    markCache
   );
 
   const textGeom = createMemo(() => {
