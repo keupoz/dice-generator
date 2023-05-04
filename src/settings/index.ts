@@ -36,7 +36,7 @@ export function createSettings(
       fontsSettings.textFont = font;
     },
     (features) => {
-      fontsSettings.textFeatures = features;
+      fontsSettings.textFeatures = { ...features };
     }
   );
 
@@ -48,7 +48,7 @@ export function createSettings(
       fontsSettings.markFont = font;
     },
     (features) => {
-      fontsSettings.markFeatures = features;
+      fontsSettings.markFeatures = { ...features };
     }
   );
 
