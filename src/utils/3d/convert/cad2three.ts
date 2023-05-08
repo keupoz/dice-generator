@@ -1,12 +1,7 @@
 import { BufferedGeom3, isBufferedGeom3 } from "@/BufferedGeom3";
 import type { Geom3 } from "@jscad/modeling/src/geometries/types";
-import {
-  BufferAttribute,
-  BufferGeometry,
-  Material,
-  Matrix4,
-  Mesh,
-} from "three";
+import { BufferAttribute, BufferGeometry, Material, Matrix4 } from "three";
+import { Brush } from "three-bvh-csg";
 
 // https://codesandbox.io/s/05d3b?file=/src/csg-2-geom.js
 export function cad2geometry(geom: Geom3): BufferGeometry {
@@ -16,6 +11,7 @@ export function cad2geometry(geom: Geom3): BufferGeometry {
 
   const vertices: number[] = [];
   const indices: number[] = [];
+  const uvs: number[] = [];
 
   let index = 0;
 
@@ -26,6 +22,7 @@ export function cad2geometry(geom: Geom3): BufferGeometry {
     for (const vertex of polygon.vertices) {
       vertices.push(...vertex);
       localIndices.push(index++);
+      uvs.push(0, 0);
     }
 
     for (let i = 2; i < localIndices.length; i++) {
@@ -38,8 +35,10 @@ export function cad2geometry(geom: Geom3): BufferGeometry {
 
   const geometry = new BufferGeometry();
   const position = new BufferAttribute(new Float32Array(vertices), 3);
+  const uv = new BufferAttribute(new Float32Array(uvs), 2);
 
   geometry.setAttribute("position", position);
+  geometry.setAttribute("uv", uv);
   geometry.setIndex(indices);
   geometry.computeVertexNormals();
 
@@ -48,11 +47,11 @@ export function cad2geometry(geom: Geom3): BufferGeometry {
   return geometry;
 }
 
-export function cad2mesh<M extends Material | Material[]>(
+export function cad2brush<M extends Material | Material[]>(
   geom: Geom3,
   material: M
 ) {
-  const mesh = new Mesh(cad2geometry(geom), material);
+  const mesh = new Brush(cad2geometry(geom), material);
 
   mesh.applyMatrix4(new Matrix4().fromArray(geom.transforms));
   mesh.layers.mask = 0b11;

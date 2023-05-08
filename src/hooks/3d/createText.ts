@@ -1,7 +1,5 @@
-import { geometry2cad } from "@/utils/3d/convert/three2cad";
 import { parsePathCommands } from "@/utils/cad/paths/parsePathCommands";
 import { getArrayItem } from "@/utils/getArrayItem";
-import transforms from "@jscad/modeling/src/operations/transforms";
 import { Font, PathCommand } from "fontkit";
 import { Accessor, createMemo } from "solid-js";
 import { FontCache } from "../../FontCache";
@@ -32,7 +30,7 @@ export function createText(
       const position = getArrayItem(layout.positions, i);
       offset += position.xOffset;
 
-      const path = glyph.path.translate(offset, 0);
+      const path = glyph.path.translate(offset, 0).scale(scale);
       commands.push(...path.commands);
 
       offset += position.xAdvance;
@@ -40,10 +38,8 @@ export function createText(
 
     const geometry = parsePathCommands(commands, segments(), 2);
 
-    const result = transforms.scale([scale, scale, 1], geometry2cad(geometry));
+    cache.save(text(), geometry);
 
-    cache.save(text(), result);
-
-    return result;
+    return geometry;
   });
 }

@@ -1,18 +1,21 @@
-import { BufferedGeom3, isBufferedGeom3 } from "@/BufferedGeom3";
+import { isBufferedGeom3 } from "@/BufferedGeom3";
 import { RenderMode, RenderOperation } from "@/dice/renderMode";
 import { createBoolean } from "@/hooks/controls/createBoolean";
 import { createFolder } from "@/hooks/controls/createFolder";
 import { createSlider } from "@/hooks/controls/createSlider";
+import { BASE_MATERIAL } from "@/materials";
+import { cad2brush } from "@/utils/3d/convert/cad2three";
+import { alignMesh } from "@/utils/boundingBox";
 import { getFirstItem } from "@/utils/getFirstItem";
 import { invertMat4 } from "@/utils/invertMat4";
 import { d180 } from "@/utils/math";
 import { Geom3 } from "@jscad/modeling/src/geometries/types";
 import mat4 from "@jscad/modeling/src/maths/mat4";
-import subtract from "@jscad/modeling/src/operations/booleans/subtract";
-import union from "@jscad/modeling/src/operations/booleans/union";
-import { rotateY, transform } from "@jscad/modeling/src/operations/transforms";
-import align from "@jscad/modeling/src/operations/transforms/align";
+import { Vec3 } from "@jscad/modeling/src/maths/types";
+import { measureDimensions } from "@jscad/modeling/src/measurements";
 import { Accessor, createMemo } from "solid-js";
+import { Group, Matrix4, Object3D } from "three";
+import { ADDITION, Brush, Evaluator, SUBTRACTION } from "three-bvh-csg";
 import { FolderApi } from "tweakpane";
 import {
   createDieFace,
@@ -56,9 +59,8 @@ export interface AbstractDieOptions<T extends Record<string, unknown>> {
 export interface DieResult {
   x: number;
   y: number;
-  base: Accessor<Geom3 | null>;
-  faces: Accessor<BufferedGeom3[]>;
-  size: Accessor<number>;
+  result: Accessor<Object3D | null>;
+  dimensions: Accessor<Vec3>;
 }
 
 export type DieFactory = (
@@ -112,6 +114,14 @@ export function createDie<T extends Record<string, unknown>>(
     return geom;
   });
 
+  const dimensions = createMemo(() => {
+    return measureDimensions(base());
+  });
+
+  const baseBrush = createMemo(() => {
+    return cad2brush(base(), BASE_MATERIAL);
+  });
+
   const facesBase = createMemo(() => {
     return baseOptions.facesBase?.(accessorOptions) ?? base();
   });
@@ -124,22 +134,30 @@ export function createDie<T extends Record<string, unknown>>(
     fontScale
   );
 
-  const finalBase = createMemo(() => {
+  const evaluator = new Evaluator();
+
+  const finalBase = createMemo<Group | null>((prev) => {
+    prev?.clear();
+
     if (hidden()) return null;
 
-    let result = base();
+    const group = new Group();
 
     if (options.renderMode() === "preview") {
-      return result;
+      group.add(baseBrush(), ...faces());
+
+      return group;
     }
 
-    switch (options.renderOperation()) {
-      case "subtract":
-        result = subtract(result, faces());
-        break;
-      case "union":
-        result = union(result, faces());
-        break;
+    const operation =
+      options.renderOperation() === "union" ? ADDITION : SUBTRACTION;
+
+    let result = baseBrush();
+    result.updateMatrixWorld();
+
+    for (const face of faces()) {
+      face.updateMatrixWorld();
+      result = evaluator.evaluate(result, face, operation);
     }
 
     if (options.renderMode() === "stl") {
@@ -150,25 +168,21 @@ export function createDie<T extends Record<string, unknown>>(
         const info = getInstanceFaceInfo(facesBase(), instance);
 
         const matrix = invertMat4(mat4.create(), info.rotationMatrix);
-        result = transform(matrix, result);
-        result = rotateY(d180, result);
+
+        result.applyMatrix4(new Matrix4().fromArray(matrix));
+        result.rotation.x += d180;
       }
 
-      result = align({ modes: ["none", "none", "min"] }, result);
+      alignMesh({ modes: ["none", "none", "min"] }, result);
     }
 
-    return result;
+    result.layers.mask = 0b11;
+    group.add(result);
+
+    return group;
   });
 
-  const finalFaces = createMemo(() => {
-    if (!hidden() && options.renderMode() === "preview") {
-      return faces();
-    }
-
-    return [];
-  });
-
-  return { x, y, size, base: finalBase, faces: finalFaces };
+  return { x, y, result: finalBase, dimensions };
 }
 
 function parseFaces(
@@ -178,7 +192,7 @@ function parseFaces(
   globalOptions: DieFaceGlobalOptions,
   fontScale: Accessor<number>
 ) {
-  const faces: Accessor<BufferedGeom3[]>[] = [];
+  const faces: Accessor<Brush[]>[] = [];
 
   let currentIndex = 0;
 
@@ -196,7 +210,7 @@ function parseFaces(
   }
 
   const finalFaces = createMemo(() => {
-    const result: BufferedGeom3[] = [];
+    const result: Brush[] = [];
 
     for (const face of faces) {
       result.push(...face());

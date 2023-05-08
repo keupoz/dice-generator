@@ -13,8 +13,7 @@ import { createD6 } from "@/dice/shapes/d6";
 import { createD8 } from "@/dice/shapes/d8";
 import { useDropzone } from "@/hooks/useDropzone";
 import { createSettings } from "@/settings";
-import { cad2mesh } from "@/utils/3d/convert/cad2three";
-import { measureDimensions } from "@jscad/modeling/src/measurements";
+import vec3 from "@jscad/modeling/src/maths/vec3";
 import { Buffer } from "buffer";
 import { saveAs } from "file-saver";
 import { create as createFont, Font } from "fontkit";
@@ -25,15 +24,13 @@ import {
   createResource,
   ErrorBoundary,
   JSX,
-  mapArray,
-  on,
   onMount,
   Show,
 } from "solid-js";
-import { Group, Mesh } from "three";
+import { Group, Object3D } from "three";
 import { STLExporter } from "three/examples/jsm/exporters/STLExporter";
 import { createThree } from "../hooks/createThree";
-import { BASE_MATERIAL, FONT_MATERIAL } from "../materials";
+import { BASE_MATERIAL } from "../materials";
 
 const LOCAL_FONTS = import.meta.glob("@/fonts/*.ttf", {
   eager: true,
@@ -185,81 +182,42 @@ const AppInternal: Component<AppInternalProps> = (props) => {
     createD20(1, 0, dieOptions),
   ];
 
-  const dieGroups = dice.map((die) => {
-    const dieGroup = new Group();
+  const maxSize = createMemo(() => {
+    const result = vec3.create();
 
-    const mesh = createMemo(() => {
-      const geom = die.base();
+    for (const die of dice) {
+      const dimensions = die.dimensions();
 
-      if (geom === null) return null;
+      vec3.max(result, result, dimensions);
+    }
 
-      return cad2mesh(geom, BASE_MATERIAL);
-    });
+    return result;
+  });
 
-    const faces = mapArray(die.faces, (face) => {
-      return cad2mesh(face, FONT_MATERIAL);
-    });
-
-    createEffect<Mesh | null>((prev) => {
+  for (const die of dice) {
+    createEffect<Object3D | null>((prev) => {
       prev?.removeFromParent();
 
-      const newMesh = mesh();
+      const object = die.result();
 
-      if (newMesh === null) return null;
+      if (object) {
+        const [x, y] = maxSize();
+        object.position.x = die.x * x * 1.5;
+        object.position.y = die.y * y * 1.25;
+        rootGroup.add(object);
+      }
 
-      dieGroup.add(newMesh);
       render();
 
-      return newMesh;
+      return object;
     });
-
-    createEffect<Mesh[]>((prev) => {
-      prev.forEach((face) => face.removeFromParent());
-
-      const newFaces = faces();
-
-      dieGroup.add(...newFaces);
-      render();
-
-      return newFaces;
-    }, []);
-
-    createEffect(() => {
-      const [fx, fy] = maxSize();
-
-      dieGroup.position.set(die.x * fx, die.y * fy, 0);
-    });
-
-    return dieGroup;
-  });
-
-  const maxSize = createMemo<[number, number]>(() => {
-    const [x, y] = dice.reduce<[number, number]>(
-      (prev, die) => {
-        const base = die.base();
-
-        if (base === null) return prev;
-
-        const [width, height] = measureDimensions(base);
-
-        return [Math.max(prev[0], width), Math.max(prev[1], height)];
-      },
-      [0, 0]
-    );
-
-    return [x * 1.5, y * 1.25];
-  });
-
-  createEffect(on(maxSize, render));
+  }
 
   const rootGroup = new Group();
+  rootGroup.rotation.x = -Math.PI / 2;
 
   onMount(() => {
     initRenderer();
-
-    rootGroup.rotation.x = -Math.PI / 2;
-
-    rootGroup.add(...dieGroups);
     addObjects(rootGroup);
   });
 

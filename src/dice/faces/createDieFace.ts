@@ -1,24 +1,18 @@
-import { BufferedGeom3 } from "@/BufferedGeom3";
 import { FontCache } from "@/FontCache";
 import { createBoolean } from "@/hooks/controls/createBoolean";
 import { createFolder } from "@/hooks/controls/createFolder";
 import { createPoint2D } from "@/hooks/controls/createPoint2D";
 import { createSlider } from "@/hooks/controls/createSlider";
 import { createString } from "@/hooks/controls/createString";
-import { flatPush } from "@/utils/flatPush";
+import { FONT_MATERIAL } from "@/materials";
+import { alignMesh, getBoundingBox } from "@/utils/boundingBox";
 import { maybePush } from "@/utils/maybePush";
 import { Geom3 } from "@jscad/modeling/src/geometries/types";
 import mat4 from "@jscad/modeling/src/maths/mat4";
-import vec3 from "@jscad/modeling/src/maths/vec3";
-import { measureDimensions } from "@jscad/modeling/src/measurements";
-import {
-  align,
-  transform,
-  translate,
-  translateY,
-} from "@jscad/modeling/src/operations/transforms";
 import { Font } from "fontkit";
 import { Accessor, createMemo } from "solid-js";
+import { Matrix4, Vector3 } from "three";
+import { Brush } from "three-bvh-csg";
 import { degToRad } from "three/src/math/MathUtils";
 import { FolderApi } from "tweakpane";
 import { createText } from "../../hooks/3d/createText";
@@ -72,7 +66,7 @@ export function createDieFace(
     "Text offset"
   );
 
-  const initialTextGeom = createText(
+  const textGeometry = createText(
     text,
     globalOptions.textFont,
     globalOptions.textFeatures,
@@ -80,7 +74,7 @@ export function createDieFace(
     textCache
   );
 
-  const initialMarkGeom = createText(
+  const markGeometry = createText(
     mark,
     globalOptions.markFont,
     globalOptions.markFeatures,
@@ -88,44 +82,52 @@ export function createDieFace(
     markCache
   );
 
-  const textGeom = createMemo(() => {
-    let result = initialTextGeom();
+  const textBrush = createMemo(() => {
+    const geometry = textGeometry();
 
-    if (result === null) return null;
+    if (geometry === null) return null;
 
-    result = align({ modes: ["center", "center", "center"] }, result);
+    const brush = new Brush(geometry, FONT_MATERIAL);
+    brush.layers.mask = 0b11;
 
-    return result;
+    alignMesh({ modes: ["center", "center", "center"] }, brush);
+
+    return brush;
   });
 
-  const markGeom = createMemo(() => {
-    let result = initialMarkGeom();
+  const markBrush = createMemo(() => {
+    const geometry = markGeometry();
 
-    if (result === null) return null;
+    if (geometry === null) return null;
 
-    const accessedTextGeom = textGeom();
+    const accessedTextGeometry = textGeometry();
+    const brush = new Brush(geometry, FONT_MATERIAL);
+    brush.layers.mask = 0b11;
 
-    if (accessedTextGeom === null) {
-      result = align({ modes: ["center", "center", "center"] }, result);
+    if (accessedTextGeometry === null) {
+      alignMesh({ modes: ["center", "center", "center"] }, brush);
     } else {
-      const textDimensions = measureDimensions(accessedTextGeom);
-      const textPivot = vec3.scale(vec3.create(), textDimensions, 0.5);
+      const textBounds = getBoundingBox(accessedTextGeometry);
+      const textPivot = textBounds.getSize(new Vector3()).multiplyScalar(0.5);
 
       if (isUnderscore()) {
-        const offset = textPivot[1] + markGap();
+        const offset = textPivot.y + markGap();
 
-        result = align({ modes: ["center", "max", "center"] }, result);
-        result = translateY(-offset, result);
+        alignMesh({ modes: ["center", "max", "center"] }, brush);
+
+        brush.position.y -= offset;
       } else {
-        const offsetX = textPivot[0] + markGap();
-        const offsetY = textPivot[1];
+        const offsetX = textPivot.x + markGap();
+        const offsetY = textPivot.y;
 
-        result = align({ modes: ["min", "none", "center"] }, result);
-        result = translate([offsetX, -offsetY], result);
+        alignMesh({ modes: ["min", "none", "center"] }, brush);
+
+        brush.position.x += offsetX;
+        brush.position.y -= offsetY;
       }
     }
 
-    return result;
+    return brush;
   });
 
   const infos = createMemo(() => {
@@ -166,10 +168,10 @@ export function createDieFace(
   });
 
   const initialGroup = createMemo(() => {
-    const result: BufferedGeom3[] = [];
+    const result: Brush[] = [];
 
-    maybePush(textGeom(), result);
-    maybePush(markGeom(), result);
+    maybePush(textBrush(), result);
+    maybePush(markBrush(), result);
 
     return result;
   });
@@ -177,10 +179,19 @@ export function createDieFace(
   const finalGroup = createMemo(() => {
     const group = initialGroup();
 
-    let result: BufferedGeom3[] = [];
+    const result: Brush[] = [];
 
     for (const matrix of finalMatrices()) {
-      flatPush(transform(matrix, group), result);
+      const mat = new Matrix4().fromArray(matrix);
+
+      for (const brush of group) {
+        const clone = brush.clone();
+
+        clone.applyMatrix4(mat);
+        clone.updateMatrixWorld();
+
+        result.push(clone);
+      }
     }
 
     return result;

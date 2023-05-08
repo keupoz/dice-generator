@@ -1,8 +1,8 @@
-import { BufferedGeom3 } from "@/BufferedGeom3";
 import { Font } from "fontkit";
+import { BufferGeometry } from "three";
 
 export class FontCache {
-  private readonly map = new Map<string, BufferedGeom3>();
+  private readonly map = new Map<string, BufferGeometry>();
 
   private font: Font | null = null;
   private segments: number = -1;
@@ -27,7 +27,7 @@ export class FontCache {
     return null;
   }
 
-  public save(key: string, value: BufferedGeom3) {
+  public save(key: string, value: BufferGeometry) {
     this.map.set(key, value);
   }
 }
