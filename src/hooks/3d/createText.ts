@@ -22,7 +22,7 @@ export function createText(
 
     const layout = font().layout(text(), { ...features() });
     const scale = 1 / font().unitsPerEm;
-    const commands: PathCommand[] = [];
+    const glyphs: PathCommand[][] = [];
 
     let offset = 0;
 
@@ -30,13 +30,14 @@ export function createText(
       const position = getArrayItem(layout.positions, i);
       offset += position.xOffset;
 
-      const path = glyph.path.translate(offset, 0).scale(scale);
-      commands.push(...path.commands);
+      const path = glyph.path.translate(offset, 0);
+      glyphs.push(path.commands);
 
       offset += position.xAdvance;
     });
 
-    const geometry = parsePathCommands(commands, segments(), 2);
+    const geometry = parsePathCommands(glyphs, segments(), 2);
+    geometry.scale(scale, scale, 1);
 
     cache.save(text(), geometry);
 
