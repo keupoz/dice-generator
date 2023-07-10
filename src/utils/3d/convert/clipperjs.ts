@@ -1,7 +1,7 @@
 import { getArrayItem } from "@/utils/getArrayItem";
 import { getFirstItem } from "@/utils/getFirstItem";
 import ClipperShape, { Point, PointLower } from "@doodle3d/clipper-js";
-import { Path, Shape, Vector2 } from "three";
+import { Path, Shape, ShapeUtils, Vector2 } from "three";
 
 export function paths2clipper(paths: Path[], segments: number) {
   const result: PointLower[][] = [];
@@ -10,15 +10,24 @@ export function paths2clipper(paths: Path[], segments: number) {
     result.push(path.getPoints(segments));
   }
 
-  return new ClipperShape(result, true, true, false, true);
+  return new ClipperShape(result, true, true, false, false);
 }
 
 export function simplifyPaths(paths: Path[], segments: number) {
   const clipperShape = paths2clipper(paths, segments);
   const simplified = clipperShape.simplify("pftNonZero");
-  const result = new Shape();
 
-  result.setFromPoints(mapPoints(getFirstItem(simplified.paths)));
+  let shapePoints = mapPoints(getFirstItem(simplified.paths));
+  const isCCW = ShapeUtils.isClockWise(shapePoints);
+
+  if (isCCW) {
+    simplified.paths.reverse();
+    simplified.paths.forEach((path) => path.reverse());
+
+    shapePoints = mapPoints(getFirstItem(simplified.paths));
+  }
+
+  const result = new Shape(shapePoints);
 
   for (let i = 1; i < simplified.paths.length; i++) {
     const points = getArrayItem(simplified.paths, i);
