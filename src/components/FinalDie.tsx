@@ -45,7 +45,7 @@ export const FinalDie = forwardRef<Object3D, FinalDieProps>(
         return group;
       }
 
-      const operation = renderOperation === "union" ? ADDITION : SUBTRACTION;
+      const operation = renderOperation === "Union" ? ADDITION : SUBTRACTION;
 
       let result = baseBrush;
 
