@@ -61,6 +61,7 @@ export const SceneContent: FC = () => {
   useEffect(() => {
     baseMaterial.opacity = baseOpacity;
     baseMaterial.transparent = baseOpacity < 1;
+    baseMaterial.needsUpdate = true;
     invalidate();
   }, [baseMaterial, baseOpacity, invalidate]);
 
