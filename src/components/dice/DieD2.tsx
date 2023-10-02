@@ -23,10 +23,12 @@ export const DieD2: FC = () => {
     return cuboid({ size: [size, size, height] });
   }, [height, size]);
 
-  const faces = [
-    useDieFace(NAME, 0, facesGeom, fontScale, FACE_1),
-    useDieFace(NAME, 1, facesGeom, fontScale, FACE_2),
-  ];
+  const face1 = useDieFace(NAME, 0, facesGeom, fontScale, FACE_1);
+  const face2 = useDieFace(NAME, 1, facesGeom, fontScale, FACE_2);
+
+  const faces = useMemo(() => {
+    return [face1, face2];
+  }, [face1, face2]);
 
   return <FinalDie ref={exportRef} geom={geom} faces={faces} hidden={hidden} />;
 };

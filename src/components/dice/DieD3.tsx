@@ -44,11 +44,13 @@ export const DieD3: FC = () => {
     return intersect(basePrism, baseSphere);
   }, [basePrism, segments, size]);
 
-  const faces = [
-    useDieFace(NAME, 0, basePrism, fontScale, FACE_1),
-    useDieFace(NAME, 1, basePrism, fontScale, FACE_2),
-    useDieFace(NAME, 2, basePrism, fontScale, FACE_3),
-  ];
+  const face1 = useDieFace(NAME, 0, basePrism, fontScale, FACE_1);
+  const face2 = useDieFace(NAME, 1, basePrism, fontScale, FACE_2);
+  const face3 = useDieFace(NAME, 2, basePrism, fontScale, FACE_3);
+
+  const faces = useMemo(() => {
+    return [face1, face2, face3];
+  }, [face1, face2, face3]);
 
   return <FinalDie ref={exportRef} geom={geom} faces={faces} hidden={hidden} />;
 };

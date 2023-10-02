@@ -13,20 +13,48 @@ export const DieD12: FC = () => {
     return dodecahedron(size / 2);
   }, [size]);
 
-  const faces = [
-    useDieFace(NAME, 0, geom, fontScale, FACE_1),
-    useDieFace(NAME, 1, geom, fontScale, FACE_2),
-    useDieFace(NAME, 2, geom, fontScale, FACE_3),
-    useDieFace(NAME, 3, geom, fontScale, FACE_4),
-    useDieFace(NAME, 4, geom, fontScale, FACE_5),
-    useDieFace(NAME, 5, geom, fontScale, FACE_6),
-    useDieFace(NAME, 6, geom, fontScale, FACE_7),
-    useDieFace(NAME, 7, geom, fontScale, FACE_8),
-    useDieFace(NAME, 8, geom, fontScale, FACE_9),
-    useDieFace(NAME, 9, geom, fontScale, FACE_10),
-    useDieFace(NAME, 10, geom, fontScale, FACE_11),
-    useDieFace(NAME, 11, geom, fontScale, FACE_12),
-  ];
+  const face1 = useDieFace(NAME, 0, geom, fontScale, FACE_1);
+  const face2 = useDieFace(NAME, 1, geom, fontScale, FACE_2);
+  const face3 = useDieFace(NAME, 2, geom, fontScale, FACE_3);
+  const face4 = useDieFace(NAME, 3, geom, fontScale, FACE_4);
+  const face5 = useDieFace(NAME, 4, geom, fontScale, FACE_5);
+  const face6 = useDieFace(NAME, 5, geom, fontScale, FACE_6);
+  const face7 = useDieFace(NAME, 6, geom, fontScale, FACE_7);
+  const face8 = useDieFace(NAME, 7, geom, fontScale, FACE_8);
+  const face9 = useDieFace(NAME, 8, geom, fontScale, FACE_9);
+  const face10 = useDieFace(NAME, 9, geom, fontScale, FACE_10);
+  const face11 = useDieFace(NAME, 10, geom, fontScale, FACE_11);
+  const face12 = useDieFace(NAME, 11, geom, fontScale, FACE_12);
+
+  const faces = useMemo(() => {
+    return [
+      face1,
+      face2,
+      face3,
+      face4,
+      face5,
+      face6,
+      face7,
+      face8,
+      face9,
+      face10,
+      face11,
+      face12,
+    ];
+  }, [
+    face1,
+    face10,
+    face11,
+    face12,
+    face2,
+    face3,
+    face4,
+    face5,
+    face6,
+    face7,
+    face8,
+    face9,
+  ]);
 
   return (
     <FinalDie

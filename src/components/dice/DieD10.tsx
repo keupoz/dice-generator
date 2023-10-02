@@ -43,18 +43,31 @@ export const DieD10: FC<DieD10Props> = ({ isD100 }) => {
     return trapezohedron(10, size / 2, radius);
   }, [radius, size]);
 
-  const faces = [
-    useDieFace(name, 0, geom, fontScale, faceConfigs[0]),
-    useDieFace(name, 1, geom, fontScale, faceConfigs[1]),
-    useDieFace(name, 2, geom, fontScale, faceConfigs[2]),
-    useDieFace(name, 3, geom, fontScale, faceConfigs[3]),
-    useDieFace(name, 4, geom, fontScale, faceConfigs[4]),
-    useDieFace(name, 5, geom, fontScale, faceConfigs[5]),
-    useDieFace(name, 6, geom, fontScale, faceConfigs[6]),
-    useDieFace(name, 7, geom, fontScale, faceConfigs[7]),
-    useDieFace(name, 8, geom, fontScale, faceConfigs[8]),
-    useDieFace(name, 9, geom, fontScale, faceConfigs[9]),
-  ];
+  const face1 = useDieFace(name, 0, geom, fontScale, faceConfigs[0]);
+  const face2 = useDieFace(name, 1, geom, fontScale, faceConfigs[1]);
+  const face3 = useDieFace(name, 2, geom, fontScale, faceConfigs[2]);
+  const face4 = useDieFace(name, 3, geom, fontScale, faceConfigs[3]);
+  const face5 = useDieFace(name, 4, geom, fontScale, faceConfigs[4]);
+  const face6 = useDieFace(name, 5, geom, fontScale, faceConfigs[5]);
+  const face7 = useDieFace(name, 6, geom, fontScale, faceConfigs[6]);
+  const face8 = useDieFace(name, 7, geom, fontScale, faceConfigs[7]);
+  const face9 = useDieFace(name, 8, geom, fontScale, faceConfigs[8]);
+  const face10 = useDieFace(name, 9, geom, fontScale, faceConfigs[9]);
+
+  const faces = useMemo(() => {
+    return [
+      face1,
+      face2,
+      face3,
+      face4,
+      face5,
+      face6,
+      face7,
+      face8,
+      face9,
+      face10,
+    ];
+  }, [face1, face10, face2, face3, face4, face5, face6, face7, face8, face9]);
 
   return (
     <FinalDie

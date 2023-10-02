@@ -60,12 +60,14 @@ export const DieD4P: FC = () => {
     });
   }, [length1, length2, size]);
 
-  const faces = [
-    useDieFace(NAME, 0, geom, fontScale, FACE_1),
-    useDieFace(NAME, 1, geom, fontScale, FACE_2),
-    useDieFace(NAME, 2, geom, fontScale, FACE_3),
-    useDieFace(NAME, 3, geom, fontScale, FACE_4),
-  ];
+  const face1 = useDieFace(NAME, 0, geom, fontScale, FACE_1);
+  const face2 = useDieFace(NAME, 1, geom, fontScale, FACE_2);
+  const face3 = useDieFace(NAME, 2, geom, fontScale, FACE_3);
+  const face4 = useDieFace(NAME, 3, geom, fontScale, FACE_4);
+
+  const faces = useMemo(() => {
+    return [face1, face2, face3, face4];
+  }, [face1, face2, face3, face4]);
 
   return (
     <FinalDie
