@@ -17,7 +17,8 @@ interface CollectedObject {
   geometry: BufferGeometry;
 }
 
-// Three.js types are not working, three-stdlib doesn't export anything
+// Copied from Three.js, because Three.js types are not working
+// and three-stdlib doesn't export anything
 export class STLExporter {
   public parse(scene: Object3D, options: STLExporterOptions = {}) {
     const binary = options.binary ?? false;
