@@ -14,8 +14,6 @@ export function parsePathCommands(
     const glyphPaths: Path[] = [];
     let path = new Path();
 
-    glyphPaths.push(path);
-
     for (const command of commands) {
       switch (command.command) {
         case "moveTo": {
@@ -60,14 +58,15 @@ export function parsePathCommands(
 
         case "closePath": {
           path.closePath();
-          path = new Path();
           glyphPaths.push(path);
+
+          path = new Path();
         }
       }
     }
 
-    const shape = simplifyPaths(glyphPaths, segments);
-    shapes.push(shape);
+    const newShapes = simplifyPaths(glyphPaths, segments);
+    shapes.push(...newShapes);
   }
 
   return new ExtrudeGeometry(shapes, {

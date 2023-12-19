@@ -17,7 +17,6 @@ export function useTextGeometry(
     if (trimmedText.length === 0) return null;
 
     const layout = font.layout(trimmedText, features);
-    const scale = 1 / font.unitsPerEm;
     const glyphs: PathCommand[][] = [];
 
     let offset = 0;
@@ -33,6 +32,8 @@ export function useTextGeometry(
     });
 
     const geometry = parsePathCommands(glyphs, segments, 2);
+
+    const scale = 1 / font.unitsPerEm;
     geometry.scale(scale, scale, 1);
 
     return geometry;
