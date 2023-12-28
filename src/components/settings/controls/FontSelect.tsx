@@ -62,7 +62,8 @@ export const FontSelect: FC<FontSelectProps> = ({
   }
 
   function handleVariationChange(value: string) {
-    const variationSettings = baseFont.namedVariations[value];
+    const variationSettings =
+      baseFont.namedVariations[value] ?? defaultVariationSettings;
 
     setSelectedVariation(value);
     setVariationSettings(variationSettings);
@@ -110,7 +111,7 @@ export const FontSelect: FC<FontSelectProps> = ({
             min={value.min}
             max={value.max}
             step={1}
-            value={variationSettings[key]}
+            value={variationSettings[key] ?? value.min}
             onChange={handleAxisChange.bind(null, key)}
           />
         ))}

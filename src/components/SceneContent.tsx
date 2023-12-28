@@ -5,6 +5,7 @@ import {
   showGridAtom,
   smoothCameraAtom,
 } from "@/stores/SceneSettingsStore";
+import { getFirstItem } from "@/utils/getFirstItem";
 import { useColorScheme } from "@mui/joy";
 import { CameraControls, Grid, PerspectiveCamera } from "@react-three/drei";
 import { ThreeEvent, useThree } from "@react-three/fiber";
@@ -71,7 +72,7 @@ export const SceneContent: FC = () => {
   function focus(e: ThreeEvent<MouseEvent>) {
     e.stopPropagation();
 
-    focusObject(e.intersections[0].object);
+    focusObject(getFirstItem(e.intersections).object);
   }
 
   function resetFocus(e: MouseEvent) {
@@ -83,7 +84,7 @@ export const SceneContent: FC = () => {
   function updateHighlight(e: ThreeEvent<PointerEvent>) {
     if (helperRef.current === null) return;
 
-    helperRef.current.setFromObject(e.intersections[0].object);
+    helperRef.current.setFromObject(getFirstItem(e.intersections).object);
     helperRef.current.update();
     helperRef.current.visible = true;
 
