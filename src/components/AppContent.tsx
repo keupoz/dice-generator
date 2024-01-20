@@ -3,13 +3,14 @@ import { Buffer } from "buffer";
 import { Font, create as createFont } from "fontkit";
 import { FC, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { AppUI } from "./AppUI";
+import { Scene } from "./Scene/Scene";
+import { Settings } from "./settings/Settings";
 
-export interface AppWrapperProps {
+export interface AppContentProps {
   fonts: Font[];
 }
 
-export const AppWrapper: FC<AppWrapperProps> = ({ fonts }) => {
+export const AppContent: FC<AppContentProps> = ({ fonts }) => {
   const [userFonts, setUserFonts] = useState<Font[]>([]);
 
   const finalFonts = useMemo(() => {
@@ -38,7 +39,9 @@ export const AppWrapper: FC<AppWrapperProps> = ({ fonts }) => {
 
   return (
     <div {...getRootProps()}>
-      <AppUI fonts={finalFonts} />
+      <Settings fonts={finalFonts} />
+
+      <Scene />
     </div>
   );
 };

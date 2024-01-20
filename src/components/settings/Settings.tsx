@@ -1,64 +1,50 @@
-import { Sheet } from "@mui/joy";
+import { Card } from "@/shadcn/components/ui/card";
 import { Font } from "fontkit";
-import { FC } from "react";
+import { FC, memo } from "react";
 import { mapDice } from "../dice/utils/registry";
 import { SettingsAccordion } from "./SettingsAccordion";
+import { SettingsAccordionItem } from "./SettingsAccordionItem";
 import { AppSettings } from "./sections/AppSettings";
 import { DieSettings } from "./sections/DieSettings";
 import { ExportSettings } from "./sections/ExportSettings";
 import { FontSettings } from "./sections/FontSettings";
 import { FontsGroup } from "./sections/FontsGroup";
 import { SceneSettings } from "./sections/SceneSettings";
-import { SettingsSection } from "./sections/SettingsSection";
 
 export interface SettingsProps {
   fonts: Font[];
 }
 
-export const Settings: FC<SettingsProps> = ({ fonts }) => {
+export const Settings: FC<SettingsProps> = memo(({ fonts }) => {
   return (
-    <Sheet
-      variant="outlined"
-      sx={{
-        borderRadius: "lg",
-        overflow: "auto",
-
-        width: 320,
-        maxHeight: "calc(100vh - 32px)",
-
-        position: "absolute",
-        top: 16,
-        left: 16,
-        zIndex: 1,
-      }}
-    >
+    <Card className="w-80 max-h-[calc(100vh-32px)] absolute top-4 left-4 z-10 px-3 overflow-auto">
       <SettingsAccordion>
-        <SettingsSection name="App settings">
+        <SettingsAccordionItem name="App settings">
           <AppSettings />
-        </SettingsSection>
+        </SettingsAccordionItem>
 
-        <SettingsSection name="Export settings">
+        <SettingsAccordionItem name="Export settings">
           <ExportSettings />
-        </SettingsSection>
+        </SettingsAccordionItem>
 
-        <SettingsSection name="Scene settings">
+        <SettingsAccordionItem name="Scene settings">
           <SceneSettings />
-        </SettingsSection>
+        </SettingsAccordionItem>
 
         <FontsGroup fonts={fonts} />
 
-        <SettingsSection name="Font settings">
+        <SettingsAccordionItem name="Font settings">
           <FontSettings />
-        </SettingsSection>
+        </SettingsAccordionItem>
 
-        <SettingsSection name="Dice settings">
+        <SettingsAccordionItem name="Dice settings">
           <SettingsAccordion>
             {mapDice((name, info) => (
               <DieSettings key={name} name={name} info={info} />
             ))}
           </SettingsAccordion>
-        </SettingsSection>
+        </SettingsAccordionItem>
       </SettingsAccordion>
-    </Sheet>
+    </Card>
   );
-};
+});

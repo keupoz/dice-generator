@@ -1,5 +1,5 @@
-import { Grid, Switch } from "@mui/joy";
-import { ChangeEventHandler, FC } from "react";
+import { Switch } from "@/shadcn/components/ui/switch";
+import { FC, useId } from "react";
 import { SettingsRow } from "./SettingsRow";
 
 export interface SettingsSwitchProps {
@@ -13,15 +13,16 @@ export const SettingsSwitch: FC<SettingsSwitchProps> = ({
   checked,
   onChange,
 }) => {
-  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    onChange(e.currentTarget.checked);
-  };
+  const id = useId();
 
   return (
-    <SettingsRow label={label} labelSize={10}>
-      <Grid xs={2}>
-        <Switch checked={checked} onChange={handleChange} />
-      </Grid>
+    <SettingsRow label={label} id={id} wideLabel>
+      <Switch
+        className="col-span-2"
+        id={id}
+        checked={checked}
+        onCheckedChange={(value) => onChange(value)}
+      />
     </SettingsRow>
   );
 };

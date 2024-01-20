@@ -4,13 +4,8 @@ import { SettingsSlider } from "../controls/SettingsSlider";
 
 export const FontSettings: FC = () => {
   const segments = useFontSettings((store) => store.segments);
-  const setSegments = useFontSettings((store) => store.setSegments);
-
   const fontScale = useFontSettings((store) => store.fontScale);
-  const setFontScale = useFontSettings((store) => store.setFontScale);
-
   const depth = useFontSettings((store) => store.depth);
-  const setDepth = useFontSettings((store) => store.setDepth);
 
   return (
     <>
@@ -20,7 +15,7 @@ export const FontSettings: FC = () => {
         max={24}
         step={1}
         value={segments}
-        onChange={setSegments}
+        onChange={(segments) => useFontSettings.setState({ segments })}
       />
 
       <SettingsSlider
@@ -29,7 +24,7 @@ export const FontSettings: FC = () => {
         max={2}
         step={0.05}
         value={fontScale}
-        onChange={setFontScale}
+        onChange={(fontScale) => useFontSettings.setState({ fontScale })}
       />
 
       <SettingsSlider
@@ -38,7 +33,7 @@ export const FontSettings: FC = () => {
         max={2}
         step={0.05}
         value={depth}
-        onChange={setDepth}
+        onChange={(depth) => useFontSettings.setState({ depth })}
       />
     </>
   );

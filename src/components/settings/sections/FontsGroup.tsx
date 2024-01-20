@@ -13,23 +13,27 @@ export const FontsGroup: FC<FontsGroupProps> = ({ fonts }) => {
   const fontSettings = useFontSettings();
 
   useEffect(() => {
-    fontSettings.setFonts(fonts);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useFontSettings.setState({ fonts });
   }, [fonts]);
 
   useEffect(() => {
-    fontSettings.setTextFont(getFirstItem(fonts));
-    fontSettings.setMarkFont(getFirstItem(fonts));
+    const font = getFirstItem(fonts);
+    const features = collectFeatures(font);
 
-    fontSettings.setTextFeatures(collectFeatures(getFirstItem(fonts)));
-    fontSettings.setMarkFeatures(collectFeatures(getFirstItem(fonts)));
+    useFontSettings.setState({
+      textFont: font,
+      markFont: font,
+      textFeatures: { ...features },
+      markFeatures: { ...features },
+    });
 
     return () => {
-      fontSettings.setTextFont(null);
-      fontSettings.setMarkFont(null);
-
-      fontSettings.setTextFeatures({});
-      fontSettings.setMarkFeatures({});
+      useFontSettings.setState({
+        textFont: null,
+        markFont: null,
+        textFeatures: {},
+        markFeatures: {},
+      });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -45,11 +49,11 @@ export const FontsGroup: FC<FontsGroupProps> = ({ fonts }) => {
         options={fontOptions}
         defaultValue={fontSettings.textFont ?? getFirstItem(fonts)}
         features={fontSettings.textFeatures}
-        onFont={(font) => {
-          fontSettings.setTextFont(font);
+        onFont={(textFont) => {
+          useFontSettings.setState({ textFont });
         }}
-        onFeatures={(features) => {
-          fontSettings.setTextFeatures(features);
+        onFeatures={(textFeatures) => {
+          useFontSettings.setState({ textFeatures });
         }}
       />
 
@@ -58,11 +62,11 @@ export const FontsGroup: FC<FontsGroupProps> = ({ fonts }) => {
         options={fontOptions}
         defaultValue={fontSettings.markFont ?? getFirstItem(fonts)}
         features={fontSettings.markFeatures}
-        onFont={(font) => {
-          fontSettings.setMarkFont(font);
+        onFont={(markFont) => {
+          useFontSettings.setState({ markFont });
         }}
-        onFeatures={(features) => {
-          fontSettings.setMarkFeatures(features);
+        onFeatures={(markFeatures) => {
+          useFontSettings.setState({ markFeatures });
         }}
       />
     </>

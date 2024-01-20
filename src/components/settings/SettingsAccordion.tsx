@@ -1,19 +1,10 @@
-import { SettingsSectionContext } from "@/contexts";
-import { AccordionGroup } from "@mui/joy";
-import { FC, PropsWithChildren, useMemo, useState } from "react";
+import { Accordion } from "@/shadcn/components/ui/accordion";
+import { FC, PropsWithChildren } from "react";
 
 export const SettingsAccordion: FC<PropsWithChildren> = ({ children }) => {
-  const [currentSection, setCurrentSection] = useState<string | null>(null);
-
-  const context = useMemo(() => {
-    return { currentSection, setCurrentSection };
-  }, [currentSection]);
-
   return (
-    <AccordionGroup>
-      <SettingsSectionContext.Provider value={context}>
-        {children}
-      </SettingsSectionContext.Provider>
-    </AccordionGroup>
+    <Accordion type="single" collapsible className="w-full">
+      {children}
+    </Accordion>
   );
 };

@@ -1,5 +1,6 @@
-import { Grid, Input, Slider } from "@mui/joy";
-import { FC } from "react";
+import { Input } from "@/shadcn/components/ui/input";
+import { Slider } from "@/shadcn/components/ui/slider";
+import { FC, useId } from "react";
 import { SettingsRow } from "./SettingsRow";
 
 export interface SettingsSliderProps {
@@ -19,28 +20,26 @@ export const SettingsSlider: FC<SettingsSliderProps> = ({
   value,
   onChange,
 }) => {
-  return (
-    <SettingsRow label={label}>
-      <Grid container xs={5}>
-        <Slider
-          valueLabelDisplay="auto"
-          min={min}
-          max={max}
-          step={step}
-          value={value}
-          onChange={(_e, value) => onChange(value as number)}
-        />
-      </Grid>
+  const id = useId();
 
-      <Grid xs={3}>
-        <Input
-          type="number"
-          size="sm"
-          value={value}
-          slotProps={{ input: { min, max, step } }}
-          onChange={(e) => onChange(parseFloat(e.currentTarget.value))}
-        />
-      </Grid>
+  return (
+    <SettingsRow label={label} id={id}>
+      <Slider
+        className="col-span-5"
+        min={min}
+        max={max}
+        step={step}
+        value={[value]}
+        onValueChange={([value]) => value !== undefined && onChange(value)}
+      />
+
+      <Input
+        className="col-span-3 h-8"
+        id={id}
+        type="number"
+        value={value}
+        onChange={(e) => onChange(parseFloat(e.currentTarget.value))}
+      />
     </SettingsRow>
   );
 };

@@ -1,16 +1,16 @@
-import { useColorScheme } from "@mui/joy";
+import { useTheme } from "@/shadcn/components/theme-provider";
 import { FC } from "react";
 import { SettingsSwitch } from "../controls/SettingsSwitch";
 
 export const AppSettings: FC = () => {
-  const { mode, setMode } = useColorScheme();
+  const { theme, setTheme } = useTheme();
 
   return (
     <>
       <SettingsSwitch
         label="Dark mode"
-        checked={mode === "dark"}
-        onChange={(value) => setMode(value ? "dark" : "light")}
+        checked={theme === "dark"}
+        onChange={(value) => setTheme(value ? "dark" : "light")}
       />
     </>
   );

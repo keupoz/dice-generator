@@ -3,7 +3,7 @@ import { Buffer } from "buffer";
 import { create as createFont } from "fontkit";
 import { FC, Suspense } from "react";
 import { FileLoader } from "three";
-import { AppWrapper } from "./AppWrapper";
+import { AppContent } from "./AppContent";
 
 const LOCAL_FONTS = import.meta.glob("@/assets/fonts/*", {
   eager: true,
@@ -35,12 +35,12 @@ const FONTS = [
 export const App: FC = () => {
   return (
     <Suspense>
-      <AppInternal />
+      <AppWrapper />
     </Suspense>
   );
 };
 
-const AppInternal: FC = () => {
+const AppWrapper: FC = () => {
   const rawFonts = useLoader(FileLoader, FONTS, (loader) => {
     loader.setResponseType("arraybuffer");
   });
@@ -53,5 +53,5 @@ const AppInternal: FC = () => {
     return createFont(Buffer.from(rawFont));
   });
 
-  return <AppWrapper fonts={fonts} />;
+  return <AppContent fonts={fonts} />;
 };

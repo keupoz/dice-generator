@@ -1,4 +1,5 @@
 import { MaterialsContext } from "@/contexts";
+import { useTheme } from "@/shadcn/components/theme-provider";
 import { useExportSettings } from "@/stores/ExportSettingsStore";
 import {
   baseOpacityAtom,
@@ -11,7 +12,6 @@ import {
   setCameraControls,
 } from "@/utils/focusObject";
 import { getFirstItem } from "@/utils/getFirstItem";
-import { useColorScheme } from "@mui/joy";
 import { CameraControls, Grid, PerspectiveCamera } from "@react-three/drei";
 import { ThreeEvent, useThree } from "@react-three/fiber";
 import { Box, Flex } from "@react-three/flex";
@@ -58,9 +58,9 @@ export const SceneContent: FC = memo(() => {
   const [smoothCamera] = useAtom(smoothCameraAtom);
   const [baseOpacity] = useAtom(baseOpacityAtom);
 
-  const { mode } = useColorScheme();
+  const { theme } = useTheme();
 
-  const dividerColor = mode === "dark" ? 0x2f2f2f : 0x9f9f9f;
+  const dividerColor = theme === "dark" ? 0x2f2f2f : 0x9f9f9f;
 
   useEffect(() => {
     baseMaterial.opacity = baseOpacity;

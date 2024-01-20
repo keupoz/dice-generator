@@ -1,13 +1,13 @@
 import { DieInfo } from "@/components/dice/utils/types";
+import { Button } from "@/shadcn/components/ui/button";
 import { exportObject } from "@/utils/exportObject";
 import { focusObject } from "@/utils/focusObject";
-import { Button, Divider, Grid } from "@mui/joy";
 import { FC } from "react";
 import { SettingsAccordion } from "../SettingsAccordion";
+import { SettingsAccordionItem } from "../SettingsAccordionItem";
 import { SettingsSlider } from "../controls/SettingsSlider";
 import { SettingsSwitch } from "../controls/SettingsSwitch";
 import { DieFaceSettings } from "./DieFaceSettings";
-import { SettingsSection } from "./SettingsSection";
 
 export interface DieSettingsProps {
   name: string;
@@ -28,20 +28,12 @@ export const DieSettings: FC<DieSettingsProps> = ({ name, info }) => {
   }
 
   return (
-    <SettingsSection name={name}>
-      <Grid container spacing={1}>
-        <Grid xs={6}>
-          <Button size="sm" fullWidth onClick={handleFocus}>
-            Focus
-          </Button>
-        </Grid>
+    <SettingsAccordionItem name={name}>
+      <div className="grid grid-cols-2 gap-2">
+        <Button onClick={handleFocus}>Focus</Button>
 
-        <Grid xs={6}>
-          <Button size="sm" fullWidth onClick={handleExport}>
-            Export STL
-          </Button>
-        </Grid>
-      </Grid>
+        <Button onClick={handleExport}>Export STL</Button>
+      </div>
 
       <SettingsSwitch
         label="Visible"
@@ -67,7 +59,7 @@ export const DieSettings: FC<DieSettingsProps> = ({ name, info }) => {
         onChange={(value) => info.useStore.setState({ fontScale: value })}
       />
 
-      {extraOptionsEntries.length > 0 && <Divider />}
+      {extraOptionsEntries.length > 0 && <div className="border-b" />}
 
       {extraOptionsEntries.map(([key, inputConfig]) => (
         <SettingsSlider
@@ -81,13 +73,13 @@ export const DieSettings: FC<DieSettingsProps> = ({ name, info }) => {
         />
       ))}
 
-      <Divider />
+      <div className="border-b" />
 
       <SettingsAccordion>
         {info.faces.map((faceInfo, index) => (
           <DieFaceSettings key={index} info={faceInfo} index={index} />
         ))}
       </SettingsAccordion>
-    </SettingsSection>
+    </SettingsAccordionItem>
   );
 };

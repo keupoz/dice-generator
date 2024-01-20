@@ -1,9 +1,9 @@
 import { FaceInfo } from "@/components/dice/utils/types";
 import { FC } from "react";
+import { SettingsAccordionItem } from "../SettingsAccordionItem";
 import { SettingsSlider } from "../controls/SettingsSlider";
 import { SettingsSwitch } from "../controls/SettingsSwitch";
 import { SettingsText } from "../controls/SettingsText";
-import { SettingsSection } from "./SettingsSection";
 
 export interface DieFaceSettingsProps {
   info: FaceInfo;
@@ -14,7 +14,7 @@ export const DieFaceSettings: FC<DieFaceSettingsProps> = ({ info, index }) => {
   const state = info.useStore();
 
   return (
-    <SettingsSection name={`Face ${index + 1}`}>
+    <SettingsAccordionItem name={`Face ${index + 1}`}>
       <SettingsText
         label="Text"
         value={state.text}
@@ -50,6 +50,6 @@ export const DieFaceSettings: FC<DieFaceSettingsProps> = ({ info, index }) => {
         value={state.rotation}
         onChange={(value) => info.useStore.setState({ rotation: value })}
       />
-    </SettingsSection>
+    </SettingsAccordionItem>
   );
 };

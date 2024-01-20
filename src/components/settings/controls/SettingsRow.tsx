@@ -1,25 +1,25 @@
-import { FormControl, FormLabel, Grid } from "@mui/joy";
+import { Label } from "@/shadcn/components/ui/label";
 import { FC, PropsWithChildren } from "react";
 
 export interface SettingsRowProps {
   label: string;
-  labelSize?: number;
+  id: string;
+  wideLabel?: boolean;
 }
 
 export const SettingsRow: FC<PropsWithChildren<SettingsRowProps>> = ({
   label,
-  labelSize = 4,
+  id,
+  wideLabel,
   children,
 }) => {
   return (
-    <FormControl>
-      <Grid container spacing={1} alignItems="center">
-        <Grid xs={labelSize}>
-          <FormLabel>{label}</FormLabel>
-        </Grid>
+    <div className="grid grid-cols-12 gap-2 items-center h-8">
+      <Label className={wideLabel ? "col-span-10" : "col-span-4"} htmlFor={id}>
+        {label}
+      </Label>
 
-        {children}
-      </Grid>
-    </FormControl>
+      {children}
+    </div>
   );
 };

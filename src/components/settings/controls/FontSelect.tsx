@@ -1,9 +1,9 @@
-import { useFontSettings } from "@/stores/FontSettingsStore";
+import { getFont } from "@/stores/FontSettingsStore";
 import { collectFeatures } from "@/utils/collectFontFeatures";
 import { Font, FontVariationSettings } from "fontkit";
-import { FC, useMemo, useState } from "react";
+import { FC, memo, useCallback, useMemo, useState } from "react";
 import { SettingsAccordion } from "../SettingsAccordion";
-import { SettingsSection } from "../sections/SettingsSection";
+import { SettingsAccordionItem } from "../SettingsAccordionItem";
 import { SettingsSelect } from "./SettingsSelect";
 import { SettingsSlider } from "./SettingsSlider";
 import { SettingsSwitch } from "./SettingsSwitch";
@@ -35,8 +35,6 @@ export const FontSelect: FC<FontSelectProps> = ({
   onFont,
   onFeatures,
 }) => {
-  const getFont = useFontSettings((store) => store.getFont);
-
   const [baseFont, setBaseFont] = useState(defaultValue);
 
   const defaultVariationSettings = useMemo(() => {
@@ -81,56 +79,75 @@ export const FontSelect: FC<FontSelectProps> = ({
     });
   }
 
-  function handleFeatureChange(key: string, value: boolean) {
-    onFeatures({ ...features, [key]: value });
-  }
+  const handleFeatureChange = useCallback(
+    (key: string, value: boolean) => {
+      onFeatures({ ...features, [key]: value });
+    },
+    [features, onFeatures]
+  );
 
   return (
-    <>
-      <SettingsSection name={name}>
+    <SettingsAccordionItem name={name}>
+      <SettingsSelect
+        label="Font"
+        options={options}
+        value={baseFont.fullName}
+        onChange={handleBaseChange}
+      />
+
+      {variations.length > 1 && (
         <SettingsSelect
-          label="Font"
-          options={options}
-          value={baseFont.fullName}
-          onChange={handleBaseChange}
+          label="Variation"
+          options={variations}
+          value={selectedVariation}
+          onChange={handleVariationChange}
         />
+      )}
 
-        {variations.length > 1 && (
-          <SettingsSelect
-            label="Variation"
-            options={variations}
-            value={selectedVariation}
-            onChange={handleVariationChange}
-          />
-        )}
+      {Object.entries(baseFont.variationAxes).map(([key, value]) => (
+        <SettingsSlider
+          key={key}
+          label={value.name}
+          min={value.min}
+          max={value.max}
+          step={1}
+          value={variationSettings[key] ?? value.min}
+          onChange={handleAxisChange.bind(null, key)}
+        />
+      ))}
 
-        {Object.entries(baseFont.variationAxes).map(([key, value]) => (
-          <SettingsSlider
-            key={key}
-            label={value.name}
-            min={value.min}
-            max={value.max}
-            step={1}
-            value={variationSettings[key] ?? value.min}
-            onChange={handleAxisChange.bind(null, key)}
-          />
-        ))}
-
-        {defaultValue.availableFeatures.length > 0 && (
-          <SettingsAccordion>
-            <SettingsSection name="Features">
-              {defaultValue.availableFeatures.map((feature) => (
-                <SettingsSwitch
-                  key={feature}
-                  label={feature}
-                  checked={features[feature] ?? false}
-                  onChange={handleFeatureChange.bind(null, feature)}
-                />
-              ))}
-            </SettingsSection>
-          </SettingsAccordion>
-        )}
-      </SettingsSection>
-    </>
+      <FontFeatures
+        options={baseFont.availableFeatures}
+        values={features}
+        onChange={handleFeatureChange}
+      />
+    </SettingsAccordionItem>
   );
 };
+
+interface FontFeaturesProps {
+  options: string[];
+  values: Record<string, boolean>;
+  onChange: (key: string, value: boolean) => void;
+}
+
+const FontFeatures: FC<FontFeaturesProps> = memo(
+  ({ options, values, onChange }) => {
+    if (!options.length) return null;
+
+    return (
+      <SettingsAccordion>
+        <SettingsAccordionItem name="Features">
+          {options.map((feature) => (
+            <SettingsSwitch
+              key={feature}
+              label={feature}
+              checked={values[feature] ?? false}
+              onChange={onChange.bind(null, feature)}
+            />
+          ))}
+        </SettingsAccordionItem>
+      </SettingsAccordion>
+    );
+  }
+);

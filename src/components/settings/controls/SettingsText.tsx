@@ -1,5 +1,5 @@
-import { Grid, Input } from "@mui/joy";
-import { FC } from "react";
+import { Input } from "@/shadcn/components/ui/input";
+import { FC, useId } from "react";
 import { SettingsRow } from "./SettingsRow";
 
 export interface SettingsTextProps {
@@ -13,16 +13,17 @@ export const SettingsText: FC<SettingsTextProps> = ({
   value,
   onChange,
 }) => {
+  const id = useId();
+
   return (
-    <SettingsRow label={label}>
-      <Grid xs={8}>
-        <Input
-          type="text"
-          size="sm"
-          value={value}
-          onChange={(e) => onChange(e.currentTarget.value)}
-        />
-      </Grid>
+    <SettingsRow label={label} id={id}>
+      <Input
+        className="col-span-8 h-8"
+        id={id}
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.currentTarget.value)}
+      />
     </SettingsRow>
   );
 };

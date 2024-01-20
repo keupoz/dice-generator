@@ -1,5 +1,11 @@
-import { Grid, Option, Select, SelectOwnProps } from "@mui/joy";
-import { FC } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/shadcn/components/ui/select";
+import { FC, useId } from "react";
 import { SettingsRow } from "./SettingsRow";
 
 export interface SettingsSelectProps {
@@ -15,23 +21,23 @@ export const SettingsSelect: FC<SettingsSelectProps> = ({
   value,
   onChange,
 }) => {
-  const handleChange: SelectOwnProps<string>["onChange"] = (_e, value) => {
-    if (value) {
-      onChange(value);
-    }
-  };
+  const id = useId();
 
   return (
-    <SettingsRow label={label}>
-      <Grid xs={8}>
-        <Select value={value} onChange={handleChange}>
-          {options.map((option) => (
-            <Option value={option} key={option}>
-              {option}
-            </Option>
+    <SettingsRow label={label} id={id}>
+      <Select value={value} onValueChange={onChange}>
+        <SelectTrigger className="col-span-8 h-8" id={id}>
+          <SelectValue placeholder="No value" />
+        </SelectTrigger>
+
+        <SelectContent>
+          {options.map((item, i) => (
+            <SelectItem key={i} value={item}>
+              {item}
+            </SelectItem>
           ))}
-        </Select>
-      </Grid>
+        </SelectContent>
+      </Select>
     </SettingsRow>
   );
 };
