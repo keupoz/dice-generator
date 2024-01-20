@@ -1,11 +1,6 @@
-import {
-  FormControl,
-  FormLabel,
-  Option,
-  Select,
-  SelectOwnProps,
-} from "@mui/joy";
+import { Grid, Option, Select, SelectOwnProps } from "@mui/joy";
 import { FC } from "react";
+import { SettingsRow } from "./SettingsRow";
 
 export interface SettingsSelectProps {
   label: string;
@@ -27,16 +22,16 @@ export const SettingsSelect: FC<SettingsSelectProps> = ({
   };
 
   return (
-    <FormControl>
-      <FormLabel>{label}</FormLabel>
-
-      <Select value={value} onChange={handleChange}>
-        {options.map((option) => (
-          <Option value={option} key={option}>
-            {option}
-          </Option>
-        ))}
-      </Select>
-    </FormControl>
+    <SettingsRow label={label}>
+      <Grid xs={8}>
+        <Select value={value} onChange={handleChange}>
+          {options.map((option) => (
+            <Option value={option} key={option}>
+              {option}
+            </Option>
+          ))}
+        </Select>
+      </Grid>
+    </SettingsRow>
   );
 };

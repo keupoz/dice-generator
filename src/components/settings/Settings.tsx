@@ -1,8 +1,10 @@
 import { Sheet } from "@mui/joy";
 import { Font } from "fontkit";
 import { FC } from "react";
+import { mapDice } from "../dice/utils/registry";
 import { SettingsAccordion } from "./SettingsAccordion";
 import { AppSettings } from "./sections/AppSettings";
+import { DieSettings } from "./sections/DieSettings";
 import { ExportSettings } from "./sections/ExportSettings";
 import { FontSettings } from "./sections/FontSettings";
 import { FontsGroup } from "./sections/FontsGroup";
@@ -47,6 +49,14 @@ export const Settings: FC<SettingsProps> = ({ fonts }) => {
 
         <SettingsSection name="Font settings">
           <FontSettings />
+        </SettingsSection>
+
+        <SettingsSection name="Dice settings">
+          <SettingsAccordion>
+            {mapDice((name, info) => (
+              <DieSettings key={name} name={name} info={info} />
+            ))}
+          </SettingsAccordion>
         </SettingsSection>
       </SettingsAccordion>
     </Sheet>

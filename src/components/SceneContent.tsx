@@ -1,27 +1,30 @@
-import { MaterialsContext, SceneContext } from "@/contexts";
+import { MaterialsContext } from "@/contexts";
 import { useExportSettings } from "@/stores/ExportSettingsStore";
 import {
   baseOpacityAtom,
   showGridAtom,
   smoothCameraAtom,
 } from "@/stores/SceneSettingsStore";
+import {
+  focusObject,
+  resetFocus,
+  setCameraControls,
+} from "@/utils/focusObject";
 import { getFirstItem } from "@/utils/getFirstItem";
 import { useColorScheme } from "@mui/joy";
 import { CameraControls, Grid, PerspectiveCamera } from "@react-three/drei";
 import { ThreeEvent, useThree } from "@react-three/fiber";
 import { Box, Flex } from "@react-three/flex";
 import { useAtom } from "jotai";
-import { FC, useEffect, useMemo, useRef } from "react";
+import { FC, memo, useEffect, useMemo, useRef } from "react";
 import {
-  Box3,
   BoxHelper,
   DoubleSide,
   MeshLambertMaterial,
   MeshNormalMaterial,
   Object3D,
-  Vector3,
 } from "three";
-import { DieD10 } from "./dice/DieD10";
+import { DieD10, DieD100 } from "./dice/DieD10";
 import { DieD12 } from "./dice/DieD12";
 import { DieD12R } from "./dice/DieD12R";
 import { DieD2 } from "./dice/DieD2";
@@ -34,7 +37,7 @@ import { DieD4P } from "./dice/DieD4P";
 import { DieD6 } from "./dice/DieD6";
 import { DieD8 } from "./dice/DieD8";
 
-export const SceneContent: FC = () => {
+export const SceneContent: FC = memo(() => {
   const invalidate = useThree((ctx) => ctx.invalidate);
 
   const baseMaterial = useMemo(() => {
@@ -66,19 +69,12 @@ export const SceneContent: FC = () => {
     invalidate();
   }, [baseMaterial, baseOpacity, invalidate]);
 
-  const controlsRef = useRef<CameraControls>(null);
   const helperRef = useRef<BoxHelper>(null);
 
   function focus(e: ThreeEvent<MouseEvent>) {
     e.stopPropagation();
 
     focusObject(getFirstItem(e.intersections).object);
-  }
-
-  function resetFocus(e: MouseEvent) {
-    if (e.type !== "dblclick") return;
-
-    controlsRef.current?.setLookAt(32, 32, 32, 0, 0, 0, true);
   }
 
   function updateHighlight(e: ThreeEvent<PointerEvent>) {
@@ -99,28 +95,6 @@ export const SceneContent: FC = () => {
     invalidate();
   }
 
-  function focusObject(object: Object3D, position = false) {
-    if (controlsRef.current === null) return;
-
-    const box = new Box3();
-    box.setFromObject(object);
-    const target = box.getCenter(new Vector3());
-
-    if (position) {
-      void controlsRef.current.setLookAt(
-        target.x + 32,
-        target.y + 32,
-        target.z + 32,
-        target.x,
-        target.y,
-        target.z,
-        true
-      );
-    } else {
-      void controlsRef.current.setTarget(target.x, target.y, target.z, true);
-    }
-  }
-
   return (
     <>
       <PerspectiveCamera makeDefault position={32}>
@@ -128,7 +102,7 @@ export const SceneContent: FC = () => {
       </PerspectiveCamera>
 
       <CameraControls
-        ref={controlsRef}
+        ref={(value) => setCameraControls(value)}
         makeDefault
         draggingSmoothTime={smoothCamera ? 0.0625 : 0}
       />
@@ -155,48 +129,47 @@ export const SceneContent: FC = () => {
         visible={false}
       />
 
-      <SceneContext.Provider value={{ focusObject }}>
-        <MaterialsContext.Provider value={materialsContext}>
-          <Flex
-            ref={setExportObject}
-            alignItems="center"
-            justifyContent="center"
-            rotation-x={-Math.PI / 2}
-            onPointerMove={updateHighlight}
-            onPointerLeave={hideHighlight}
-            onDoubleClick={focus}
-            onPointerMissed={resetFocus}
-          >
-            <Box flexDirection="row">
-              <DieD2 />
-              <DieD3 />
-              <DieD4 />
-            </Box>
+      <MaterialsContext.Provider value={materialsContext}>
+        <Flex
+          ref={setExportObject}
+          alignItems="center"
+          justifyContent="center"
+          dir="column-reverse"
+          plane="xz"
+          onPointerMove={updateHighlight}
+          onPointerLeave={hideHighlight}
+          onDoubleClick={focus}
+          onPointerMissed={resetFocus}
+        >
+          <Box flexDirection="row">
+            <DieD2 />
+            <DieD3 />
+            <DieD4 />
+          </Box>
 
-            <Box flexDirection="row">
-              <DieD4C />
-              <DieD4I />
-              <DieD4P />
-            </Box>
+          <Box flexDirection="row">
+            <DieD4C />
+            <DieD4I />
+            <DieD4P />
+          </Box>
 
-            <Box flexDirection="row">
-              <DieD6 />
-              <DieD8 />
-              <DieD10 />
-            </Box>
+          <Box flexDirection="row">
+            <DieD6 />
+            <DieD8 />
+            <DieD10 />
+          </Box>
 
-            <Box flexDirection="row">
-              <DieD10 isD100 />
-              <DieD12 />
-              <DieD12R />
-            </Box>
+          <Box flexDirection="row">
+            <DieD100 />
+            <DieD12 />
+            <DieD12R />
+          </Box>
 
-            <Box flexDirection="row">
-              <DieD20 />
-            </Box>
-          </Flex>
-        </MaterialsContext.Provider>
-      </SceneContext.Provider>
+          <Box flexDirection="row">
+            <DieD20 />
+          </Box>
+        </Flex>
+      </MaterialsContext.Provider>
     </>
   );
-};
+});

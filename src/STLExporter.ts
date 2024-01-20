@@ -26,7 +26,7 @@ export class STLExporter {
     const objects: CollectedObject[] = [];
     let triangles = 0;
 
-    scene.traverse((object) => {
+    scene.traverseVisible((object) => {
       if (object instanceof Mesh) {
         const geometry = object.geometry;
 

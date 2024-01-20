@@ -1,5 +1,6 @@
-import { FormControl, Switch, Typography } from "@mui/joy";
+import { Grid, Switch } from "@mui/joy";
 import { ChangeEventHandler, FC } from "react";
+import { SettingsRow } from "./SettingsRow";
 
 export interface SettingsSwitchProps {
   label: string;
@@ -17,15 +18,10 @@ export const SettingsSwitch: FC<SettingsSwitchProps> = ({
   };
 
   return (
-    <FormControl>
-      <Typography
-        component="label"
-        endDecorator={<Switch checked={checked} onChange={handleChange} />}
-        sx={{ userSelect: "none" }}
-        justifyContent="space-between"
-      >
-        {label}
-      </Typography>
-    </FormControl>
+    <SettingsRow label={label} labelSize={10}>
+      <Grid xs={2}>
+        <Switch checked={checked} onChange={handleChange} />
+      </Grid>
+    </SettingsRow>
   );
 };

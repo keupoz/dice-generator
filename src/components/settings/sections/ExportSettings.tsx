@@ -1,5 +1,5 @@
 import { useExportSettings } from "@/stores/ExportSettingsStore";
-import { exportSTL } from "@/utils/exportSTL";
+import { exportObject } from "@/utils/exportObject";
 import { Button } from "@mui/joy";
 import { FC } from "react";
 import { SettingsSelect } from "../controls/SettingsSelect";
@@ -8,17 +8,7 @@ export const ExportSettings: FC = () => {
   const exportSettings = useExportSettings();
 
   function handleExport() {
-    const oldMode = exportSettings.renderMode;
-
-    exportSettings.setRenderMode("STL");
-
-    setTimeout(() => {
-      if (exportSettings.exportObject) {
-        exportSTL(exportSettings.exportObject);
-      }
-
-      exportSettings.setRenderMode(oldMode);
-    });
+    exportObject(exportSettings.exportObject);
   }
 
   return (

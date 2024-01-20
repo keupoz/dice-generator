@@ -1,5 +1,6 @@
-import { FormControl, FormLabel, Grid, Input, Slider } from "@mui/joy";
+import { Grid, Input, Slider } from "@mui/joy";
 import { FC } from "react";
+import { SettingsRow } from "./SettingsRow";
 
 export interface SettingsSliderProps {
   label: string;
@@ -19,31 +20,27 @@ export const SettingsSlider: FC<SettingsSliderProps> = ({
   onChange,
 }) => {
   return (
-    <FormControl>
-      <FormLabel>{label}</FormLabel>
-
-      <Grid container spacing={2} alignItems="center">
-        <Grid xs={8}>
-          <Slider
-            valueLabelDisplay="auto"
-            min={min}
-            max={max}
-            step={step}
-            value={value}
-            onChange={(_e, value) => onChange(value as number)}
-          />
-        </Grid>
-
-        <Grid xs={4}>
-          <Input
-            type="number"
-            size="sm"
-            value={value}
-            slotProps={{ input: { min, max, step } }}
-            onChange={(e) => onChange(parseFloat(e.currentTarget.value))}
-          />
-        </Grid>
+    <SettingsRow label={label}>
+      <Grid container xs={5}>
+        <Slider
+          valueLabelDisplay="auto"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={(_e, value) => onChange(value as number)}
+        />
       </Grid>
-    </FormControl>
+
+      <Grid xs={3}>
+        <Input
+          type="number"
+          size="sm"
+          value={value}
+          slotProps={{ input: { min, max, step } }}
+          onChange={(e) => onChange(parseFloat(e.currentTarget.value))}
+        />
+      </Grid>
+    </SettingsRow>
   );
 };

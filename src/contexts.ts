@@ -1,11 +1,5 @@
 import { createContext } from "react";
-import { Material, Object3D } from "three";
-
-export const SceneContext = createContext({
-  focusObject(object: Object3D, position = false) {
-    console.log(object, position);
-  },
-});
+import { Material } from "three";
 
 export const MaterialsContext = createContext({
   baseMaterial: undefined as Material | undefined,

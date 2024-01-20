@@ -1,4 +1,5 @@
-import { Box3, BufferGeometry, Mesh, Vector3 } from "three";
+import { BufferGeometry, Object3D, Vector3 } from "three";
+import { createBoxFromObject } from "./createBoxFromObject";
 
 export function getBoundingBox(geometry: BufferGeometry, force = false) {
   if (force || geometry.boundingBox === null) {
@@ -19,8 +20,8 @@ export interface AlignOptions {
   relativeTo?: Vector3;
 }
 
-export function alignMesh(options: AlignOptions, mesh: Mesh) {
-  const bounds = new Box3().setFromObject(mesh, true);
+export function getAlignment(options: AlignOptions, object: Object3D) {
+  const bounds = createBoxFromObject(object, true);
   const relativeTo = options.relativeTo ?? new Vector3();
   const translation = new Vector3();
 
@@ -46,5 +47,11 @@ export function alignMesh(options: AlignOptions, mesh: Mesh) {
     translation.setComponent(i, value);
   });
 
-  mesh.position.add(translation);
+  return translation;
+}
+
+export function alignObject(options: AlignOptions, object: Object3D) {
+  const translation = getAlignment(options, object);
+
+  object.position.add(translation);
 }
