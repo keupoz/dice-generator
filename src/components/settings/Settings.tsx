@@ -17,7 +17,7 @@ export interface SettingsProps {
 
 export const Settings: FC<SettingsProps> = memo(({ fonts }) => {
   return (
-    <Card className="w-80 max-h-[calc(100vh-32px)] absolute top-4 left-4 z-10 px-3 overflow-auto">
+    <Card className="w-80 max-h-[calc(100vh-32px)] absolute top-4 left-4 z-10 overflow-auto">
       <SettingsAccordion>
         <SettingsAccordionItem name="App settings">
           <AppSettings />
