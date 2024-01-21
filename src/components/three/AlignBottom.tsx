@@ -1,11 +1,5 @@
 import { alignObject } from "@/utils/alignObject";
-import {
-  FC,
-  PropsWithChildren,
-  useCallback,
-  useLayoutEffect,
-  useRef,
-} from "react";
+import { FC, PropsWithChildren, useLayoutEffect, useRef } from "react";
 import { Group } from "three";
 
 export interface AlignBottomProps {
@@ -18,15 +12,17 @@ export const AlignBottom: FC<PropsWithChildren<AlignBottomProps>> = ({
 }) => {
   const rootRef = useRef<Group>(null);
 
-  const update = useCallback(() => {
+  function update() {
     if (!rootRef.current) return;
 
-    if (disabled) {
-      rootRef.current.position.set(0, 0, 0);
-    } else {
+    rootRef.current.position.set(0, 0, 0);
+
+    if (!disabled) {
+      rootRef.current.updateMatrixWorld();
+
       alignObject({ modes: ["none", "min", "none"] }, rootRef.current);
     }
-  }, [disabled]);
+  }
 
   useLayoutEffect(() => {
     update();
