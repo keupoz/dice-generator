@@ -4,7 +4,6 @@ import { useForceUpdate } from "@/hooks/useForceUpdate";
 import {
   PropsWithChildren,
   forwardRef,
-  useCallback,
   useImperativeHandle,
   useLayoutEffect,
   useRef,
@@ -14,14 +13,15 @@ import { CSGOperation, Evaluator } from "three-bvh-csg";
 import { CSGContext } from "./CSGContext";
 import { evaluateAll } from "./evaluateAll";
 
-export interface CSGProps {
-  disabled?: boolean;
-  operation: CSGOperation;
-}
-
 export interface CSGRef {
   output: Mesh | null;
   update: () => void;
+}
+
+export interface CSGProps {
+  disabled?: boolean;
+  operation: CSGOperation;
+  onUpdate?: () => void;
 }
 
 const evaluator = new Evaluator();
@@ -29,26 +29,25 @@ evaluator.attributes = ["position", "normal"];
 
 /** Adapted from https://github.com/pmndrs/react-three-csg/blob/7b6d31616085476975f6592ff424948acb5bfcd4/src/index.tsx#L81 */
 export const CSG = forwardRef<CSGRef, PropsWithChildren<CSGProps>>(
-  ({ disabled, operation, children }, ref) => {
+  ({ disabled, operation, onUpdate, children }, ref) => {
     const rootRef = useRef<Group>(null);
     const outputRef = useRef<Mesh>(null);
 
     const forceUpdate = useForceUpdate();
 
-    const update = useCallback(() => {
+    function update() {
       if (!outputRef.current) return;
 
       if (disabled || !rootRef.current) {
         outputRef.current.copy(new Mesh());
-        return;
+      } else {
+        const result = evaluateAll(evaluator, rootRef.current, operation);
+
+        if (result) outputRef.current.copy(result);
       }
 
-      const result = evaluateAll(evaluator, rootRef.current, operation);
-
-      if (!result) return;
-
-      outputRef.current.copy(result);
-    }, [disabled, operation]);
+      onUpdate?.();
+    }
 
     useLayoutEffect(() => {
       update();
