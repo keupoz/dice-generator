@@ -62,7 +62,7 @@ export const DieFace: FC<DieFaceProps> = memo(({ info, geom, fontScale }) => {
   return infos.map((subInfo, i) => {
     const scale = subInfo.length * fontSettings.fontScale * fontScale;
     const rotation =
-      (info.config.localRotation ?? 0) * degToRad(state.rotation);
+      (info.config.localRotation ?? 0) + degToRad(state.rotation);
 
     return (
       <Fragment key={i}>
