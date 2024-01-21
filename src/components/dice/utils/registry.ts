@@ -1,17 +1,23 @@
+import { useEffect } from "react";
+import { create } from "zustand";
 import { DieInfo } from "./types";
 
-const registeredDice: Record<string, DieInfo> = {};
-
-export function mapDice<T>(mapper: (name: string, info: DieInfo) => T) {
-  const result: T[] = [];
-
-  for (const [name, info] of Object.entries(registeredDice)) {
-    result.push(mapper(name, info));
-  }
-
-  return result;
+export interface DiceRegistryStore {
+  dice: DieInfo[];
 }
 
-export function registerDie(name: string, info: DieInfo) {
-  registeredDice[name] = info;
+export const useDiceRegistryStore = create<DiceRegistryStore>(() => ({
+  dice: [],
+}));
+
+export function useDiceRegistry(info: DieInfo) {
+  useEffect(() => {
+    useDiceRegistryStore.setState((prev) => ({ dice: [...prev.dice, info] }));
+
+    return () => {
+      useDiceRegistryStore.setState((prev) => {
+        return { dice: prev.dice.filter((item) => item !== info) };
+      });
+    };
+  }, [info]);
 }

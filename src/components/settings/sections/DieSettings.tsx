@@ -10,11 +10,11 @@ import { SettingsSwitch } from "../controls/SettingsSwitch";
 import { DieFaceSettings } from "./DieFaceSettings";
 
 export interface DieSettingsProps {
-  name: string;
   info: DieInfo;
 }
 
-export const DieSettings: FC<DieSettingsProps> = ({ name, info }) => {
+export const DieSettings: FC<DieSettingsProps> = ({ info }) => {
+  const name = info.config.name;
   const state = info.useStore();
 
   const extraOptionsEntries = Object.entries(info.config.extraOptions);

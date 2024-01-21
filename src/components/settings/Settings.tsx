@@ -1,7 +1,7 @@
 import { Card } from "@/shadcn/components/ui/card";
 import { Font } from "fontkit";
 import { FC, memo } from "react";
-import { mapDice } from "../dice/utils/registry";
+import { useDiceRegistryStore } from "../dice/utils/registry";
 import { SettingsAccordion } from "./SettingsAccordion";
 import { SettingsAccordionItem } from "./SettingsAccordionItem";
 import { AppSettings } from "./sections/AppSettings";
@@ -16,6 +16,8 @@ export interface SettingsProps {
 }
 
 export const Settings: FC<SettingsProps> = memo(({ fonts }) => {
+  const dice = useDiceRegistryStore((state) => state.dice);
+
   return (
     <Card className="w-80 max-h-[calc(100vh-32px)] absolute top-4 left-4 z-10 overflow-auto">
       <SettingsAccordion>
@@ -39,8 +41,8 @@ export const Settings: FC<SettingsProps> = memo(({ fonts }) => {
 
         <SettingsAccordionItem name="Dice settings">
           <SettingsAccordion>
-            {mapDice((name, info) => (
-              <DieSettings key={name} name={name} info={info} />
+            {dice.map((info) => (
+              <DieSettings key={info.config.name} info={info} />
             ))}
           </SettingsAccordion>
         </SettingsAccordionItem>

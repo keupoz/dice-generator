@@ -1,7 +1,7 @@
 import { FC, memo } from "react";
 import { AbstractDie } from "../AbstractDie";
 import { createDieInfo } from "./createDieInfo";
-import { registerDie } from "./registry";
+import { useDiceRegistry } from "./registry";
 import { DieConfig, DieInputConfig } from "./types";
 
 export function createDie<T extends Record<string, DieInputConfig>>(
@@ -9,9 +9,9 @@ export function createDie<T extends Record<string, DieInputConfig>>(
 ): FC {
   const info = createDieInfo(config);
 
-  registerDie(config.name, info);
-
   return memo(() => {
+    useDiceRegistry(info);
+
     return <AbstractDie info={info} />;
   });
 }
