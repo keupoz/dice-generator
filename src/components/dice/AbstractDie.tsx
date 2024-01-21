@@ -4,12 +4,10 @@ import { CSG } from "@/components/three/csg/CSG";
 import { MaterialsContext } from "@/contexts";
 import { useExportSettings } from "@/stores/ExportSettingsStore";
 import { cad2brush } from "@/utils/cad2three";
-import { decompose } from "@/utils/decompose";
 import { getInstanceFaceInfo } from "@/utils/faces/getInstanceFaceInfo";
 import { getFirstItem } from "@/utils/getFirstItem";
 import { Box } from "@react-three/flex";
 import { FC, useContext, useMemo } from "react";
-import { Matrix4 } from "three";
 import { ADDITION, SUBTRACTION } from "three-bvh-csg";
 import { DieInfo } from "./utils/types";
 
@@ -47,15 +45,13 @@ export const AbstractDie: FC<AbstractDieProps> = ({ info }) => {
     if (!alignFaceConfig) return null;
 
     const instance = getFirstItem(alignFaceConfig.instances);
-    const faceInfo = getInstanceFaceInfo(facesGeom ?? baseGeom, instance);
+    const faceInfo = getInstanceFaceInfo(
+      facesGeom ?? baseGeom,
+      instance,
+      info.config.invertAlignMatrix
+    );
 
-    const matrix = new Matrix4().fromArray(faceInfo.rotationMatrix);
-
-    if (info.config.invertAlignMatrix) {
-      matrix.invert();
-    }
-
-    return decompose(matrix);
+    return faceInfo.rotationMatrix;
   }, [
     baseGeom,
     enableAlign,

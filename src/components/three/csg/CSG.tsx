@@ -1,5 +1,6 @@
 import "./extendR3F";
 
+import { useForceUpdate } from "@/hooks/useForceUpdate";
 import {
   PropsWithChildren,
   forwardRef,
@@ -32,6 +33,8 @@ export const CSG = forwardRef<CSGRef, PropsWithChildren<CSGProps>>(
     const rootRef = useRef<Group>(null);
     const outputRef = useRef<Mesh>(null);
 
+    const forceUpdate = useForceUpdate();
+
     const update = useCallback(() => {
       if (!outputRef.current) return;
 
@@ -51,12 +54,17 @@ export const CSG = forwardRef<CSGRef, PropsWithChildren<CSGProps>>(
       update();
     });
 
-    useImperativeHandle(ref, () => ({ output: outputRef.current, update }));
+    useImperativeHandle(ref, () => ({
+      output: outputRef.current,
+      update: forceUpdate,
+    }));
 
     return (
       <>
         <group ref={rootRef} visible={disabled}>
-          <CSGContext.Provider value={update}>{children}</CSGContext.Provider>
+          <CSGContext.Provider value={forceUpdate}>
+            {children}
+          </CSGContext.Provider>
         </group>
 
         <mesh ref={outputRef} raycast={() => null} />
