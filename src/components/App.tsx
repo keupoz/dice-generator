@@ -4,7 +4,7 @@ import { getFirstItem } from "@/utils/getFirstItem";
 import { useLoader } from "@react-three/fiber";
 import { Buffer } from "buffer";
 import { create as createFont } from "fontkit";
-import { FC, Suspense, useEffect } from "react";
+import { FC, Suspense } from "react";
 import { FileLoader } from "three";
 import { AppContent } from "./AppContent";
 
@@ -56,31 +56,16 @@ const AppWrapper: FC = () => {
     return createFont(Buffer.from(rawFont));
   });
 
-  useEffect(() => {
-    useFontsStore.setState({ fonts });
-  }, [fonts]);
+  const font = getFirstItem(fonts);
+  const features = collectFeatures(font);
 
-  useEffect(() => {
-    const font = getFirstItem(fonts);
-    const features = collectFeatures(font);
-
-    useFontSettings.setState({
-      textFont: font,
-      markFont: font,
-      textFeatures: features,
-      markFeatures: features,
-    });
-
-    return () => {
-      useFontSettings.setState({
-        textFont: null,
-        markFont: null,
-        textFeatures: {},
-        markFeatures: {},
-      });
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useFontsStore.setState({ fonts });
+  useFontSettings.setState({
+    textFont: font,
+    markFont: font,
+    textFeatures: features,
+    markFeatures: features,
+  });
 
   return <AppContent />;
 };
