@@ -58,9 +58,9 @@ export const SceneContent: FC = memo(() => {
   const [smoothCamera] = useAtom(smoothCameraAtom);
   const [baseOpacity] = useAtom(baseOpacityAtom);
 
-  const { theme } = useTheme();
+  const { isDark } = useTheme();
 
-  const dividerColor = theme === "dark" ? 0x2f2f2f : 0x9f9f9f;
+  const dividerColor = isDark ? 0x2f2f2f : 0x9f9f9f;
 
   useEffect(() => {
     baseMaterial.opacity = baseOpacity;

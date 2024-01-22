@@ -72,6 +72,7 @@ export interface DieFaceStore {
 }
 
 export interface FaceInfo {
+  name: string;
   config: DieFaceConfig;
   useStore: UseBoundStore<StoreApi<DieFaceStore>>;
 }

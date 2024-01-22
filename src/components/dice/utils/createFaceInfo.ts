@@ -5,6 +5,8 @@ export function createFaceInfo(config: DieFaceConfig, index: number): FaceInfo {
   const defaultText = config.text ?? `${index + 1}`;
   const defaultMark = defaultText === "6" || defaultText === "9" ? "_" : "";
 
+  const name = `Face ${defaultText}`;
+
   const useStore = create<DieFaceStore>(() => ({
     text: defaultText,
     mark: defaultMark,
@@ -15,5 +17,5 @@ export function createFaceInfo(config: DieFaceConfig, index: number): FaceInfo {
     offsetY: 0,
   }));
 
-  return { config, useStore };
+  return { name, config, useStore };
 }

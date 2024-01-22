@@ -1,15 +1,12 @@
 import { getFont } from "@/stores/FontSettingsStore";
 import { collectFeatures } from "@/utils/collectFontFeatures";
 import { Font, FontVariationSettings } from "fontkit";
-import { FC, memo, useCallback, useMemo, useState } from "react";
-import { SettingsAccordion } from "../SettingsAccordion";
-import { SettingsAccordionItem } from "../SettingsAccordionItem";
-import { SettingsSelect } from "./SettingsSelect";
-import { SettingsSlider } from "./SettingsSlider";
-import { SettingsSwitch } from "./SettingsSwitch";
+import { FC, useCallback, useMemo, useState } from "react";
+import { SettingsSelect } from "../../controls/SettingsSelect";
+import { SettingsSlider } from "../../controls/SettingsSlider";
+import { FontFeatures } from "./FontFeatures";
 
 export interface FontSelectProps {
-  name: string;
   options: string[];
   defaultValue: Font;
   features: Record<string, boolean>;
@@ -28,7 +25,6 @@ function collectVariationSettings(font: Font) {
 }
 
 export const FontSelect: FC<FontSelectProps> = ({
-  name,
   options,
   defaultValue,
   features,
@@ -87,7 +83,7 @@ export const FontSelect: FC<FontSelectProps> = ({
   );
 
   return (
-    <SettingsAccordionItem name={name}>
+    <>
       <SettingsSelect
         label="Font"
         options={options}
@@ -121,33 +117,6 @@ export const FontSelect: FC<FontSelectProps> = ({
         values={features}
         onChange={handleFeatureChange}
       />
-    </SettingsAccordionItem>
+    </>
   );
 };
-
-interface FontFeaturesProps {
-  options: string[];
-  values: Record<string, boolean>;
-  onChange: (key: string, value: boolean) => void;
-}
-
-const FontFeatures: FC<FontFeaturesProps> = memo(
-  ({ options, values, onChange }) => {
-    if (!options.length) return null;
-
-    return (
-      <SettingsAccordion>
-        <SettingsAccordionItem name="Features">
-          {options.map((feature) => (
-            <SettingsSwitch
-              key={feature}
-              label={feature}
-              checked={values[feature] ?? false}
-              onChange={onChange.bind(null, feature)}
-            />
-          ))}
-        </SettingsAccordionItem>
-      </SettingsAccordion>
-    );
-  }
-);

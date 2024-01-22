@@ -1,52 +1,26 @@
-import { Card } from "@/shadcn/components/ui/card";
-import { Font } from "fontkit";
+import { Tabs, TabsList, TabsTrigger } from "@/shadcn/components/ui/tabs";
 import { FC, memo } from "react";
-import { useDiceRegistryStore } from "../dice/utils/registry";
-import { SettingsAccordion } from "./SettingsAccordion";
-import { SettingsAccordionItem } from "./SettingsAccordionItem";
-import { AppSettings } from "./sections/AppSettings";
-import { DieSettings } from "./sections/DieSettings";
-import { ExportSettings } from "./sections/ExportSettings";
-import { FontSettings } from "./sections/FontSettings";
-import { FontsGroup } from "./sections/FontsGroup";
-import { SceneSettings } from "./sections/SceneSettings";
+import { AppHeader } from "./partials/AppHeader";
+import { DiceTab } from "./tabs/DiceTab";
+import { FontsTab } from "./tabs/FontsTab";
+import { GlobalTab } from "./tabs/GlobalTab";
 
-export interface SettingsProps {
-  fonts: Font[];
-}
-
-export const Settings: FC<SettingsProps> = memo(({ fonts }) => {
-  const dice = useDiceRegistryStore((state) => state.dice);
-
+export const Settings: FC = memo(() => {
   return (
-    <Card className="w-80 max-h-[calc(100vh-32px)] absolute top-4 left-4 z-10 overflow-auto">
-      <SettingsAccordion>
-        <SettingsAccordionItem name="App settings">
-          <AppSettings />
-        </SettingsAccordionItem>
+    <>
+      <AppHeader />
 
-        <SettingsAccordionItem name="Export settings">
-          <ExportSettings />
-        </SettingsAccordionItem>
+      <Tabs defaultValue="global" className="px-3">
+        <TabsList className="grid grid-cols-3">
+          <TabsTrigger value="global">Global</TabsTrigger>
+          <TabsTrigger value="fonts">Fonts</TabsTrigger>
+          <TabsTrigger value="dice">Dice</TabsTrigger>
+        </TabsList>
 
-        <SettingsAccordionItem name="Scene settings">
-          <SceneSettings />
-        </SettingsAccordionItem>
-
-        <FontsGroup fonts={fonts} />
-
-        <SettingsAccordionItem name="Font settings">
-          <FontSettings />
-        </SettingsAccordionItem>
-
-        <SettingsAccordionItem name="Dice settings">
-          <SettingsAccordion>
-            {dice.map((info) => (
-              <DieSettings key={info.config.name} info={info} />
-            ))}
-          </SettingsAccordion>
-        </SettingsAccordionItem>
-      </SettingsAccordion>
-    </Card>
+        <GlobalTab />
+        <FontsTab />
+        <DiceTab />
+      </Tabs>
+    </>
   );
 });

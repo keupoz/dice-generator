@@ -37,6 +37,9 @@ export const SettingsSlider: FC<SettingsSliderProps> = ({
         className="col-span-3 h-8"
         id={id}
         type="number"
+        min={min}
+        max={max}
+        step={step}
         value={value}
         onChange={(e) => onChange(parseFloat(e.currentTarget.value))}
       />

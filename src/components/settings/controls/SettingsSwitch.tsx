@@ -18,7 +18,7 @@ export const SettingsSwitch: FC<SettingsSwitchProps> = ({
   return (
     <SettingsRow label={label} id={id} wideLabel>
       <Switch
-        className="col-span-2"
+        className="col-span-2 justify-self-end"
         id={id}
         checked={checked}
         onCheckedChange={(value) => onChange(value)}

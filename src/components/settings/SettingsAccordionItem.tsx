@@ -14,8 +14,8 @@ export const SettingsAccordionItem: FC<
 > = ({ name, children }) => {
   return (
     <AccordionItem value={name} className="last:border-b-0">
-      <AccordionTrigger className="p-3">{name}</AccordionTrigger>
-      <AccordionContent className="px-3 py-2 border-t flex flex-col gap-2">
+      <AccordionTrigger className="h-8">{name}</AccordionTrigger>
+      <AccordionContent className="py-2 border-t flex flex-col gap-2">
         {children}
       </AccordionContent>
     </AccordionItem>

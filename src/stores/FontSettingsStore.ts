@@ -1,8 +1,11 @@
 import { Font } from "fontkit";
 import { create } from "zustand";
 
-interface FontSettingsState {
+interface FontsStoreState {
   fonts: Font[];
+}
+
+interface FontSettingsState {
   textFont: Font | null;
   markFont: Font | null;
   textFeatures: Record<string, boolean>;
@@ -12,9 +15,11 @@ interface FontSettingsState {
   depth: number;
 }
 
-export const useFontSettings = create<FontSettingsState>(() => ({
+export const useFontsStore = create<FontsStoreState>(() => ({
   fonts: [],
+}));
 
+export const useFontSettings = create<FontSettingsState>(() => ({
   textFont: null as Font | null,
   markFont: null as Font | null,
 
@@ -27,7 +32,7 @@ export const useFontSettings = create<FontSettingsState>(() => ({
 }));
 
 export function getFont(name: string) {
-  const fonts = useFontSettings.getState().fonts;
+  const fonts = useFontsStore.getState().fonts;
   const font = fonts.find((font) => font.fullName === name);
 
   if (font === undefined) {

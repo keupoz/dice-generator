@@ -2,9 +2,8 @@ import { DieInfo } from "@/components/dice/utils/types";
 import { Button } from "@/shadcn/components/ui/button";
 import { exportObject } from "@/utils/exportObject";
 import { focusObject } from "@/utils/focusObject";
-import { FC } from "react";
-import { SettingsAccordion } from "../SettingsAccordion";
-import { SettingsAccordionItem } from "../SettingsAccordionItem";
+import { FC, useMemo, useState } from "react";
+import { SettingsSelect } from "../controls/SettingsSelect";
 import { SettingsSlider } from "../controls/SettingsSlider";
 import { SettingsSwitch } from "../controls/SettingsSwitch";
 import { DieFaceSettings } from "./DieFaceSettings";
@@ -14,7 +13,6 @@ export interface DieSettingsProps {
 }
 
 export const DieSettings: FC<DieSettingsProps> = ({ info }) => {
-  const name = info.config.name;
   const state = info.useStore();
 
   const extraOptionsEntries = Object.entries(info.config.extraOptions);
@@ -24,11 +22,23 @@ export const DieSettings: FC<DieSettingsProps> = ({ info }) => {
   }
 
   function handleExport() {
-    exportObject(info.object, name);
+    exportObject(info.object, info.config.name);
+  }
+
+  const [currentFace, setCurrentFace] = useState(info.faces[0]);
+
+  const faceOptions = useMemo(() => {
+    return info.faces.map((faceInfo) => faceInfo.name);
+  }, [info.faces]);
+
+  function selectFace(name: string) {
+    const face = info.faces.find((faceInfo) => faceInfo.name === name);
+
+    setCurrentFace(face);
   }
 
   return (
-    <SettingsAccordionItem name={name}>
+    <>
       <div className="grid grid-cols-2 gap-2">
         <Button onClick={handleFocus}>Focus</Button>
 
@@ -75,11 +85,16 @@ export const DieSettings: FC<DieSettingsProps> = ({ info }) => {
 
       <div className="border-b" />
 
-      <SettingsAccordion>
-        {info.faces.map((faceInfo, index) => (
-          <DieFaceSettings key={index} info={faceInfo} index={index} />
-        ))}
-      </SettingsAccordion>
-    </SettingsAccordionItem>
+      <SettingsSelect
+        label="Face"
+        options={faceOptions}
+        value={currentFace?.name ?? ""}
+        onChange={selectFace}
+      />
+
+      {currentFace && (
+        <DieFaceSettings key={currentFace.name} info={currentFace} />
+      )}
+    </>
   );
 };

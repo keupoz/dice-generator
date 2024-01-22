@@ -1,36 +1,34 @@
 import { FaceInfo } from "@/components/dice/utils/types";
 import { FC } from "react";
-import { SettingsAccordionItem } from "../SettingsAccordionItem";
 import { SettingsSlider } from "../controls/SettingsSlider";
 import { SettingsSwitch } from "../controls/SettingsSwitch";
 import { SettingsText } from "../controls/SettingsText";
 
 export interface DieFaceSettingsProps {
   info: FaceInfo;
-  index: number;
 }
 
-export const DieFaceSettings: FC<DieFaceSettingsProps> = ({ info, index }) => {
+export const DieFaceSettings: FC<DieFaceSettingsProps> = ({ info }) => {
   const state = info.useStore();
 
   return (
-    <SettingsAccordionItem name={`Face ${index + 1}`}>
+    <>
       <SettingsText
         label="Text"
         value={state.text}
-        onChange={(value) => info.useStore.setState({ text: value })}
+        onChange={(text) => info.useStore.setState({ text })}
       />
 
       <SettingsText
         label="Mark"
         value={state.mark}
-        onChange={(value) => info.useStore.setState({ mark: value })}
+        onChange={(mark) => info.useStore.setState({ mark })}
       />
 
       <SettingsSwitch
         label="Underscore"
         checked={state.isUnderscore}
-        onChange={(value) => info.useStore.setState({ isUnderscore: value })}
+        onChange={(isUnderscore) => info.useStore.setState({ isUnderscore })}
       />
 
       <SettingsSlider
@@ -39,7 +37,7 @@ export const DieFaceSettings: FC<DieFaceSettingsProps> = ({ info, index }) => {
         max={2}
         step={0.1}
         value={state.markGap}
-        onChange={(value) => info.useStore.setState({ markGap: value })}
+        onChange={(markGap) => info.useStore.setState({ markGap })}
       />
 
       <SettingsSlider
@@ -48,8 +46,26 @@ export const DieFaceSettings: FC<DieFaceSettingsProps> = ({ info, index }) => {
         max={360}
         step={1}
         value={state.rotation}
-        onChange={(value) => info.useStore.setState({ rotation: value })}
+        onChange={(rotation) => info.useStore.setState({ rotation })}
       />
-    </SettingsAccordionItem>
+
+      <SettingsSlider
+        label="Offset X"
+        min={-2}
+        max={2}
+        step={0.01}
+        value={state.offsetX}
+        onChange={(offsetX) => info.useStore.setState({ offsetX })}
+      />
+
+      <SettingsSlider
+        label="Offset Y"
+        min={-2}
+        max={2}
+        step={0.01}
+        value={state.offsetY}
+        onChange={(offsetY) => info.useStore.setState({ offsetY })}
+      />
+    </>
   );
 };
