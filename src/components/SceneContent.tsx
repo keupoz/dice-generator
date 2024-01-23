@@ -16,7 +16,7 @@ import { CameraControls, Grid, PerspectiveCamera } from "@react-three/drei";
 import { ThreeEvent, useThree } from "@react-three/fiber";
 import { Box, Flex } from "@react-three/flex";
 import { useAtom } from "jotai";
-import { FC, memo, useEffect, useMemo, useRef } from "react";
+import { FC, memo, useLayoutEffect, useMemo, useRef } from "react";
 import {
   BoxHelper,
   DoubleSide,
@@ -62,12 +62,11 @@ export const SceneContent: FC = memo(() => {
 
   const dividerColor = isDark ? 0x2f2f2f : 0x9f9f9f;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     baseMaterial.opacity = baseOpacity;
     baseMaterial.transparent = baseOpacity < 1;
     baseMaterial.needsUpdate = true;
-    invalidate();
-  }, [baseMaterial, baseOpacity, invalidate]);
+  }, [baseMaterial, baseOpacity]);
 
   const helperRef = useRef<BoxHelper>(null);
 
