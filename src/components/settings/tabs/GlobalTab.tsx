@@ -1,6 +1,9 @@
 import { Button } from "@/shadcn/components/ui/button";
 import { Separator } from "@/shadcn/components/ui/separator";
-import { useExportSettings } from "@/stores/ExportSettingsStore";
+import {
+  getExportObject,
+  useExportSettings,
+} from "@/stores/ExportSettingsStore";
 import {
   baseOpacityAtom,
   showGridAtom,
@@ -22,7 +25,7 @@ export const GlobalTab: FC = () => {
   const exportSettings = useExportSettings();
 
   function handleExport() {
-    exportObject(exportSettings.exportObject);
+    exportObject(getExportObject());
   }
 
   return (
@@ -54,14 +57,16 @@ export const GlobalTab: FC = () => {
         label="Render mode"
         options={["Preview", "Render", "STL"]}
         value={exportSettings.renderMode}
-        onChange={exportSettings.setRenderMode}
+        onChange={(renderMode) => useExportSettings.setState({ renderMode })}
       />
 
       <SettingsSelect
         label="Render operation"
         options={["Subtract", "Union"]}
         value={exportSettings.renderOperation}
-        onChange={exportSettings.setRenderOperation}
+        onChange={(renderOperation) =>
+          useExportSettings.setState({ renderOperation })
+        }
       />
 
       <Button onClick={handleExport}>Export STL</Button>

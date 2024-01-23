@@ -1,7 +1,7 @@
 import { useHighlight } from "@/hooks/useHighlight";
 import { BASE_MATERIAL } from "@/materials";
 import { useTheme } from "@/shadcn/components/theme-provider";
-import { useExportSettings } from "@/stores/ExportSettingsStore";
+import { setExportObject } from "@/stores/ExportSettingsStore";
 import {
   baseOpacityAtom,
   showGridAtom,
@@ -33,8 +33,6 @@ import { DieD6 } from "./dice/DieD6";
 import { DieD8 } from "./dice/DieD8";
 
 export const SceneContent: FC = memo(() => {
-  const setExportObject = useExportSettings((store) => store.setExportObject);
-
   const [showGrid] = useAtom(showGridAtom);
   const [smoothCamera] = useAtom(smoothCameraAtom);
   const [baseOpacity] = useAtom(baseOpacityAtom);
