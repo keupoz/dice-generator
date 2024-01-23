@@ -1,7 +1,7 @@
 import { Clone } from "@/components/three/Clone";
 import { CSGContext } from "@/components/three/csg/CSGContext";
-import { MaterialsContext } from "@/contexts";
 import { useTextGeometry } from "@/hooks/useTextGeometry";
+import { FONT_MATERIAL } from "@/materials";
 import { useFontSettings } from "@/stores/FontSettingsStore";
 import { Geom3 } from "@jscad/modeling/src/geometries/types";
 import { FC, Fragment, memo, useContext, useLayoutEffect } from "react";
@@ -20,7 +20,6 @@ export interface DieFaceProps {
 export const DieFace: FC<DieFaceProps> = memo(({ info, geom, fontScale }) => {
   const state = info.useStore();
   const fontSettings = useFontSettings();
-  const { fontMaterial } = useContext(MaterialsContext);
 
   let textGeometry = useTextGeometry(
     fontSettings.textFont,
@@ -41,12 +40,12 @@ export const DieFace: FC<DieFaceProps> = memo(({ info, geom, fontScale }) => {
     markGeometry = null;
   }
 
-  const textBrush = useTextBrush(textGeometry, fontMaterial);
+  const textBrush = useTextBrush(textGeometry, FONT_MATERIAL);
 
   const markBrush = useMarkBrush(
     textGeometry,
     markGeometry,
-    fontMaterial,
+    FONT_MATERIAL,
     state.isUnderscore,
     state.markGap
   );

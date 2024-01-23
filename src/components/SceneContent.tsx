@@ -1,5 +1,5 @@
-import { MaterialsContext } from "@/contexts";
 import { useHighlight } from "@/hooks/useHighlight";
+import { BASE_MATERIAL } from "@/materials";
 import { useTheme } from "@/shadcn/components/theme-provider";
 import { useExportSettings } from "@/stores/ExportSettingsStore";
 import {
@@ -17,8 +17,8 @@ import { CameraControls, Grid, PerspectiveCamera } from "@react-three/drei";
 import { ThreeEvent } from "@react-three/fiber";
 import { Box, Flex } from "@react-three/flex";
 import { useAtom } from "jotai";
-import { FC, memo, useLayoutEffect, useMemo } from "react";
-import { DoubleSide, MeshLambertMaterial, MeshNormalMaterial } from "three";
+import { FC, memo, useLayoutEffect } from "react";
+import { DoubleSide } from "three";
 import { DieD10, DieD100 } from "./dice/DieD10";
 import { DieD12 } from "./dice/DieD12";
 import { DieD12R } from "./dice/DieD12R";
@@ -33,18 +33,6 @@ import { DieD6 } from "./dice/DieD6";
 import { DieD8 } from "./dice/DieD8";
 
 export const SceneContent: FC = memo(() => {
-  const baseMaterial = useMemo(() => {
-    return new MeshLambertMaterial({ transparent: true });
-  }, []);
-
-  const fontMaterial = useMemo(() => {
-    return new MeshNormalMaterial();
-  }, []);
-
-  const materialsContext = useMemo(() => {
-    return { baseMaterial, fontMaterial };
-  }, [baseMaterial, fontMaterial]);
-
   const setExportObject = useExportSettings((store) => store.setExportObject);
 
   const [showGrid] = useAtom(showGridAtom);
@@ -58,10 +46,10 @@ export const SceneContent: FC = memo(() => {
   const { highlight, updateHighlight, hideHighlight } = useHighlight();
 
   useLayoutEffect(() => {
-    baseMaterial.opacity = baseOpacity;
-    baseMaterial.transparent = baseOpacity < 1;
-    baseMaterial.needsUpdate = true;
-  }, [baseMaterial, baseOpacity]);
+    BASE_MATERIAL.opacity = baseOpacity;
+    BASE_MATERIAL.transparent = baseOpacity < 1;
+    BASE_MATERIAL.needsUpdate = true;
+  }, [baseOpacity]);
 
   function focus(e: ThreeEvent<MouseEvent>) {
     e.stopPropagation();
@@ -99,47 +87,45 @@ export const SceneContent: FC = memo(() => {
 
       <primitive object={highlight} />
 
-      <MaterialsContext.Provider value={materialsContext}>
-        <Flex
-          ref={setExportObject}
-          alignItems="center"
-          justifyContent="center"
-          dir="column-reverse"
-          plane="xz"
-          onPointerMove={updateHighlight}
-          onPointerLeave={hideHighlight}
-          onDoubleClick={focus}
-          onPointerMissed={resetFocus}
-        >
-          <Box flexDirection="row">
-            <DieD2 />
-            <DieD3 />
-            <DieD4 />
-          </Box>
+      <Flex
+        ref={setExportObject}
+        alignItems="center"
+        justifyContent="center"
+        dir="column-reverse"
+        plane="xz"
+        onPointerMove={updateHighlight}
+        onPointerLeave={hideHighlight}
+        onDoubleClick={focus}
+        onPointerMissed={resetFocus}
+      >
+        <Box flexDirection="row">
+          <DieD2 />
+          <DieD3 />
+          <DieD4 />
+        </Box>
 
-          <Box flexDirection="row">
-            <DieD4C />
-            <DieD4I />
-            <DieD4P />
-          </Box>
+        <Box flexDirection="row">
+          <DieD4C />
+          <DieD4I />
+          <DieD4P />
+        </Box>
 
-          <Box flexDirection="row">
-            <DieD6 />
-            <DieD8 />
-            <DieD10 />
-          </Box>
+        <Box flexDirection="row">
+          <DieD6 />
+          <DieD8 />
+          <DieD10 />
+        </Box>
 
-          <Box flexDirection="row">
-            <DieD100 />
-            <DieD12 />
-            <DieD12R />
-          </Box>
+        <Box flexDirection="row">
+          <DieD100 />
+          <DieD12 />
+          <DieD12R />
+        </Box>
 
-          <Box flexDirection="row">
-            <DieD20 />
-          </Box>
-        </Flex>
-      </MaterialsContext.Provider>
+        <Box flexDirection="row">
+          <DieD20 />
+        </Box>
+      </Flex>
     </>
   );
 });

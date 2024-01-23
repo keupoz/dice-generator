@@ -1,13 +1,13 @@
 import { DieFace } from "@/components/dice/DieFace/DieFace";
 import { AlignBottom } from "@/components/three/AlignBottom";
 import { CSG } from "@/components/three/csg/CSG";
-import { MaterialsContext } from "@/contexts";
+import { BASE_MATERIAL } from "@/materials";
 import { useExportSettings } from "@/stores/ExportSettingsStore";
 import { cad2brush } from "@/utils/cad2three";
 import { getInstanceFaceInfo } from "@/utils/faces/getInstanceFaceInfo";
 import { getFirstItem } from "@/utils/getFirstItem";
 import { Box } from "@react-three/flex";
-import { FC, useContext, useMemo } from "react";
+import { FC, useMemo } from "react";
 import { ADDITION, SUBTRACTION } from "three-bvh-csg";
 import { DieInfo } from "./utils/types";
 
@@ -26,11 +26,9 @@ export const AbstractDie: FC<AbstractDieProps> = ({ info }) => {
     return info.config.facesBase?.({ size, ...extraOptions });
   }, [extraOptions, info.config, size]);
 
-  const { baseMaterial } = useContext(MaterialsContext);
-
   const baseBrush = useMemo(() => {
-    return cad2brush(baseGeom, baseMaterial);
-  }, [baseGeom, baseMaterial]);
+    return cad2brush(baseGeom, BASE_MATERIAL);
+  }, [baseGeom]);
 
   const renderMode = useExportSettings((store) => store.renderMode);
   const renderOperation = useExportSettings((store) => store.renderOperation);
