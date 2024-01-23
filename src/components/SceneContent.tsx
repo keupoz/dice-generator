@@ -62,7 +62,7 @@ export const SceneContent: FC = memo(() => {
       </PerspectiveCamera>
 
       <CameraControls
-        ref={(value) => setCameraControls(value)}
+        ref={setCameraControls}
         makeDefault
         draggingSmoothTime={smoothCamera ? 0.0625 : 0}
       />
