@@ -1,4 +1,5 @@
 import { MaterialsContext } from "@/contexts";
+import { useHighlight } from "@/hooks/useHighlight";
 import { useTheme } from "@/shadcn/components/theme-provider";
 import { useExportSettings } from "@/stores/ExportSettingsStore";
 import {
@@ -13,17 +14,11 @@ import {
 } from "@/utils/focusObject";
 import { getFirstItem } from "@/utils/getFirstItem";
 import { CameraControls, Grid, PerspectiveCamera } from "@react-three/drei";
-import { ThreeEvent, useThree } from "@react-three/fiber";
+import { ThreeEvent } from "@react-three/fiber";
 import { Box, Flex } from "@react-three/flex";
 import { useAtom } from "jotai";
-import { FC, memo, useLayoutEffect, useMemo, useRef } from "react";
-import {
-  BoxHelper,
-  DoubleSide,
-  MeshLambertMaterial,
-  MeshNormalMaterial,
-  Object3D,
-} from "three";
+import { FC, memo, useLayoutEffect, useMemo } from "react";
+import { DoubleSide, MeshLambertMaterial, MeshNormalMaterial } from "three";
 import { DieD10, DieD100 } from "./dice/DieD10";
 import { DieD12 } from "./dice/DieD12";
 import { DieD12R } from "./dice/DieD12R";
@@ -38,8 +33,6 @@ import { DieD6 } from "./dice/DieD6";
 import { DieD8 } from "./dice/DieD8";
 
 export const SceneContent: FC = memo(() => {
-  const invalidate = useThree((ctx) => ctx.invalidate);
-
   const baseMaterial = useMemo(() => {
     return new MeshLambertMaterial({ transparent: true });
   }, []);
@@ -62,36 +55,18 @@ export const SceneContent: FC = memo(() => {
 
   const dividerColor = isDark ? 0x2f2f2f : 0x9f9f9f;
 
+  const { highlight, updateHighlight, hideHighlight } = useHighlight();
+
   useLayoutEffect(() => {
     baseMaterial.opacity = baseOpacity;
     baseMaterial.transparent = baseOpacity < 1;
     baseMaterial.needsUpdate = true;
   }, [baseMaterial, baseOpacity]);
 
-  const helperRef = useRef<BoxHelper>(null);
-
   function focus(e: ThreeEvent<MouseEvent>) {
     e.stopPropagation();
 
     focusObject(getFirstItem(e.intersections).object);
-  }
-
-  function updateHighlight(e: ThreeEvent<PointerEvent>) {
-    if (helperRef.current === null) return;
-
-    helperRef.current.setFromObject(getFirstItem(e.intersections).object);
-    helperRef.current.update();
-    helperRef.current.visible = true;
-
-    invalidate();
-  }
-
-  function hideHighlight() {
-    if (helperRef.current === null) return;
-
-    helperRef.current.visible = false;
-
-    invalidate();
   }
 
   return (
@@ -122,11 +97,7 @@ export const SceneContent: FC = memo(() => {
         side={DoubleSide}
       />
 
-      <boxHelper
-        ref={helperRef}
-        args={[new Object3D(), "white"]}
-        visible={false}
-      />
+      <primitive object={highlight} />
 
       <MaterialsContext.Provider value={materialsContext}>
         <Flex
