@@ -75,7 +75,10 @@ export const AbstractDie: FC<AbstractDieProps> = ({ info }) => {
               operation={getOperation(renderOperation)}
               disabled={!enableRender}
             >
-              <primitive object={baseBrush} />
+              {/* Wrapped to make its position in the tree persistent */}
+              <group>
+                <primitive object={baseBrush} />
+              </group>
 
               {info.faces.map((info, i) => (
                 <DieFace
