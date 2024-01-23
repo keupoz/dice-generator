@@ -3,11 +3,12 @@ import { AlignBottom } from "@/components/three/AlignBottom";
 import { CSG } from "@/components/three/csg/CSG";
 import { BASE_MATERIAL } from "@/materials";
 import { useExportSettings } from "@/stores/ExportSettingsStore";
-import { cad2brush } from "@/utils/cad2three";
+import { cad2geometry } from "@/utils/cad2three";
 import { getInstanceFaceInfo } from "@/utils/faces/getInstanceFaceInfo";
 import { getFirstItem } from "@/utils/getFirstItem";
 import { Box } from "@react-three/flex";
 import { FC, useMemo } from "react";
+import { Brush } from "three-bvh-csg";
 import { getOperation } from "../three/csg/availableOperations";
 import { DieInfo } from "./utils/types";
 
@@ -27,7 +28,7 @@ export const AbstractDie: FC<AbstractDieProps> = ({ info }) => {
   }, [extraOptions, info.config, size]);
 
   const baseBrush = useMemo(() => {
-    return cad2brush(baseGeom, BASE_MATERIAL);
+    return new Brush(cad2geometry(baseGeom), BASE_MATERIAL);
   }, [baseGeom]);
 
   const enableAlign = useExportSettings((store) => store.enableAlign);
