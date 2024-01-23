@@ -2,12 +2,14 @@ import { Object3D } from "three";
 import { create } from "zustand";
 
 export interface ExportSettingsState {
-  renderMode: string;
+  enableAlign: boolean;
+  enableRender: boolean;
   renderOperation: string;
 }
 
 export const useExportSettings = create<ExportSettingsState>(() => ({
-  renderMode: "Preview",
+  enableAlign: true,
+  enableRender: false,
   renderOperation: "Subtract",
 }));
 

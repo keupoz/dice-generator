@@ -1,13 +1,15 @@
-import { alignObject } from "@/utils/alignObject";
+import { getAlignment } from "@/utils/alignObject";
 import { FC, PropsWithChildren, useLayoutEffect, useRef } from "react";
-import { Group } from "three";
+import { Group, Object3D } from "three";
 
 export interface AlignBottomProps {
   disabled?: boolean;
+  alignBy?: Object3D | null;
 }
 
 export const AlignBottom: FC<PropsWithChildren<AlignBottomProps>> = ({
   disabled,
+  alignBy,
   children,
 }) => {
   const rootRef = useRef<Group>(null);
@@ -20,7 +22,13 @@ export const AlignBottom: FC<PropsWithChildren<AlignBottomProps>> = ({
     if (!disabled) {
       rootRef.current.updateMatrixWorld();
 
-      alignObject({ modes: ["none", "min", "none"] }, rootRef.current);
+      const target = alignBy ?? rootRef.current;
+      const alignment = getAlignment(
+        { modes: ["none", "min", "none"] },
+        target
+      );
+
+      rootRef.current.position.add(alignment);
     }
   }
 

@@ -8,7 +8,7 @@ import { getInstanceFaceInfo } from "@/utils/faces/getInstanceFaceInfo";
 import { getFirstItem } from "@/utils/getFirstItem";
 import { Box } from "@react-three/flex";
 import { FC, useMemo } from "react";
-import { ADDITION, SUBTRACTION } from "three-bvh-csg";
+import { getOperation } from "../three/csg/availableOperations";
 import { DieInfo } from "./utils/types";
 
 export interface AbstractDieProps {
@@ -30,10 +30,9 @@ export const AbstractDie: FC<AbstractDieProps> = ({ info }) => {
     return cad2brush(baseGeom, BASE_MATERIAL);
   }, [baseGeom]);
 
-  const renderMode = useExportSettings((store) => store.renderMode);
+  const enableAlign = useExportSettings((store) => store.enableAlign);
+  const enableRender = useExportSettings((store) => store.enableRender);
   const renderOperation = useExportSettings((store) => store.renderOperation);
-
-  const enableAlign = renderMode === "STL";
 
   const alignMatrix = useMemo(() => {
     if (!enableAlign) return null;
@@ -66,14 +65,15 @@ export const AbstractDie: FC<AbstractDieProps> = ({ info }) => {
       visible={visible}
       ref={(value) => (info.object = value)}
     >
-      <AlignBottom disabled={!enableAlign}>
+      <AlignBottom
+        disabled={!enableAlign}
+        alignBy={enableRender ? null : baseBrush}
+      >
         <group rotation-x={-Math.PI / 2}>
           <group {...alignMatrix}>
             <CSG
-              operation={
-                renderOperation === "Subtract" ? SUBTRACTION : ADDITION
-              }
-              disabled={renderMode === "Preview"}
+              operation={getOperation(renderOperation)}
+              disabled={!enableRender}
             >
               <primitive object={baseBrush} />
 

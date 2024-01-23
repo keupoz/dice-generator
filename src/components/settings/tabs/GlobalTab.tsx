@@ -1,3 +1,4 @@
+import { AVAILABLE_OPERATIONS } from "@/components/three/csg/availableOperations";
 import { Button } from "@/shadcn/components/ui/button";
 import { Separator } from "@/shadcn/components/ui/separator";
 import {
@@ -53,16 +54,23 @@ export const GlobalTab: FC = () => {
 
       <Separator />
 
-      <SettingsSelect
-        label="Render mode"
-        options={["Preview", "Render", "STL"]}
-        value={exportSettings.renderMode}
-        onChange={(renderMode) => useExportSettings.setState({ renderMode })}
+      <SettingsSwitch
+        label="Enable align"
+        checked={exportSettings.enableAlign}
+        onChange={(enableAlign) => useExportSettings.setState({ enableAlign })}
+      />
+
+      <SettingsSwitch
+        label="Enable render"
+        checked={exportSettings.enableRender}
+        onChange={(enableRender) =>
+          useExportSettings.setState({ enableRender })
+        }
       />
 
       <SettingsSelect
         label="Render operation"
-        options={["Subtract", "Union"]}
+        options={Object.keys(AVAILABLE_OPERATIONS)}
         value={exportSettings.renderOperation}
         onChange={(renderOperation) =>
           useExportSettings.setState({ renderOperation })

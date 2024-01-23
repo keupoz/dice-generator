@@ -3,15 +3,15 @@ import { Object3D } from "three";
 import { exportSTL } from "./exportSTL";
 
 export function exportObject(object: Object3D | null, name?: string) {
-  const oldMode = useExportSettings.getState().renderMode;
+  const { enableAlign, enableRender } = useExportSettings.getState();
 
-  useExportSettings.setState({ renderMode: "STL" });
+  useExportSettings.setState({ enableAlign: true, enableRender: true });
 
   setTimeout(() => {
     if (object) {
       exportSTL(object, name);
     }
 
-    useExportSettings.setState({ renderMode: oldMode });
+    useExportSettings.setState({ enableAlign, enableRender });
   });
 }
