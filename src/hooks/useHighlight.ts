@@ -1,3 +1,4 @@
+import { updateBoxHelperPrecise } from "@/utils/updateBoxHelperPrecise";
 import { ThreeEvent, useThree } from "@react-three/fiber";
 import { useCallback } from "react";
 import { BoxHelper, Object3D } from "three";
@@ -17,8 +18,7 @@ export function useHighlight() {
 
   const updateHighlight = useCallback(
     (e: ThreeEvent<PointerEvent>) => {
-      highlight.setFromObject(getFirstItem(e.intersections).object);
-      highlight.update();
+      updateBoxHelperPrecise(highlight, getFirstItem(e.intersections).object);
       highlight.visible = true;
 
       invalidate();
