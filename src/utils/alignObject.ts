@@ -51,7 +51,12 @@ export function getAlignment(options: AlignOptions, object: Object3D) {
 }
 
 export function alignObject(options: AlignOptions, object: Object3D) {
+  const parent = object.parent;
+  object.removeFromParent();
+  object.updateMatrixWorld();
+
   const translation = getAlignment(options, object);
 
   object.position.add(translation);
+  parent?.add(object);
 }

@@ -14,7 +14,7 @@ export const AlignBottom: FC<PropsWithChildren<AlignBottomProps>> = ({
 }) => {
   const rootRef = useRef<Group>(null);
 
-  function update() {
+  useLayoutEffect(() => {
     if (!rootRef.current) return;
 
     rootRef.current.position.set(0, 0, 0);
@@ -30,10 +30,6 @@ export const AlignBottom: FC<PropsWithChildren<AlignBottomProps>> = ({
 
       rootRef.current.position.add(alignment);
     }
-  }
-
-  useLayoutEffect(() => {
-    update();
   });
 
   return <group ref={rootRef}>{children}</group>;

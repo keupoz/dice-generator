@@ -1,15 +1,12 @@
-import { Clone } from "@/components/three/Clone";
-import { CSGContext } from "@/components/three/csg/CSGContext";
-import { useTextGeometry } from "@/hooks/useTextGeometry";
-import { FONT_MATERIAL } from "@/materials";
+import { useUpdateCSG } from "@/components/three/csg/CSGContext";
 import { useFontSettings } from "@/stores/FontSettingsStore";
 import { Geom3 } from "@jscad/modeling/src/geometries/types";
-import { FC, Fragment, memo, useContext, useLayoutEffect } from "react";
+import { FC, Fragment, memo } from "react";
 import { degToRad } from "three/src/math/MathUtils.js";
 import { FaceInfo } from "../utils/types";
+import { FaceLayout } from "./FaceLayout";
+import { Text3D } from "./Text3D";
 import { useInfos } from "./useInfos";
-import { useMarkBrush } from "./useMarkBrush";
-import { useTextBrush } from "./useTextBrush";
 
 export interface DieFaceProps {
   info: FaceInfo;
@@ -18,48 +15,23 @@ export interface DieFaceProps {
 }
 
 export const DieFace: FC<DieFaceProps> = memo(({ info, geom, fontScale }) => {
+  useUpdateCSG();
+
   const state = info.useStore();
-  const fontSettings = useFontSettings();
 
-  let textGeometry = useTextGeometry(
-    fontSettings.textFont,
-    fontSettings.textFeatures,
-    state.text,
-    fontSettings.segments
-  );
+  const textFont = useFontSettings((state) => state.textFont);
+  const markFont = useFontSettings((state) => state.markFont);
 
-  let markGeometry = useTextGeometry(
-    fontSettings.markFont,
-    fontSettings.markFeatures,
-    state.mark,
-    fontSettings.segments
-  );
+  const textFeatures = useFontSettings((state) => state.textFeatures);
+  const markFeatures = useFontSettings((state) => state.markFeatures);
 
-  if (!textGeometry) {
-    textGeometry = markGeometry;
-    markGeometry = null;
-  }
-
-  const textBrush = useTextBrush(textGeometry, FONT_MATERIAL);
-
-  const markBrush = useMarkBrush(
-    textGeometry,
-    markGeometry,
-    FONT_MATERIAL,
-    state.isUnderscore,
-    state.markGap
-  );
+  const globalFontScale = useFontSettings((state) => state.fontScale);
+  const depth = useFontSettings((state) => state.depth);
 
   const infos = useInfos(info.config.instances, geom);
 
-  const updateCSG = useContext(CSGContext);
-
-  useLayoutEffect(() => {
-    updateCSG();
-  });
-
   return infos.map((subInfo, i) => {
-    const scale = subInfo.length * fontSettings.fontScale * fontScale;
+    const scale = subInfo.length * globalFontScale * fontScale;
     const rotation =
       (info.config.localRotation ?? 0) + degToRad(state.rotation);
 
@@ -67,11 +39,25 @@ export const DieFace: FC<DieFaceProps> = memo(({ info, geom, fontScale }) => {
       <Fragment key={i}>
         <group position={subInfo.center}>
           <group {...subInfo.rotationMatrix}>
-            <group scale-x={scale} scale-y={scale} scale-z={fontSettings.depth}>
+            <group scale-x={scale} scale-y={scale} scale-z={depth}>
               <group position-x={state.offsetX} position-y={state.offsetY}>
                 <group rotation-z={rotation}>
-                  {textBrush && <Clone object={textBrush} />}
-                  {markBrush && <Clone object={markBrush} />}
+                  <FaceLayout
+                    isUnderscore={state.isUnderscore}
+                    markGap={state.markGap}
+                  >
+                    <Text3D
+                      text={state.text}
+                      font={textFont}
+                      features={textFeatures}
+                    />
+
+                    <Text3D
+                      text={state.mark}
+                      font={markFont}
+                      features={markFeatures}
+                    />
+                  </FaceLayout>
                 </group>
               </group>
             </group>
