@@ -1,3 +1,4 @@
+import { CAMERA_POSITION } from "@/consts";
 import { CameraControls } from "@react-three/drei";
 import { Box3, Object3D, Vector3 } from "three";
 
@@ -7,14 +8,14 @@ export function setCameraControls(value: CameraControls | null) {
   cameraControls = value;
 }
 
-export function focusObject(object: Object3D, position = false) {
+export function focusObject(object: Object3D, repositionCamera = false) {
   if (!cameraControls) return;
 
   const box = new Box3();
   box.setFromObject(object);
   const target = box.getCenter(new Vector3());
 
-  if (position) {
+  if (repositionCamera) {
     void cameraControls.setLookAt(
       target.x + 32,
       target.y + 32,
@@ -32,5 +33,13 @@ export function focusObject(object: Object3D, position = false) {
 export function resetFocus(e: MouseEvent) {
   if (e.type !== "dblclick") return;
 
-  cameraControls?.setLookAt(32, 32, 32, 0, 0, 0, true);
+  cameraControls?.setLookAt(
+    CAMERA_POSITION,
+    CAMERA_POSITION,
+    CAMERA_POSITION,
+    0,
+    0,
+    0,
+    true
+  );
 }

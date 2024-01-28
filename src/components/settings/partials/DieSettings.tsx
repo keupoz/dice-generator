@@ -18,7 +18,7 @@ export const DieSettings: FC<DieSettingsProps> = ({ info }) => {
   const extraOptionsEntries = Object.entries(info.config.extraOptions);
 
   function handleFocus() {
-    if (info.object) focusObject(info.object);
+    if (info.object) focusObject(info.object, true);
   }
 
   function handleExport() {

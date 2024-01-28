@@ -1,3 +1,4 @@
+import { CAMERA_POSITION } from "@/consts";
 import { useHighlight } from "@/hooks/useHighlight";
 import { BASE_MATERIAL } from "@/materials";
 import { useTheme } from "@/shadcn/components/theme-provider";
@@ -57,7 +58,7 @@ export const SceneContent: FC = memo(() => {
 
   return (
     <>
-      <PerspectiveCamera makeDefault position={32}>
+      <PerspectiveCamera makeDefault position={CAMERA_POSITION}>
         <pointLight intensity={10000} />
       </PerspectiveCamera>
 
