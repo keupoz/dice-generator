@@ -73,6 +73,15 @@ export const FontsTab: FC = () => {
       />
 
       <SettingsSlider
+        label="SVG scale"
+        min={0.05}
+        max={2}
+        step={0.05}
+        value={fontSettings.svgScale}
+        onChange={(svgScale) => useFontSettings.setState({ svgScale })}
+      />
+
+      <SettingsSlider
         label="Font depth"
         min={0.05}
         max={2}

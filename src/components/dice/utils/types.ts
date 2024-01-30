@@ -62,8 +62,8 @@ export interface DieOptionsStore<T extends Record<string, DieInputConfig>> {
 }
 
 export interface DieFaceStore {
-  text: string;
-  mark: string;
+  text: string | number;
+  mark: string | number;
   isUnderscore: boolean;
   markGap: number;
   rotation: number;

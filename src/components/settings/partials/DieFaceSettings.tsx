@@ -1,8 +1,8 @@
 import { FaceInfo } from "@/components/dice/utils/types";
 import { FC } from "react";
+import { SettingsSVGSelect } from "../controls/SettingsSVGSelect";
 import { SettingsSlider } from "../controls/SettingsSlider";
 import { SettingsSwitch } from "../controls/SettingsSwitch";
-import { SettingsText } from "../controls/SettingsText";
 
 export interface DieFaceSettingsProps {
   info: FaceInfo;
@@ -13,13 +13,13 @@ export const DieFaceSettings: FC<DieFaceSettingsProps> = ({ info }) => {
 
   return (
     <>
-      <SettingsText
+      <SettingsSVGSelect
         label="Text"
         value={state.text}
         onChange={(text) => info.useStore.setState({ text })}
       />
 
-      <SettingsText
+      <SettingsSVGSelect
         label="Mark"
         value={state.mark}
         onChange={(mark) => info.useStore.setState({ mark })}

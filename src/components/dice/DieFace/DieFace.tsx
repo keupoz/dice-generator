@@ -5,7 +5,7 @@ import { FC, Fragment, memo } from "react";
 import { degToRad } from "three/src/math/MathUtils.js";
 import { FaceInfo } from "../utils/types";
 import { FaceLayout } from "./FaceLayout";
-import { Text3D } from "./Text3D";
+import { FaceText } from "./FaceText";
 import { useInfos } from "./useInfos";
 
 export interface DieFaceProps {
@@ -46,13 +46,13 @@ export const DieFace: FC<DieFaceProps> = memo(({ info, geom, fontScale }) => {
                     isUnderscore={state.isUnderscore}
                     markGap={state.markGap}
                   >
-                    <Text3D
+                    <FaceText
                       text={state.text}
                       font={textFont}
                       features={textFeatures}
                     />
 
-                    <Text3D
+                    <FaceText
                       text={state.mark}
                       font={markFont}
                       features={markFeatures}

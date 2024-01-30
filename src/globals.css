@@ -57,3 +57,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .bg-checker {
+    background: top left / calc(100% / 8);
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMTZEaa/1AAAAFUlEQVQYV2PYv3//////GYB4//79AEk6CnVgRItzAAAAAElFTkSuQmCC");
+    image-rendering: pixelated;
+  }
+}

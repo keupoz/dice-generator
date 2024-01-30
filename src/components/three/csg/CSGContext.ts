@@ -1,11 +1,3 @@
-import { createContext, useContext, useLayoutEffect } from "react";
+import { createForceUpdateContext } from "@/hooks/useForceUpdate";
 
-export const CSGContext = createContext(() => {});
-
-export function useUpdateCSG() {
-  const updateCSG = useContext(CSGContext);
-
-  useLayoutEffect(() => {
-    updateCSG();
-  });
-}
+export const [CSGContext, useUpdateCSG] = createForceUpdateContext();

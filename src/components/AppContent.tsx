@@ -9,12 +9,12 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/shadcn/components/ui/resizable";
-import { useFontsStore } from "@/stores/FontSettingsStore";
-import { readFile } from "@/utils/readFile";
+import { SVGInfo, useFontsStore } from "@/stores/FontSettingsStore";
+import { readFont } from "@/utils/readFont";
+import { readSVG } from "@/utils/readSVG";
 import { GearIcon } from "@radix-ui/react-icons";
 import { useMediaQuery } from "@uidotdev/usehooks";
-import { Buffer } from "buffer";
-import { create as createFont } from "fontkit";
+import { Font } from "fontkit";
 import { FC } from "react";
 import { useDropzone } from "react-dropzone";
 import { Scene } from "./Scene";
@@ -28,17 +28,28 @@ export const AppContent: FC = () => {
       "font/otf": [".otf"],
       "font/woff": [".woff"],
       "font/woff2": [".woff2"],
+      "image/svg+xml": [".svg"],
     },
     async onDrop(files) {
-      const promises = files.map(async (file) => {
-        const rawFont = await readFile(file);
-        return createFont(Buffer.from(rawFont));
-      });
+      const fontPromises: Promise<Font>[] = [];
+      const svgPromises: Promise<SVGInfo>[] = [];
 
-      const fonts = await Promise.all(promises);
+      for (const file of files) {
+        if (file.name.endsWith(".svg")) {
+          svgPromises.push(readSVG(file));
+        } else {
+          fontPromises.push(readFont(file));
+        }
+      }
+
+      const fontsPromise = Promise.all(fontPromises);
+      const svgsPromise = Promise.all(svgPromises);
+
+      const [fonts, svgs] = await Promise.all([fontsPromise, svgsPromise]);
 
       useFontsStore.setState((prev) => ({
-        fonts: [...prev.fonts, ...fonts],
+        fonts: fonts.length ? [...prev.fonts, ...fonts] : prev.fonts,
+        svgs: svgs.length ? [...prev.svgs, ...svgs] : prev.svgs,
       }));
     },
   });

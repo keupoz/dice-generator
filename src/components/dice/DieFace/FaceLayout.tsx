@@ -1,7 +1,9 @@
+import { useForceUpdate } from "@/hooks/useForceUpdate";
 import { alignObject } from "@/utils/alignObject";
 import { createBoxFromObject } from "@/utils/createBoxFromObject";
 import { FC, PropsWithChildren, useLayoutEffect, useRef } from "react";
 import { Group, Vector3 } from "three";
+import { FaceLayoutContext } from "./FaceLayoutContext";
 
 export interface FaceLayoutProps {
   isUnderscore: boolean;
@@ -14,6 +16,7 @@ export const FaceLayout: FC<PropsWithChildren<FaceLayoutProps>> = ({
   children,
 }) => {
   const rootRef = useRef<Group>(null);
+  const forceUpdate = useForceUpdate();
 
   useLayoutEffect(() => {
     if (!rootRef.current) return;
@@ -53,5 +56,11 @@ export const FaceLayout: FC<PropsWithChildren<FaceLayoutProps>> = ({
     }
   });
 
-  return <group ref={rootRef}>{children}</group>;
+  return (
+    <group ref={rootRef}>
+      <FaceLayoutContext.Provider value={forceUpdate}>
+        {children}
+      </FaceLayoutContext.Provider>
+    </group>
+  );
 };
