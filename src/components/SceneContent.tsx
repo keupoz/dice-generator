@@ -53,6 +53,7 @@ export const SceneContent: FC = memo(() => {
   }, [baseOpacity]);
 
   useLayoutEffect(() => {
+    BASE_MATERIAL.wireframe = enableWireframe;
     FONT_MATERIAL.wireframe = enableWireframe;
   }, [baseOpacity, enableWireframe]);
 
