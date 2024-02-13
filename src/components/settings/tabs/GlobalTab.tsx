@@ -7,6 +7,7 @@ import {
 } from "@/stores/ExportSettingsStore";
 import {
   baseOpacityAtom,
+  enableWireframeAtom,
   showGridAtom,
   smoothCameraAtom,
 } from "@/stores/SceneSettingsStore";
@@ -22,6 +23,7 @@ export const GlobalTab: FC = () => {
   const [showGrid, setShowGrid] = useAtom(showGridAtom);
   const [smoothCamera, setSmoothCamera] = useAtom(smoothCameraAtom);
   const [baseOpacity, setBaseOpacity] = useAtom(baseOpacityAtom);
+  const [enableWireframe, setEnableWireframe] = useAtom(enableWireframeAtom);
 
   const exportSettings = useExportSettings();
 
@@ -41,6 +43,12 @@ export const GlobalTab: FC = () => {
         label="Smooth camera"
         checked={smoothCamera}
         onChange={setSmoothCamera}
+      />
+
+      <SettingsSwitch
+        label="Enable wireframe"
+        checked={enableWireframe}
+        onChange={setEnableWireframe}
       />
 
       <SettingsSlider

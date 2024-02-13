@@ -1,10 +1,11 @@
 import { CAMERA_POSITION } from "@/consts";
 import { useHighlight } from "@/hooks/useHighlight";
-import { BASE_MATERIAL } from "@/materials";
+import { BASE_MATERIAL, FONT_MATERIAL } from "@/materials";
 import { useTheme } from "@/shadcn/components/theme-provider";
 import { setExportObject } from "@/stores/ExportSettingsStore";
 import {
   baseOpacityAtom,
+  enableWireframeAtom,
   showGridAtom,
   smoothCameraAtom,
 } from "@/stores/SceneSettingsStore";
@@ -37,6 +38,7 @@ export const SceneContent: FC = memo(() => {
   const [showGrid] = useAtom(showGridAtom);
   const [smoothCamera] = useAtom(smoothCameraAtom);
   const [baseOpacity] = useAtom(baseOpacityAtom);
+  const [enableWireframe] = useAtom(enableWireframeAtom);
 
   const { isDark } = useTheme();
 
@@ -49,6 +51,10 @@ export const SceneContent: FC = memo(() => {
     BASE_MATERIAL.transparent = baseOpacity < 1;
     BASE_MATERIAL.needsUpdate = true;
   }, [baseOpacity]);
+
+  useLayoutEffect(() => {
+    FONT_MATERIAL.wireframe = enableWireframe;
+  }, [baseOpacity, enableWireframe]);
 
   function focus(e: ThreeEvent<MouseEvent>) {
     e.stopPropagation();
