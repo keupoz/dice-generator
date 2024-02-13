@@ -58,17 +58,18 @@ export const SceneContent: FC = memo(() => {
 
   return (
     <>
-      <PerspectiveCamera makeDefault position={CAMERA_POSITION}>
-        <pointLight intensity={10000} />
-      </PerspectiveCamera>
+      <PerspectiveCamera makeDefault position={CAMERA_POSITION} />
+
+      <directionalLight position-z={32} position-y={32} />
+      <directionalLight position-z={-32} position-y={32} />
+
+      <ambientLight intensity={1} />
 
       <CameraControls
         ref={setCameraControls}
         makeDefault
         draggingSmoothTime={smoothCamera ? 0.0625 : 0}
       />
-
-      <ambientLight intensity={0.5} />
 
       <Grid
         visible={showGrid}
