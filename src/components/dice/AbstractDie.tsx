@@ -9,7 +9,6 @@ import { getFirstItem } from "@/utils/getFirstItem";
 import { Box } from "@react-three/flex";
 import { FC, useMemo } from "react";
 import { Brush } from "three-bvh-csg";
-import { getOperation } from "../three/csg/availableOperations";
 import { DieInfo } from "./utils/types";
 
 export interface AbstractDieProps {
@@ -33,7 +32,6 @@ export const AbstractDie: FC<AbstractDieProps> = ({ info }) => {
 
   const enableAlign = useExportSettings((store) => store.enableAlign);
   const enableRender = useExportSettings((store) => store.enableRender);
-  const renderOperation = useExportSettings((store) => store.renderOperation);
 
   const alignMatrix = useMemo(() => {
     if (!enableAlign) return null;
@@ -72,10 +70,7 @@ export const AbstractDie: FC<AbstractDieProps> = ({ info }) => {
       >
         <group rotation-x={-Math.PI / 2}>
           <group {...alignMatrix}>
-            <CSG
-              operation={getOperation(renderOperation)}
-              disabled={!enableRender}
-            >
+            <CSG disabled={!enableRender}>
               {/* Wrapped to make its position in the tree persistent */}
               <group>
                 <primitive object={baseBrush} />

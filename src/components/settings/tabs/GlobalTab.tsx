@@ -1,3 +1,4 @@
+import { AVAILABLE_EVALUATORS } from "@/components/three/csg/availableEvaluators";
 import { AVAILABLE_OPERATIONS } from "@/components/three/csg/availableOperations";
 import { Button } from "@/shadcn/components/ui/button";
 import { Separator } from "@/shadcn/components/ui/separator";
@@ -82,6 +83,14 @@ export const GlobalTab: FC = () => {
         value={exportSettings.renderOperation}
         onChange={(renderOperation) =>
           useExportSettings.setState({ renderOperation })
+        }
+      />
+      <SettingsSelect
+        label="Render method"
+        options={Object.keys(AVAILABLE_EVALUATORS)}
+        value={exportSettings.renderMethod}
+        onChange={(renderMethod) =>
+          useExportSettings.setState({ renderMethod })
         }
       />
 
