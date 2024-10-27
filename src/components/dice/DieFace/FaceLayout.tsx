@@ -52,7 +52,7 @@ export const FaceLayout: FC<PropsWithChildren<FaceLayoutProps>> = ({
       alignObject({ modes: ["min", "none", "center"] }, markObject);
 
       markObject.position.x += offsetX;
-      markObject.position.y -= offsetY;
+      markObject.position.y = -offsetY;
     }
   });
 
