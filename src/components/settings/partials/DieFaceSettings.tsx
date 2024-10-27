@@ -26,7 +26,7 @@ export const DieFaceSettings: FC<DieFaceSettingsProps> = ({ info }) => {
       />
 
       <SettingsSwitch
-        label="Underscore"
+        label="Align mark as underscore"
         checked={state.isUnderscore}
         onChange={(isUnderscore) => info.useStore.setState({ isUnderscore })}
       />
