@@ -35,7 +35,7 @@ export const SVGCard: FC<SVGCardProps> = memo(({ info }) => {
     <Card>
       <CardContent className="flex gap-4 p-4">
         <div
-          className="bg-checker rounded-sm w-16 h-16 shrink-0"
+          className="bg-checker rounded-sm shrink-0 [&>*]:size-16"
           dangerouslySetInnerHTML={{
             __html: info.raw,
           }}
