@@ -1,4 +1,4 @@
-import type { Font } from 'fontkit'
+import type { Font, FontCollection } from 'fontkit'
 import type { FC } from 'react'
 import { GearIcon } from '@radix-ui/react-icons'
 import { useMediaQuery } from '@uidotdev/usehooks'
@@ -16,6 +16,7 @@ import {
 } from '~/shadcn/components/ui/resizable'
 import type { SVGInfo } from '~/stores/FontSettingsStore'
 import { useFontsStore } from '~/stores/FontSettingsStore'
+import { flatFontCollection } from '~/utils/flatFontCollection'
 import { readFont } from '~/utils/readFont'
 import { readSVG } from '~/utils/readSVG'
 import { Scene } from './Scene'
@@ -32,7 +33,7 @@ export const AppContent: FC = () => {
       'image/svg+xml': ['.svg'],
     },
     async onDrop(files) {
-      const fontPromises: Promise<Font>[] = []
+      const fontPromises: Promise<Font | FontCollection>[] = []
       const svgPromises: Promise<SVGInfo>[] = []
 
       for (const file of files) {
@@ -46,7 +47,8 @@ export const AppContent: FC = () => {
       const fontsPromise = Promise.all(fontPromises)
       const svgsPromise = Promise.all(svgPromises)
 
-      const [fonts, svgs] = await Promise.all([fontsPromise, svgsPromise])
+      const [fontCollection, svgs] = await Promise.all([fontsPromise, svgsPromise])
+      const fonts = flatFontCollection(fontCollection)
 
       useFontsStore.setState(prev => ({
         fonts: fonts.length ? [...prev.fonts, ...fonts] : prev.fonts,

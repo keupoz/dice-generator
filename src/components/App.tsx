@@ -6,6 +6,7 @@ import { Suspense } from 'react'
 import { FileLoader } from 'three'
 import { useFontSettings, useFontsStore } from '~/stores/FontSettingsStore'
 import { collectFeatures } from '~/utils/collectFontFeatures'
+import { flatFontCollection } from '~/utils/flatFontCollection'
 import { getFirstItem } from '~/utils/getFirstItem'
 import { AppContent } from './AppContent'
 
@@ -41,7 +42,7 @@ const AppWrapper: FC = () => {
     loader.setResponseType('arraybuffer')
   })
 
-  const fonts = rawFonts.map((rawFont) => {
+  const collection = rawFonts.map((rawFont) => {
     if (!(rawFont instanceof ArrayBuffer)) {
       throw new TypeError('Expected ArrayBuffer')
     }
@@ -49,6 +50,7 @@ const AppWrapper: FC = () => {
     return createFont(Buffer.from(rawFont))
   })
 
+  const fonts = flatFontCollection(collection)
   const font = getFirstItem(fonts)
   const features = collectFeatures(font)
 
