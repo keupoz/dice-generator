@@ -1,4 +1,4 @@
-import { icosahedron } from "@/utils/shapes/icosahedron";
+import { icosahedron } from "~/utils/shapes/icosahedron";
 import { createDie } from "./utils/createDie";
 
 export const DieD20 = createDie({

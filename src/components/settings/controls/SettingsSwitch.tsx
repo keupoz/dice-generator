@@ -1,4 +1,4 @@
-import { Switch } from "@/shadcn/components/ui/switch";
+import { Switch } from "~/shadcn/components/ui/switch";
 import { FC, useId } from "react";
 import { SettingsRow } from "./SettingsRow";
 

@@ -1,4 +1,4 @@
-import { octahedron } from "@/utils/shapes/octahedron";
+import { octahedron } from "~/utils/shapes/octahedron";
 import { createDie } from "./utils/createDie";
 import { DieFaceConfig } from "./utils/types";
 

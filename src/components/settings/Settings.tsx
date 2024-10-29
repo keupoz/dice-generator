@@ -1,4 +1,4 @@
-import { Tabs, TabsList, TabsTrigger } from "@/shadcn/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "~/shadcn/components/ui/tabs";
 import { FC, memo } from "react";
 import { AppHeader } from "./partials/AppHeader";
 import { DiceTab } from "./tabs/DiceTab";

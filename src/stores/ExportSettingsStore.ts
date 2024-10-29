@@ -1,6 +1,6 @@
-import { AVAILABLE_EVALUATORS } from "@/components/three/csg/availableEvaluators";
-import { AVAILABLE_OPERATIONS } from "@/components/three/csg/availableOperations";
-import { getFirstItem } from "@/utils/getFirstItem";
+import { AVAILABLE_EVALUATORS } from "~/components/three/csg/availableEvaluators";
+import { AVAILABLE_OPERATIONS } from "~/components/three/csg/availableOperations";
+import { getFirstItem } from "~/utils/getFirstItem";
 import { Object3D } from "three";
 import { create } from "zustand";
 

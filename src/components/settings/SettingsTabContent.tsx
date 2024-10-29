@@ -1,4 +1,4 @@
-import { TabsContent } from "@/shadcn/components/ui/tabs";
+import { TabsContent } from "~/shadcn/components/ui/tabs";
 import { FC, PropsWithChildren } from "react";
 
 export interface SettingsTabContentProps {

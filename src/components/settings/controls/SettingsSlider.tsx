@@ -1,5 +1,5 @@
-import { Input } from "@/shadcn/components/ui/input";
-import { Slider } from "@/shadcn/components/ui/slider";
+import { Input } from "~/shadcn/components/ui/input";
+import { Slider } from "~/shadcn/components/ui/slider";
 import { FC, useId } from "react";
 import { SettingsRow } from "./SettingsRow";
 

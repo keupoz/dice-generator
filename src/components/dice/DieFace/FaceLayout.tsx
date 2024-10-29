@@ -1,6 +1,6 @@
-import { useForceUpdate } from "@/hooks/useForceUpdate";
-import { alignObject } from "@/utils/alignObject";
-import { createBoxFromObject } from "@/utils/createBoxFromObject";
+import { useForceUpdate } from "~/hooks/useForceUpdate";
+import { alignObject } from "~/utils/alignObject";
+import { createBoxFromObject } from "~/utils/createBoxFromObject";
 import { FC, PropsWithChildren, useLayoutEffect, useRef } from "react";
 import { Group, Vector3 } from "three";
 import { FaceLayoutContext } from "./FaceLayoutContext";

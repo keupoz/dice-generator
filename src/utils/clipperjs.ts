@@ -1,4 +1,4 @@
-import { POINT_PRECISION_MUL } from "@/consts";
+import { POINT_PRECISION_MUL } from "~/consts";
 import ClipperShape, { Point, PointLower } from "@doodle3d/clipper-js";
 import { Path, Shape, Vector2 } from "three";
 import { getArrayItem } from "./getArrayItem";

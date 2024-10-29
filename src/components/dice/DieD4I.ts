@@ -1,4 +1,4 @@
-import { getArrayItem } from "@/utils/getArrayItem";
+import { getArrayItem } from "~/utils/getArrayItem";
 import geom3 from "@jscad/modeling/src/geometries/geom3";
 import { union } from "@jscad/modeling/src/operations/booleans";
 import { rotateY, translateY } from "@jscad/modeling/src/operations/transforms";

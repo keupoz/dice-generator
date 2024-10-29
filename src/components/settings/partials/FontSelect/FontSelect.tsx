@@ -1,5 +1,5 @@
-import { getFont } from "@/stores/FontSettingsStore";
-import { collectFeatures } from "@/utils/collectFontFeatures";
+import { getFont } from "~/stores/FontSettingsStore";
+import { collectFeatures } from "~/utils/collectFontFeatures";
 import { Font, FontVariationSettings } from "fontkit";
 import { FC, useCallback, useMemo, useState } from "react";
 import { SettingsSelect } from "../../controls/SettingsSelect";

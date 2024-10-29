@@ -1,7 +1,7 @@
-import { DieInfo } from "@/components/dice/utils/types";
-import { Button } from "@/shadcn/components/ui/button";
-import { exportObject } from "@/utils/exportObject";
-import { focusObject } from "@/utils/focusObject";
+import { DieInfo } from "~/components/dice/utils/types";
+import { Button } from "~/shadcn/components/ui/button";
+import { exportObject } from "~/utils/exportObject";
+import { focusObject } from "~/utils/focusObject";
 import { FC, useMemo, useState } from "react";
 import { SettingsSelect } from "../controls/SettingsSelect";
 import { SettingsSlider } from "../controls/SettingsSlider";

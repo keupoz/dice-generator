@@ -1,6 +1,6 @@
-import { useFontSettings, useFontsStore } from "@/stores/FontSettingsStore";
-import { collectFeatures } from "@/utils/collectFontFeatures";
-import { getFirstItem } from "@/utils/getFirstItem";
+import { useFontSettings, useFontsStore } from "~/stores/FontSettingsStore";
+import { collectFeatures } from "~/utils/collectFontFeatures";
+import { getFirstItem } from "~/utils/getFirstItem";
 import { useLoader } from "@react-three/fiber";
 import { Buffer } from "buffer";
 import { create as createFont } from "fontkit";
@@ -8,7 +8,7 @@ import { FC, Suspense } from "react";
 import { FileLoader } from "three";
 import { AppContent } from "./AppContent";
 
-const LOCAL_FONTS = import.meta.glob("@/assets/fonts/*", {
+const LOCAL_FONTS = import.meta.glob("~/assets/fonts/*", {
   eager: true,
   as: "url",
 });

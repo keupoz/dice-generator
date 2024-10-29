@@ -4,7 +4,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/shadcn/components/ui/select";
+} from "~/shadcn/components/ui/select";
 import { FC, useId } from "react";
 import { SettingsRow } from "./SettingsRow";
 

@@ -1,7 +1,7 @@
 import "./extendR3F";
 
-import { useForceUpdate } from "@/hooks/useForceUpdate";
-import { useExportSettings } from "@/stores/ExportSettingsStore";
+import { useForceUpdate } from "~/hooks/useForceUpdate";
+import { useExportSettings } from "~/stores/ExportSettingsStore";
 import { FC, PropsWithChildren, useLayoutEffect, useRef } from "react";
 import { Group, Mesh } from "three";
 import { CSGContext } from "./CSGContext";

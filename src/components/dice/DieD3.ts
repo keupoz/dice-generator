@@ -1,4 +1,4 @@
-import { DEG_60 } from "@/consts";
+import { DEG_60 } from "~/consts";
 import { intersect } from "@jscad/modeling/src/operations/booleans";
 import {
   rotateX,

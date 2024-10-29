@@ -1,4 +1,4 @@
-import { InstanceFaceConfig } from "@/utils/faces/getInstanceFaceInfo";
+import { InstanceFaceConfig } from "~/utils/faces/getInstanceFaceInfo";
 import { Geom3 } from "@jscad/modeling/src/geometries/types";
 import { Object3D } from "three";
 import { StoreApi, UseBoundStore } from "zustand";

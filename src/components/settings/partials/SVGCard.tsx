@@ -1,8 +1,8 @@
-import { MutedText } from "@/shadcn/components/typography/muted-text";
-import { Button } from "@/shadcn/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/shadcn/components/ui/card";
-import { Separator } from "@/shadcn/components/ui/separator";
-import { SVGInfo, useFontsStore } from "@/stores/FontSettingsStore";
+import { MutedText } from "~/shadcn/components/typography/muted-text";
+import { Button } from "~/shadcn/components/ui/button";
+import { Card, CardContent, CardFooter } from "~/shadcn/components/ui/card";
+import { Separator } from "~/shadcn/components/ui/separator";
+import { SVGInfo, useFontsStore } from "~/stores/FontSettingsStore";
 import { TrashIcon } from "@radix-ui/react-icons";
 import prettyBytes from "pretty-bytes";
 import { FC, memo } from "react";

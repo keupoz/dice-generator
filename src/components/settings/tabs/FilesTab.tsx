@@ -1,6 +1,6 @@
-import { LargeText } from "@/shadcn/components/typography/large-text";
-import { MutedText } from "@/shadcn/components/typography/muted-text";
-import { useFontsStore } from "@/stores/FontSettingsStore";
+import { LargeText } from "~/shadcn/components/typography/large-text";
+import { MutedText } from "~/shadcn/components/typography/muted-text";
+import { useFontsStore } from "~/stores/FontSettingsStore";
 import { FC } from "react";
 import { SettingsTabContent } from "../SettingsTabContent";
 import { SVGCard } from "../partials/SVGCard";

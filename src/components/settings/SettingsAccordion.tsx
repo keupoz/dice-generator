@@ -1,4 +1,4 @@
-import { Accordion } from "@/shadcn/components/ui/accordion";
+import { Accordion } from "~/shadcn/components/ui/accordion";
 import { FC, PropsWithChildren } from "react";
 
 export const SettingsAccordion: FC<PropsWithChildren> = ({ children }) => {

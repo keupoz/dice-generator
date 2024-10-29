@@ -1,4 +1,4 @@
-import { Input } from "@/shadcn/components/ui/input";
+import { Input } from "~/shadcn/components/ui/input";
 import { FC, useId } from "react";
 import { SettingsRow } from "./SettingsRow";
 

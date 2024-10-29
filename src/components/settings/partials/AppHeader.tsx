@@ -1,8 +1,8 @@
-import { useTheme } from "@/shadcn/components/theme-provider";
+import { useTheme } from "~/shadcn/components/theme-provider";
 import {
   ToggleGroup,
   ToggleGroupItem,
-} from "@/shadcn/components/ui/toggle-group";
+} from "~/shadcn/components/ui/toggle-group";
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { FC } from "react";
 

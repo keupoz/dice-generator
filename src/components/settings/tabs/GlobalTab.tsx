@@ -1,18 +1,18 @@
-import { AVAILABLE_EVALUATORS } from "@/components/three/csg/availableEvaluators";
-import { AVAILABLE_OPERATIONS } from "@/components/three/csg/availableOperations";
-import { Button } from "@/shadcn/components/ui/button";
-import { Separator } from "@/shadcn/components/ui/separator";
+import { AVAILABLE_EVALUATORS } from "~/components/three/csg/availableEvaluators";
+import { AVAILABLE_OPERATIONS } from "~/components/three/csg/availableOperations";
+import { Button } from "~/shadcn/components/ui/button";
+import { Separator } from "~/shadcn/components/ui/separator";
 import {
   getExportObject,
   useExportSettings,
-} from "@/stores/ExportSettingsStore";
+} from "~/stores/ExportSettingsStore";
 import {
   baseOpacityAtom,
   enableWireframeAtom,
   showGridAtom,
   smoothCameraAtom,
-} from "@/stores/SceneSettingsStore";
-import { exportObject } from "@/utils/exportObject";
+} from "~/stores/SceneSettingsStore";
+import { exportObject } from "~/utils/exportObject";
 import { useAtom } from "jotai";
 import { FC } from "react";
 import { SettingsTabContent } from "../SettingsTabContent";

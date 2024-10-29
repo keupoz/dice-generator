@@ -1,4 +1,4 @@
-import { STLExporter } from "@/STLExporter";
+import { STLExporter } from "~/STLExporter";
 import saveAs from "file-saver";
 import { Object3D } from "three";
 

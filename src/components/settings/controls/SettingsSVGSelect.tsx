@@ -1,11 +1,11 @@
-import { Input } from "@/shadcn/components/ui/input";
+import { Input } from "~/shadcn/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-} from "@/shadcn/components/ui/select";
-import { useFontsStore } from "@/stores/FontSettingsStore";
+} from "~/shadcn/components/ui/select";
+import { useFontsStore } from "~/stores/FontSettingsStore";
 import { FC, useId, useMemo } from "react";
 import { SettingsRow } from "./SettingsRow";
 

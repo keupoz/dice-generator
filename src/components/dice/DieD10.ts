@@ -1,4 +1,4 @@
-import { trapezohedron } from "@/utils/shapes/trapezohedron";
+import { trapezohedron } from "~/utils/shapes/trapezohedron";
 import { createDie } from "./utils/createDie";
 import { DieFaceConfig } from "./utils/types";
 

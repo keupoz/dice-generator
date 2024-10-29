@@ -1,4 +1,4 @@
-import { CAMERA_POSITION } from "@/consts";
+import { CAMERA_POSITION } from "~/consts";
 import { CameraControls } from "@react-three/drei";
 import { Box3, Object3D, Vector3 } from "three";
 

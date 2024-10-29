@@ -1,4 +1,4 @@
-import { useDiceRegistryStore } from "@/components/dice/utils/registry";
+import { useDiceRegistryStore } from "~/components/dice/utils/registry";
 import { FC, useMemo, useState } from "react";
 import { SettingsTabContent } from "../SettingsTabContent";
 import { SettingsSelect } from "../controls/SettingsSelect";

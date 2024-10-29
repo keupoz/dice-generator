@@ -1,5 +1,5 @@
-import { cad2geometry } from "@/utils/cad2three";
-import { mesh2cad } from "@/utils/three2cad";
+import { cad2geometry } from "~/utils/cad2three";
+import { mesh2cad } from "~/utils/three2cad";
 import { subtract, union } from "@jscad/modeling/src/operations/booleans";
 import { Mesh, Object3D } from "three";
 import { ADDITION, Brush, CSGOperation, Evaluator } from "three-bvh-csg";

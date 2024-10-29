@@ -1,7 +1,7 @@
 import {
   InstanceFaceConfig,
   getInstanceFaceInfo,
-} from "@/utils/faces/getInstanceFaceInfo";
+} from "~/utils/faces/getInstanceFaceInfo";
 import { Geom3 } from "@jscad/modeling/src/geometries/types";
 import { useMemo } from "react";
 

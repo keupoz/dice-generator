@@ -1,4 +1,4 @@
-import { FaceInfo } from "@/components/dice/utils/types";
+import { FaceInfo } from "~/components/dice/utils/types";
 import { FC } from "react";
 import { SettingsSVGSelect } from "../controls/SettingsSVGSelect";
 import { SettingsSlider } from "../controls/SettingsSlider";

@@ -1,4 +1,4 @@
-import { Label } from "@/shadcn/components/ui/label";
+import { Label } from "~/shadcn/components/ui/label";
 import { FC, PropsWithChildren } from "react";
 
 export interface SettingsRowProps {

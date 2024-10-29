@@ -1,17 +1,17 @@
-import { Button } from "@/shadcn/components/ui/button";
+import { Button } from "~/shadcn/components/ui/button";
 import {
   Drawer,
   DrawerContent,
   DrawerTrigger,
-} from "@/shadcn/components/ui/drawer";
+} from "~/shadcn/components/ui/drawer";
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from "@/shadcn/components/ui/resizable";
-import { SVGInfo, useFontsStore } from "@/stores/FontSettingsStore";
-import { readFont } from "@/utils/readFont";
-import { readSVG } from "@/utils/readSVG";
+} from "~/shadcn/components/ui/resizable";
+import { SVGInfo, useFontsStore } from "~/stores/FontSettingsStore";
+import { readFont } from "~/utils/readFont";
+import { readSVG } from "~/utils/readSVG";
 import { GearIcon } from "@radix-ui/react-icons";
 import { useMediaQuery } from "@uidotdev/usehooks";
 import { Font } from "fontkit";

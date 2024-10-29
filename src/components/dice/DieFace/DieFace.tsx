@@ -1,5 +1,5 @@
-import { useUpdateCSG } from "@/components/three/csg/CSGContext";
-import { useFontSettings } from "@/stores/FontSettingsStore";
+import { useUpdateCSG } from "~/components/three/csg/CSGContext";
+import { useFontSettings } from "~/stores/FontSettingsStore";
 import { Geom3 } from "@jscad/modeling/src/geometries/types";
 import { FC, Fragment, memo } from "react";
 import { degToRad } from "three/src/math/MathUtils.js";

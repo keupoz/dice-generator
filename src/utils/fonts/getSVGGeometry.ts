@@ -1,4 +1,4 @@
-import { SVGInfo } from "@/stores/FontSettingsStore";
+import { SVGInfo } from "~/stores/FontSettingsStore";
 import { BufferGeometry } from "three";
 import { paths2geometry } from "./paths2geometry";
 

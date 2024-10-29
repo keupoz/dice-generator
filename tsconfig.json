@@ -4,7 +4,7 @@
     "jsx": "react-jsx",
     "checkJs": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "~/*": ["./src/*"]
     }
   },
   "include": ["./src", "./*.ts", "./*.js", "./*.mjs", "./*.cjs"]

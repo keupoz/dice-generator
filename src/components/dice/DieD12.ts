@@ -1,4 +1,4 @@
-import { dodecahedron } from "@/utils/shapes/dodecahedron";
+import { dodecahedron } from "~/utils/shapes/dodecahedron";
 import { createDie } from "./utils/createDie";
 
 export const DieD12 = createDie({

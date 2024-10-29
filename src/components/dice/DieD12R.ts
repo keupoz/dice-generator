@@ -1,4 +1,4 @@
-import { rhombicDodecahedron } from "@/utils/shapes/rhombicDodecahedron";
+import { rhombicDodecahedron } from "~/utils/shapes/rhombicDodecahedron";
 import { createDie } from "./utils/createDie";
 
 export const DieD12R = createDie({

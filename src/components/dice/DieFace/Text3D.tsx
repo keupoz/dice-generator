@@ -1,8 +1,8 @@
-import { useUpdateCSG } from "@/components/three/csg/CSGContext";
-import { FONT_MATERIAL } from "@/materials";
-import { useFontSettings } from "@/stores/FontSettingsStore";
-import { getGlyphGeometry } from "@/utils/fonts/getGlyphGeometry";
-import { getArrayItem } from "@/utils/getArrayItem";
+import { useUpdateCSG } from "~/components/three/csg/CSGContext";
+import { FONT_MATERIAL } from "~/materials";
+import { useFontSettings } from "~/stores/FontSettingsStore";
+import { getGlyphGeometry } from "~/utils/fonts/getGlyphGeometry";
+import { getArrayItem } from "~/utils/getArrayItem";
 import { Font } from "fontkit";
 import { FC, memo, useMemo } from "react";
 

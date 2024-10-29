@@ -1,4 +1,4 @@
-import { SVGInfo } from "@/stores/FontSettingsStore";
+import { SVGInfo } from "~/stores/FontSettingsStore";
 import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
 import { readTextFile } from "./readTextFile";
 

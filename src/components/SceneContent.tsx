@@ -1,20 +1,20 @@
-import { CAMERA_POSITION } from "@/consts";
-import { useHighlight } from "@/hooks/useHighlight";
-import { BASE_MATERIAL, FONT_MATERIAL } from "@/materials";
-import { useTheme } from "@/shadcn/components/theme-provider";
-import { setExportObject } from "@/stores/ExportSettingsStore";
+import { CAMERA_POSITION } from "~/consts";
+import { useHighlight } from "~/hooks/useHighlight";
+import { BASE_MATERIAL, FONT_MATERIAL } from "~/materials";
+import { useTheme } from "~/shadcn/components/theme-provider";
+import { setExportObject } from "~/stores/ExportSettingsStore";
 import {
   baseOpacityAtom,
   enableWireframeAtom,
   showGridAtom,
   smoothCameraAtom,
-} from "@/stores/SceneSettingsStore";
+} from "~/stores/SceneSettingsStore";
 import {
   focusObject,
   resetFocus,
   setCameraControls,
-} from "@/utils/focusObject";
-import { getFirstItem } from "@/utils/getFirstItem";
+} from "~/utils/focusObject";
+import { getFirstItem } from "~/utils/getFirstItem";
 import { CameraControls, Grid, PerspectiveCamera } from "@react-three/drei";
 import { ThreeEvent } from "@react-three/fiber";
 import { Box, Flex } from "@react-three/flex";

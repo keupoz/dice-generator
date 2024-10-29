@@ -1,8 +1,8 @@
-import { useUpdateCSG } from "@/components/three/csg/CSGContext";
-import { FONT_MATERIAL } from "@/materials";
-import { useFontSettings, useFontsStore } from "@/stores/FontSettingsStore";
-import { getBoundingBox } from "@/utils/alignObject";
-import { getSVGGeometry } from "@/utils/fonts/getSVGGeometry";
+import { useUpdateCSG } from "~/components/three/csg/CSGContext";
+import { FONT_MATERIAL } from "~/materials";
+import { useFontSettings, useFontsStore } from "~/stores/FontSettingsStore";
+import { getBoundingBox } from "~/utils/alignObject";
+import { getSVGGeometry } from "~/utils/fonts/getSVGGeometry";
 import { FC, memo, useMemo } from "react";
 import { Vector3 } from "three";
 import { useUpdateFaceLayout } from "./FaceLayoutContext";

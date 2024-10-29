@@ -1,4 +1,4 @@
-import { updateBoxHelperPrecise } from "@/utils/updateBoxHelperPrecise";
+import { updateBoxHelperPrecise } from "~/utils/updateBoxHelperPrecise";
 import { ThreeEvent, useThree } from "@react-three/fiber";
 import { useCallback } from "react";
 import { BoxHelper, Object3D } from "three";

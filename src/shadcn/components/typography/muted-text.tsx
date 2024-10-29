@@ -1,4 +1,4 @@
-import { cn } from "@/shadcn/utils";
+import { cn } from "~/shadcn/utils";
 import { HTMLAttributes, forwardRef } from "react";
 
 export const MutedText = forwardRef<

@@ -1,4 +1,4 @@
-import { FONT_MATERIAL } from "@/materials";
+import { FONT_MATERIAL } from "~/materials";
 import { GlyphRun } from "fontkit";
 import { Brush } from "three-bvh-csg";
 import { getArrayItem } from "../getArrayItem";

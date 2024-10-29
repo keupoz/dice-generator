@@ -1,4 +1,4 @@
-import { useExportSettings } from "@/stores/ExportSettingsStore";
+import { useExportSettings } from "~/stores/ExportSettingsStore";
 import { Object3D } from "three";
 import { exportSTL } from "./exportSTL";
 

@@ -1,7 +1,7 @@
-import { Separator } from "@/shadcn/components/ui/separator";
-import { Tabs, TabsList, TabsTrigger } from "@/shadcn/components/ui/tabs";
-import { useFontSettings, useFontsStore } from "@/stores/FontSettingsStore";
-import { getFirstItem } from "@/utils/getFirstItem";
+import { Separator } from "~/shadcn/components/ui/separator";
+import { Tabs, TabsList, TabsTrigger } from "~/shadcn/components/ui/tabs";
+import { useFontSettings, useFontsStore } from "~/stores/FontSettingsStore";
+import { getFirstItem } from "~/utils/getFirstItem";
 import { FC, useMemo } from "react";
 import { SettingsTabContent } from "../SettingsTabContent";
 import { SettingsSlider } from "../controls/SettingsSlider";

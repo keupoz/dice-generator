@@ -2,7 +2,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/shadcn/components/ui/accordion";
+} from "~/shadcn/components/ui/accordion";
 import { FC, PropsWithChildren } from "react";
 
 export interface SettingsAccordionItemProps {

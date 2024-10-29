@@ -1,4 +1,4 @@
-import { getAlignment } from "@/utils/alignObject";
+import { getAlignment } from "~/utils/alignObject";
 import { FC, PropsWithChildren, useLayoutEffect, useRef } from "react";
 import { Group, Object3D } from "three";
 
