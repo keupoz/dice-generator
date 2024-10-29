@@ -1,7 +1,7 @@
-import { defineScaledPolyhedron } from "./defineScaledPolyhedron";
+import { defineScaledPolyhedron } from './defineScaledPolyhedron'
 
 // http://dmccooey.com/polyhedra/Octahedron.html
-const C0 = Math.SQRT2 / 2;
+const C0 = Math.SQRT2 / 2
 
 export const octahedron = defineScaledPolyhedron({
   points: [
@@ -22,4 +22,4 @@ export const octahedron = defineScaledPolyhedron({
     [1, 3, 4],
     [1, 4, 2],
   ],
-});
+})

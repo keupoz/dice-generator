@@ -1,11 +1,11 @@
-import { create } from "zustand";
-import { DieFaceConfig, DieFaceStore, FaceInfo } from "./types";
+import type { DieFaceConfig, DieFaceStore, FaceInfo } from './types'
+import { create } from 'zustand'
 
 export function createFaceInfo(config: DieFaceConfig, index: number): FaceInfo {
-  const defaultText = config.text ?? `${index + 1}`;
-  const defaultMark = defaultText === "6" || defaultText === "9" ? "_" : "";
+  const defaultText = config.text ?? `${index + 1}`
+  const defaultMark = defaultText === '6' || defaultText === '9' ? '_' : ''
 
-  const name = `Face ${defaultText}`;
+  const name = `Face ${defaultText}`
 
   const useStore = create<DieFaceStore>(() => ({
     text: defaultText,
@@ -15,7 +15,7 @@ export function createFaceInfo(config: DieFaceConfig, index: number): FaceInfo {
     rotation: 0,
     offsetX: 0,
     offsetY: 0,
-  }));
+  }))
 
-  return { name, config, useStore };
+  return { name, config, useStore }
 }

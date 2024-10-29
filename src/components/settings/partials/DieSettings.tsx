@@ -1,40 +1,43 @@
-import { DieInfo } from "~/components/dice/utils/types";
-import { Button } from "~/shadcn/components/ui/button";
-import { exportObject } from "~/utils/exportObject";
-import { focusObject } from "~/utils/focusObject";
-import { FC, useMemo, useState } from "react";
-import { SettingsSelect } from "../controls/SettingsSelect";
-import { SettingsSlider } from "../controls/SettingsSlider";
-import { SettingsSwitch } from "../controls/SettingsSwitch";
-import { DieFaceSettings } from "./DieFaceSettings";
+import type { FC } from 'react'
+import { useMemo, useState } from 'react'
+import type { DieInfo } from '~/components/dice/utils/types'
+import { Button } from '~/shadcn/components/ui/button'
+import { exportObject } from '~/utils/exportObject'
+import { focusObject } from '~/utils/focusObject'
+import { SettingsSelect } from '../controls/SettingsSelect'
+import { SettingsSlider } from '../controls/SettingsSlider'
+import { SettingsSwitch } from '../controls/SettingsSwitch'
+import { DieFaceSettings } from './DieFaceSettings'
 
 export interface DieSettingsProps {
-  info: DieInfo;
+  info: DieInfo
 }
 
 export const DieSettings: FC<DieSettingsProps> = ({ info }) => {
-  const state = info.useStore();
+  const state = info.useStore()
 
-  const extraOptionsEntries = Object.entries(info.config.extraOptions);
+  const extraOptionsEntries = Object.entries(info.config.extraOptions)
 
   function handleFocus() {
-    if (info.object) focusObject(info.object, true);
+    if (info.object) {
+      focusObject(info.object, true)
+    }
   }
 
   function handleExport() {
-    exportObject(info.object, info.config.name);
+    exportObject(info.object, info.config.name)
   }
 
-  const [currentFace, setCurrentFace] = useState(info.faces[0]);
+  const [currentFace, setCurrentFace] = useState(info.faces[0])
 
   const faceOptions = useMemo(() => {
-    return info.faces.map((faceInfo) => faceInfo.name);
-  }, [info.faces]);
+    return info.faces.map(faceInfo => faceInfo.name)
+  }, [info.faces])
 
   function selectFace(name: string) {
-    const face = info.faces.find((faceInfo) => faceInfo.name === name);
+    const face = info.faces.find(faceInfo => faceInfo.name === name)
 
-    setCurrentFace(face);
+    setCurrentFace(face)
   }
 
   return (
@@ -48,7 +51,7 @@ export const DieSettings: FC<DieSettingsProps> = ({ info }) => {
       <SettingsSwitch
         label="Visible"
         checked={state.visible}
-        onChange={(value) => info.useStore.setState({ visible: value })}
+        onChange={value => info.useStore.setState({ visible: value })}
       />
 
       <SettingsSlider
@@ -57,7 +60,7 @@ export const DieSettings: FC<DieSettingsProps> = ({ info }) => {
         max={40}
         step={1}
         value={state.size}
-        onChange={(value) => info.useStore.setState({ size: value })}
+        onChange={value => info.useStore.setState({ size: value })}
       />
 
       <SettingsSlider
@@ -66,7 +69,7 @@ export const DieSettings: FC<DieSettingsProps> = ({ info }) => {
         max={2}
         step={0.05}
         value={state.fontScale}
-        onChange={(value) => info.useStore.setState({ fontScale: value })}
+        onChange={value => info.useStore.setState({ fontScale: value })}
       />
 
       {extraOptionsEntries.length > 0 && <div className="border-b" />}
@@ -79,7 +82,7 @@ export const DieSettings: FC<DieSettingsProps> = ({ info }) => {
           max={inputConfig.max}
           step={inputConfig.step}
           value={state.extraOptions[key] ?? inputConfig.value}
-          onChange={(value) => state.setExtraOptions(key, value)}
+          onChange={value => state.setExtraOptions(key, value)}
         />
       ))}
 
@@ -88,7 +91,7 @@ export const DieSettings: FC<DieSettingsProps> = ({ info }) => {
       <SettingsSelect
         label="Face"
         options={faceOptions}
-        value={currentFace?.name ?? ""}
+        value={currentFace?.name ?? ''}
         onChange={selectFace}
       />
 
@@ -96,5 +99,5 @@ export const DieSettings: FC<DieSettingsProps> = ({ info }) => {
         <DieFaceSettings key={currentFace.name} info={currentFace} />
       )}
     </>
-  );
-};
+  )
+}

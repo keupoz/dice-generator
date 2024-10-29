@@ -1,22 +1,23 @@
-import { useDiceRegistryStore } from "~/components/dice/utils/registry";
-import { FC, useMemo, useState } from "react";
-import { SettingsTabContent } from "../SettingsTabContent";
-import { SettingsSelect } from "../controls/SettingsSelect";
-import { DieSettings } from "../partials/DieSettings";
+import type { FC } from 'react'
+import { useMemo, useState } from 'react'
+import { useDiceRegistryStore } from '~/components/dice/utils/registry'
+import { SettingsSelect } from '../controls/SettingsSelect'
+import { DieSettings } from '../partials/DieSettings'
+import { SettingsTabContent } from '../SettingsTabContent'
 
 export const DiceTab: FC = () => {
-  const dice = useDiceRegistryStore((state) => state.dice);
+  const dice = useDiceRegistryStore(state => state.dice)
 
-  const [currentDie, setCurrentDie] = useState(() => dice[0]);
+  const [currentDie, setCurrentDie] = useState(() => dice[0])
 
   const options = useMemo(() => {
-    return dice.map((info) => info.config.name);
-  }, [dice]);
+    return dice.map(info => info.config.name)
+  }, [dice])
 
   function selectDie(name: string) {
-    const info = dice.find((info) => info.config.name === name);
+    const info = dice.find(info => info.config.name === name)
 
-    setCurrentDie(info);
+    setCurrentDie(info)
   }
 
   return (
@@ -24,7 +25,7 @@ export const DiceTab: FC = () => {
       <SettingsSelect
         label="Die"
         options={options}
-        value={currentDie?.config.name ?? ""}
+        value={currentDie?.config.name ?? ''}
         onChange={selectDie}
       />
 
@@ -32,5 +33,5 @@ export const DiceTab: FC = () => {
         <DieSettings key={currentDie.config.name} info={currentDie} />
       )}
     </SettingsTabContent>
-  );
-};
+  )
+}

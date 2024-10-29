@@ -1,8 +1,8 @@
-import { defineScaledPolyhedron } from "./defineScaledPolyhedron";
+import { defineScaledPolyhedron } from './defineScaledPolyhedron'
 
 // http://dmccooey.com/polyhedra/RhombicDodecahedron.html
-const C0 = (3 * Math.sqrt(2)) / 8;
-const C1 = (3 * Math.sqrt(2)) / 4;
+const C0 = (3 * Math.sqrt(2)) / 8
+const C1 = (3 * Math.sqrt(2)) / 4
 
 export const rhombicDodecahedron = defineScaledPolyhedron({
   points: [
@@ -35,4 +35,4 @@ export const rhombicDodecahedron = defineScaledPolyhedron({
     [12, 3, 13, 5],
     [12, 5, 8, 0],
   ],
-});
+})

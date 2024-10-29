@@ -1,14 +1,14 @@
-import { AVAILABLE_EVALUATORS } from "~/components/three/csg/availableEvaluators";
-import { AVAILABLE_OPERATIONS } from "~/components/three/csg/availableOperations";
-import { getFirstItem } from "~/utils/getFirstItem";
-import { Object3D } from "three";
-import { create } from "zustand";
+import type { Object3D } from 'three'
+import { create } from 'zustand'
+import { AVAILABLE_EVALUATORS } from '~/components/three/csg/availableEvaluators'
+import { AVAILABLE_OPERATIONS } from '~/components/three/csg/availableOperations'
+import { getFirstItem } from '~/utils/getFirstItem'
 
 export interface ExportSettingsState {
-  enableAlign: boolean;
-  enableRender: boolean;
-  renderOperation: string;
-  renderMethod: string;
+  enableAlign: boolean
+  enableRender: boolean
+  renderOperation: string
+  renderMethod: string
 }
 
 export const useExportSettings = create<ExportSettingsState>(() => ({
@@ -16,14 +16,14 @@ export const useExportSettings = create<ExportSettingsState>(() => ({
   enableRender: false,
   renderOperation: getFirstItem(Object.keys(AVAILABLE_OPERATIONS)),
   renderMethod: getFirstItem(Object.keys(AVAILABLE_EVALUATORS)),
-}));
+}))
 
-let exportObject: Object3D | null = null;
+let exportObject: Object3D | null = null
 
 export function setExportObject(value: Object3D | null) {
-  exportObject = value;
+  exportObject = value
 }
 
 export function getExportObject() {
-  return exportObject;
+  return exportObject
 }

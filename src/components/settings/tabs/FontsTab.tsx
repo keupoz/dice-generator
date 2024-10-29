@@ -1,19 +1,20 @@
-import { Separator } from "~/shadcn/components/ui/separator";
-import { Tabs, TabsList, TabsTrigger } from "~/shadcn/components/ui/tabs";
-import { useFontSettings, useFontsStore } from "~/stores/FontSettingsStore";
-import { getFirstItem } from "~/utils/getFirstItem";
-import { FC, useMemo } from "react";
-import { SettingsTabContent } from "../SettingsTabContent";
-import { SettingsSlider } from "../controls/SettingsSlider";
-import { FontSelect } from "../partials/FontSelect/FontSelect";
+import type { FC } from 'react'
+import { useMemo } from 'react'
+import { Separator } from '~/shadcn/components/ui/separator'
+import { Tabs, TabsList, TabsTrigger } from '~/shadcn/components/ui/tabs'
+import { useFontSettings, useFontsStore } from '~/stores/FontSettingsStore'
+import { getFirstItem } from '~/utils/getFirstItem'
+import { SettingsSlider } from '../controls/SettingsSlider'
+import { FontSelect } from '../partials/FontSelect/FontSelect'
+import { SettingsTabContent } from '../SettingsTabContent'
 
 export const FontsTab: FC = () => {
-  const fontSettings = useFontSettings();
-  const fonts = useFontsStore((state) => state.fonts);
+  const fontSettings = useFontSettings()
+  const fonts = useFontsStore(state => state.fonts)
 
   const fontOptions = useMemo(() => {
-    return fonts.map((font) => font.fullName);
-  }, [fonts]);
+    return fonts.map(font => font.fullName)
+  }, [fonts])
 
   return (
     <SettingsTabContent value="fonts">
@@ -29,10 +30,10 @@ export const FontsTab: FC = () => {
             defaultValue={fontSettings.textFont ?? getFirstItem(fonts)}
             features={fontSettings.textFeatures}
             onFont={(textFont) => {
-              useFontSettings.setState({ textFont });
+              useFontSettings.setState({ textFont })
             }}
             onFeatures={(textFeatures) => {
-              useFontSettings.setState({ textFeatures });
+              useFontSettings.setState({ textFeatures })
             }}
           />
         </SettingsTabContent>
@@ -43,10 +44,10 @@ export const FontsTab: FC = () => {
             defaultValue={fontSettings.markFont ?? getFirstItem(fonts)}
             features={fontSettings.markFeatures}
             onFont={(markFont) => {
-              useFontSettings.setState({ markFont });
+              useFontSettings.setState({ markFont })
             }}
             onFeatures={(markFeatures) => {
-              useFontSettings.setState({ markFeatures });
+              useFontSettings.setState({ markFeatures })
             }}
           />
         </SettingsTabContent>
@@ -60,7 +61,7 @@ export const FontsTab: FC = () => {
         max={24}
         step={1}
         value={fontSettings.segments}
-        onChange={(segments) => useFontSettings.setState({ segments })}
+        onChange={segments => useFontSettings.setState({ segments })}
       />
 
       <SettingsSlider
@@ -69,7 +70,7 @@ export const FontsTab: FC = () => {
         max={2}
         step={0.05}
         value={fontSettings.fontScale}
-        onChange={(fontScale) => useFontSettings.setState({ fontScale })}
+        onChange={fontScale => useFontSettings.setState({ fontScale })}
       />
 
       <SettingsSlider
@@ -78,7 +79,7 @@ export const FontsTab: FC = () => {
         max={2}
         step={0.05}
         value={fontSettings.svgScale}
-        onChange={(svgScale) => useFontSettings.setState({ svgScale })}
+        onChange={svgScale => useFontSettings.setState({ svgScale })}
       />
 
       <SettingsSlider
@@ -87,8 +88,8 @@ export const FontsTab: FC = () => {
         max={2}
         step={0.05}
         value={fontSettings.depth}
-        onChange={(depth) => useFontSettings.setState({ depth })}
+        onChange={depth => useFontSettings.setState({ depth })}
       />
     </SettingsTabContent>
-  );
-};
+  )
+}

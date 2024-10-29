@@ -1,34 +1,34 @@
-import { FaceInfo } from "~/components/dice/utils/types";
-import { FC } from "react";
-import { SettingsSVGSelect } from "../controls/SettingsSVGSelect";
-import { SettingsSlider } from "../controls/SettingsSlider";
-import { SettingsSwitch } from "../controls/SettingsSwitch";
+import type { FC } from 'react'
+import type { FaceInfo } from '~/components/dice/utils/types'
+import { SettingsSlider } from '../controls/SettingsSlider'
+import { SettingsSVGSelect } from '../controls/SettingsSVGSelect'
+import { SettingsSwitch } from '../controls/SettingsSwitch'
 
 export interface DieFaceSettingsProps {
-  info: FaceInfo;
+  info: FaceInfo
 }
 
 export const DieFaceSettings: FC<DieFaceSettingsProps> = ({ info }) => {
-  const state = info.useStore();
+  const state = info.useStore()
 
   return (
     <>
       <SettingsSVGSelect
         label="Text"
         value={state.text}
-        onChange={(text) => info.useStore.setState({ text })}
+        onChange={text => info.useStore.setState({ text })}
       />
 
       <SettingsSVGSelect
         label="Mark"
         value={state.mark}
-        onChange={(mark) => info.useStore.setState({ mark })}
+        onChange={mark => info.useStore.setState({ mark })}
       />
 
       <SettingsSwitch
         label="Align mark as underscore"
         checked={state.isUnderscore}
-        onChange={(isUnderscore) => info.useStore.setState({ isUnderscore })}
+        onChange={isUnderscore => info.useStore.setState({ isUnderscore })}
       />
 
       <SettingsSlider
@@ -37,7 +37,7 @@ export const DieFaceSettings: FC<DieFaceSettingsProps> = ({ info }) => {
         max={2}
         step={0.1}
         value={state.markGap}
-        onChange={(markGap) => info.useStore.setState({ markGap })}
+        onChange={markGap => info.useStore.setState({ markGap })}
       />
 
       <SettingsSlider
@@ -46,7 +46,7 @@ export const DieFaceSettings: FC<DieFaceSettingsProps> = ({ info }) => {
         max={360}
         step={1}
         value={state.rotation}
-        onChange={(rotation) => info.useStore.setState({ rotation })}
+        onChange={rotation => info.useStore.setState({ rotation })}
       />
 
       <SettingsSlider
@@ -55,7 +55,7 @@ export const DieFaceSettings: FC<DieFaceSettingsProps> = ({ info }) => {
         max={2}
         step={0.01}
         value={state.offsetX}
-        onChange={(offsetX) => info.useStore.setState({ offsetX })}
+        onChange={offsetX => info.useStore.setState({ offsetX })}
       />
 
       <SettingsSlider
@@ -64,8 +64,8 @@ export const DieFaceSettings: FC<DieFaceSettingsProps> = ({ info }) => {
         max={2}
         step={0.01}
         value={state.offsetY}
-        onChange={(offsetY) => info.useStore.setState({ offsetY })}
+        onChange={offsetY => info.useStore.setState({ offsetY })}
       />
     </>
-  );
-};
+  )
+}

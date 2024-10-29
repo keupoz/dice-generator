@@ -1,11 +1,11 @@
-import { useRef } from "react";
+import { useRef } from 'react'
 
 export function useConst<T>(init: () => T): T {
-  const ref = useRef<T>();
+  const ref = useRef<T>()
 
   if (!ref.current) {
-    ref.current = init();
+    ref.current = init()
   }
 
-  return ref.current;
+  return ref.current
 }

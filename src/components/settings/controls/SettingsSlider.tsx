@@ -1,15 +1,16 @@
-import { Input } from "~/shadcn/components/ui/input";
-import { Slider } from "~/shadcn/components/ui/slider";
-import { FC, useId } from "react";
-import { SettingsRow } from "./SettingsRow";
+import type { FC } from 'react'
+import { useId } from 'react'
+import { Input } from '~/shadcn/components/ui/input'
+import { Slider } from '~/shadcn/components/ui/slider'
+import { SettingsRow } from './SettingsRow'
 
 export interface SettingsSliderProps {
-  label: string;
-  min: number;
-  max: number;
-  step: number;
-  value: number;
-  onChange: (value: number) => void;
+  label: string
+  min: number
+  max: number
+  step: number
+  value: number
+  onChange: (value: number) => void
 }
 
 export const SettingsSlider: FC<SettingsSliderProps> = ({
@@ -20,7 +21,7 @@ export const SettingsSlider: FC<SettingsSliderProps> = ({
   value,
   onChange,
 }) => {
-  const id = useId();
+  const id = useId()
 
   return (
     <SettingsRow label={label} id={id}>
@@ -41,8 +42,8 @@ export const SettingsSlider: FC<SettingsSliderProps> = ({
         max={max}
         step={step}
         value={value}
-        onChange={(e) => onChange(parseFloat(e.currentTarget.value))}
+        onChange={e => onChange(Number.parseFloat(e.currentTarget.value))}
       />
     </SettingsRow>
-  );
-};
+  )
+}

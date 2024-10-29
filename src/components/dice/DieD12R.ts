@@ -1,15 +1,15 @@
-import { rhombicDodecahedron } from "~/utils/shapes/rhombicDodecahedron";
-import { createDie } from "./utils/createDie";
+import { rhombicDodecahedron } from '~/utils/shapes/rhombicDodecahedron'
+import { createDie } from './utils/createDie'
 
 export const DieD12R = createDie({
-  name: "d12r",
+  name: 'd12r',
   defaultSize: 16,
   defaultFontScale: 0.6,
   alignFaceIndex: 0,
   invertAlignMatrix: true,
   extraOptions: {},
   base({ size }) {
-    return rhombicDodecahedron(size / 2);
+    return rhombicDodecahedron(size / 2)
   },
   faces: [
     // Face 1
@@ -17,8 +17,8 @@ export const DieD12R = createDie({
       instances: [
         {
           faceIndex: 11,
-          from: { type: "vertex", index: 0 },
-          to: { type: "vertex", index: 2 },
+          from: { type: 'vertex', index: 0 },
+          to: { type: 'vertex', index: 2 },
         },
       ],
     },
@@ -28,8 +28,8 @@ export const DieD12R = createDie({
       instances: [
         {
           faceIndex: 9,
-          from: { type: "vertex", index: 2 },
-          to: { type: "vertex", index: 0 },
+          from: { type: 'vertex', index: 2 },
+          to: { type: 'vertex', index: 0 },
         },
       ],
     },
@@ -39,8 +39,8 @@ export const DieD12R = createDie({
       instances: [
         {
           faceIndex: 4,
-          from: { type: "vertex", index: 2 },
-          to: { type: "vertex", index: 0 },
+          from: { type: 'vertex', index: 2 },
+          to: { type: 'vertex', index: 0 },
         },
       ],
     },
@@ -50,8 +50,8 @@ export const DieD12R = createDie({
       instances: [
         {
           faceIndex: 0,
-          from: { type: "vertex", index: 2 },
-          to: { type: "vertex", index: 0 },
+          from: { type: 'vertex', index: 2 },
+          to: { type: 'vertex', index: 0 },
         },
       ],
     },
@@ -61,8 +61,8 @@ export const DieD12R = createDie({
       instances: [
         {
           faceIndex: 5,
-          from: { type: "vertex", index: 2 },
-          to: { type: "vertex", index: 0 },
+          from: { type: 'vertex', index: 2 },
+          to: { type: 'vertex', index: 0 },
         },
       ],
     },
@@ -72,8 +72,8 @@ export const DieD12R = createDie({
       instances: [
         {
           faceIndex: 10,
-          from: { type: "vertex", index: 2 },
-          to: { type: "vertex", index: 0 },
+          from: { type: 'vertex', index: 2 },
+          to: { type: 'vertex', index: 0 },
         },
       ],
     },
@@ -83,8 +83,8 @@ export const DieD12R = createDie({
       instances: [
         {
           faceIndex: 1,
-          from: { type: "vertex", index: 2 },
-          to: { type: "vertex", index: 0 },
+          from: { type: 'vertex', index: 2 },
+          to: { type: 'vertex', index: 0 },
         },
       ],
     },
@@ -94,8 +94,8 @@ export const DieD12R = createDie({
       instances: [
         {
           faceIndex: 2,
-          from: { type: "vertex", index: 0 },
-          to: { type: "vertex", index: 2 },
+          from: { type: 'vertex', index: 0 },
+          to: { type: 'vertex', index: 2 },
         },
       ],
     },
@@ -105,8 +105,8 @@ export const DieD12R = createDie({
       instances: [
         {
           faceIndex: 6,
-          from: { type: "vertex", index: 2 },
-          to: { type: "vertex", index: 0 },
+          from: { type: 'vertex', index: 2 },
+          to: { type: 'vertex', index: 0 },
         },
       ],
     },
@@ -116,8 +116,8 @@ export const DieD12R = createDie({
       instances: [
         {
           faceIndex: 7,
-          from: { type: "vertex", index: 2 },
-          to: { type: "vertex", index: 0 },
+          from: { type: 'vertex', index: 2 },
+          to: { type: 'vertex', index: 0 },
         },
       ],
     },
@@ -127,8 +127,8 @@ export const DieD12R = createDie({
       instances: [
         {
           faceIndex: 3,
-          from: { type: "vertex", index: 2 },
-          to: { type: "vertex", index: 0 },
+          from: { type: 'vertex', index: 2 },
+          to: { type: 'vertex', index: 0 },
         },
       ],
     },
@@ -138,10 +138,10 @@ export const DieD12R = createDie({
       instances: [
         {
           faceIndex: 8,
-          from: { type: "vertex", index: 0 },
-          to: { type: "vertex", index: 2 },
+          from: { type: 'vertex', index: 0 },
+          to: { type: 'vertex', index: 2 },
         },
       ],
     },
   ],
-});
+})

@@ -1,4 +1,4 @@
-import { createForceUpdateContext } from "~/hooks/useForceUpdate";
+import { createForceUpdateContext } from '~/hooks/useForceUpdate'
 
-export const [FaceLayoutContext, useUpdateFaceLayout] =
-  createForceUpdateContext();
+export const [FaceLayoutContext, useUpdateFaceLayout]
+  = createForceUpdateContext()

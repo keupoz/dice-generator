@@ -1,10 +1,10 @@
-import { Label } from "~/shadcn/components/ui/label";
-import { FC, PropsWithChildren } from "react";
+import type { FC, PropsWithChildren } from 'react'
+import { Label } from '~/shadcn/components/ui/label'
 
 export interface SettingsRowProps {
-  label: string;
-  id: string;
-  wideLabel?: boolean;
+  label: string
+  id: string
+  wideLabel?: boolean
 }
 
 export const SettingsRow: FC<PropsWithChildren<SettingsRowProps>> = ({
@@ -15,11 +15,11 @@ export const SettingsRow: FC<PropsWithChildren<SettingsRowProps>> = ({
 }) => {
   return (
     <div className="grid grid-cols-12 gap-2 items-center h-8">
-      <Label className={wideLabel ? "col-span-10" : "col-span-4"} htmlFor={id}>
+      <Label className={wideLabel ? 'col-span-10' : 'col-span-4'} htmlFor={id}>
         {label}
       </Label>
 
       {children}
     </div>
-  );
-};
+  )
+}

@@ -1,13 +1,15 @@
-import { useForceUpdate } from "~/hooks/useForceUpdate";
-import { alignObject } from "~/utils/alignObject";
-import { createBoxFromObject } from "~/utils/createBoxFromObject";
-import { FC, PropsWithChildren, useLayoutEffect, useRef } from "react";
-import { Group, Vector3 } from "three";
-import { FaceLayoutContext } from "./FaceLayoutContext";
+import type { FC, PropsWithChildren } from 'react'
+import type { Group } from 'three'
+import { useLayoutEffect, useRef } from 'react'
+import { Vector3 } from 'three'
+import { useForceUpdate } from '~/hooks/useForceUpdate'
+import { alignObject } from '~/utils/alignObject'
+import { createBoxFromObject } from '~/utils/createBoxFromObject'
+import { FaceLayoutContext } from './FaceLayoutContext'
 
 export interface FaceLayoutProps {
-  isUnderscore: boolean;
-  markGap: number;
+  isUnderscore: boolean
+  markGap: number
 }
 
 export const FaceLayout: FC<PropsWithChildren<FaceLayoutProps>> = ({
@@ -15,46 +17,52 @@ export const FaceLayout: FC<PropsWithChildren<FaceLayoutProps>> = ({
   markGap,
   children,
 }) => {
-  const rootRef = useRef<Group>(null);
-  const forceUpdate = useForceUpdate();
+  const rootRef = useRef<Group>(null)
+  const forceUpdate = useForceUpdate()
 
   useLayoutEffect(() => {
-    if (!rootRef.current) return;
+    if (!rootRef.current) {
+      return
+    }
 
-    rootRef.current.updateMatrixWorld();
+    rootRef.current.updateMatrixWorld()
 
-    let [textObject, markObject] = rootRef.current.children;
+    let [textObject, markObject] = rootRef.current.children
 
     if (!textObject) {
-      textObject = markObject;
-      markObject = undefined;
+      textObject = markObject
+      markObject = undefined
     }
 
-    if (!textObject) return;
+    if (!textObject) {
+      return
+    }
 
-    alignObject({ modes: ["center", "center", "center"] }, textObject);
+    alignObject({ modes: ['center', 'center', 'center'] }, textObject)
 
-    if (!markObject) return;
+    if (!markObject) {
+      return
+    }
 
-    const textBounds = createBoxFromObject(textObject);
-    const textPivot = textBounds.getSize(new Vector3()).multiplyScalar(0.5);
+    const textBounds = createBoxFromObject(textObject)
+    const textPivot = textBounds.getSize(new Vector3()).multiplyScalar(0.5)
 
     if (isUnderscore) {
-      const offset = textPivot.y + markGap;
+      const offset = textPivot.y + markGap
 
-      alignObject({ modes: ["center", "max", "center"] }, markObject);
+      alignObject({ modes: ['center', 'max', 'center'] }, markObject)
 
-      markObject.position.y -= offset;
+      markObject.position.y -= offset
     } else {
-      const offsetX = textPivot.x + markGap;
-      const offsetY = textPivot.y;
+      const offsetX = textPivot.x + markGap
+      const offsetY = textPivot.y
 
-      alignObject({ modes: ["min", "none", "center"] }, markObject);
+      alignObject({ modes: ['min', 'none', 'center'] }, markObject)
 
-      markObject.position.x += offsetX;
-      markObject.position.y = -offsetY;
+      markObject.position.x += offsetX
+      markObject.position.y = -offsetY
     }
-  });
+  })
 
   return (
     <group ref={rootRef}>
@@ -62,5 +70,5 @@ export const FaceLayout: FC<PropsWithChildren<FaceLayoutProps>> = ({
         {children}
       </FaceLayoutContext.Provider>
     </group>
-  );
-};
+  )
+}

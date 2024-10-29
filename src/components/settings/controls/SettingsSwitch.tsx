@@ -1,11 +1,12 @@
-import { Switch } from "~/shadcn/components/ui/switch";
-import { FC, useId } from "react";
-import { SettingsRow } from "./SettingsRow";
+import type { FC } from 'react'
+import { useId } from 'react'
+import { Switch } from '~/shadcn/components/ui/switch'
+import { SettingsRow } from './SettingsRow'
 
 export interface SettingsSwitchProps {
-  label: string;
-  checked: boolean;
-  onChange: (value: boolean) => void;
+  label: string
+  checked: boolean
+  onChange: (value: boolean) => void
 }
 
 export const SettingsSwitch: FC<SettingsSwitchProps> = ({
@@ -13,7 +14,7 @@ export const SettingsSwitch: FC<SettingsSwitchProps> = ({
   checked,
   onChange,
 }) => {
-  const id = useId();
+  const id = useId()
 
   return (
     <SettingsRow label={label} id={id} wideLabel>
@@ -21,8 +22,8 @@ export const SettingsSwitch: FC<SettingsSwitchProps> = ({
         className="col-span-2 justify-self-end"
         id={id}
         checked={checked}
-        onCheckedChange={(value) => onChange(value)}
+        onCheckedChange={value => onChange(value)}
       />
     </SettingsRow>
-  );
-};
+  )
+}

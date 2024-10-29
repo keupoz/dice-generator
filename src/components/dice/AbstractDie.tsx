@@ -1,53 +1,58 @@
-import { DieFace } from "~/components/dice/DieFace/DieFace";
-import { AlignBottom } from "~/components/three/AlignBottom";
-import { CSG } from "~/components/three/csg/CSG";
-import { BASE_MATERIAL } from "~/materials";
-import { useExportSettings } from "~/stores/ExportSettingsStore";
-import { cad2geometry } from "~/utils/cad2three";
-import { getInstanceFaceInfo } from "~/utils/faces/getInstanceFaceInfo";
-import { getFirstItem } from "~/utils/getFirstItem";
-import { Box } from "@react-three/flex";
-import { FC, useMemo } from "react";
-import { Brush } from "three-bvh-csg";
-import { DieInfo } from "./utils/types";
+import type { FC } from 'react'
+import type { DieInfo } from './utils/types'
+import { Box } from '@react-three/flex'
+import { useMemo } from 'react'
+import { Brush } from 'three-bvh-csg'
+import { DieFace } from '~/components/dice/DieFace/DieFace'
+import { AlignBottom } from '~/components/three/AlignBottom'
+import { CSG } from '~/components/three/csg/CSG'
+import { BASE_MATERIAL } from '~/materials'
+import { useExportSettings } from '~/stores/ExportSettingsStore'
+import { cad2geometry } from '~/utils/cad2three'
+import { getInstanceFaceInfo } from '~/utils/faces/getInstanceFaceInfo'
+import { getFirstItem } from '~/utils/getFirstItem'
 
 export interface AbstractDieProps {
-  info: DieInfo;
+  info: DieInfo
 }
 
 export const AbstractDie: FC<AbstractDieProps> = ({ info }) => {
-  const { visible, size, fontScale, extraOptions } = info.useStore();
+  const { visible, size, fontScale, extraOptions } = info.useStore()
 
   const baseGeom = useMemo(() => {
-    return info.config.base({ size, ...extraOptions });
-  }, [extraOptions, info.config, size]);
+    return info.config.base({ size, ...extraOptions })
+  }, [extraOptions, info.config, size])
 
   const facesGeom = useMemo(() => {
-    return info.config.facesBase?.({ size, ...extraOptions });
-  }, [extraOptions, info.config, size]);
+    return info.config.facesBase?.({ size, ...extraOptions })
+  }, [extraOptions, info.config, size])
 
   const baseBrush = useMemo(() => {
-    return new Brush(cad2geometry(baseGeom), BASE_MATERIAL);
-  }, [baseGeom]);
+    return new Brush(cad2geometry(baseGeom), BASE_MATERIAL)
+  }, [baseGeom])
 
-  const enableAlign = useExportSettings((store) => store.enableAlign);
-  const enableRender = useExportSettings((store) => store.enableRender);
+  const enableAlign = useExportSettings(store => store.enableAlign)
+  const enableRender = useExportSettings(store => store.enableRender)
 
   const alignMatrix = useMemo(() => {
-    if (!enableAlign) return null;
+    if (!enableAlign) {
+      return null
+    }
 
-    const alignFaceConfig = info.config.faces[info.config.alignFaceIndex ?? -1];
+    const alignFaceConfig = info.config.faces[info.config.alignFaceIndex ?? -1]
 
-    if (!alignFaceConfig) return null;
+    if (!alignFaceConfig) {
+      return null
+    }
 
-    const instance = getFirstItem(alignFaceConfig.instances);
+    const instance = getFirstItem(alignFaceConfig.instances)
     const faceInfo = getInstanceFaceInfo(
       facesGeom ?? baseGeom,
       instance,
-      info.config.invertAlignMatrix
-    );
+      info.config.invertAlignMatrix,
+    )
 
-    return faceInfo.rotationMatrix;
+    return faceInfo.rotationMatrix
   }, [
     baseGeom,
     enableAlign,
@@ -55,14 +60,14 @@ export const AbstractDie: FC<AbstractDieProps> = ({ info }) => {
     info.config.alignFaceIndex,
     info.config.faces,
     info.config.invertAlignMatrix,
-  ]);
+  ])
 
   return (
     <Box
       centerAnchor
       padding={15}
       visible={visible}
-      ref={(value) => (info.object = value)}
+      ref={value => (info.object = value)}
     >
       <AlignBottom
         disabled={!enableAlign}
@@ -76,9 +81,9 @@ export const AbstractDie: FC<AbstractDieProps> = ({ info }) => {
                 <primitive object={baseBrush} />
               </group>
 
-              {info.faces.map((info, i) => (
+              {info.faces.map(info => (
                 <DieFace
-                  key={i}
+                  key={info.name}
                   info={info}
                   fontScale={fontScale}
                   geom={facesGeom ?? baseGeom}
@@ -89,5 +94,5 @@ export const AbstractDie: FC<AbstractDieProps> = ({ info }) => {
         </group>
       </AlignBottom>
     </Box>
-  );
-};
+  )
+}

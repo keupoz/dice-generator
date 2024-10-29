@@ -1,21 +1,21 @@
-import { create } from "zustand";
-import {
+import type {
   DieConfig,
   DieInputConfig,
   DieInputValues,
   DieOptionsStore,
-} from "./types";
+} from './types'
+import { create } from 'zustand'
 
 export function createDieStore<T extends Record<string, DieInputConfig>>(
-  config: DieConfig<T>
+  config: DieConfig<T>,
 ) {
   return create<DieOptionsStore<T>>((set) => {
     const extraOptionsValues = Object.fromEntries(
       Object.entries(config.extraOptions).map(([key, value]) => [
         key,
         value.value,
-      ])
-    );
+      ]),
+    )
 
     return {
       visible: true,
@@ -27,8 +27,8 @@ export function createDieStore<T extends Record<string, DieInputConfig>>(
       setExtraOptions(name, value) {
         set(({ extraOptions }) => ({
           extraOptions: { ...extraOptions, [name]: value },
-        }));
+        }))
       },
-    };
-  });
+    }
+  })
 }

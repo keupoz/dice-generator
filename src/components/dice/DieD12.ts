@@ -1,15 +1,15 @@
-import { dodecahedron } from "~/utils/shapes/dodecahedron";
-import { createDie } from "./utils/createDie";
+import { dodecahedron } from '~/utils/shapes/dodecahedron'
+import { createDie } from './utils/createDie'
 
 export const DieD12 = createDie({
-  name: "d12",
+  name: 'd12',
   defaultSize: 16,
   defaultFontScale: 0.6,
   alignFaceIndex: 0,
   invertAlignMatrix: true,
   extraOptions: {},
   base({ size }) {
-    return dodecahedron(size / 2);
+    return dodecahedron(size / 2)
   },
   faces: [
     // Face 1
@@ -18,8 +18,8 @@ export const DieD12 = createDie({
         {
           faceIndex: 8,
           polygonCenter: true,
-          from: { type: "vertex", index: 2 },
-          to: { type: "edge", index: 0 },
+          from: { type: 'vertex', index: 2 },
+          to: { type: 'edge', index: 0 },
         },
       ],
     },
@@ -30,8 +30,8 @@ export const DieD12 = createDie({
         {
           faceIndex: 7,
           polygonCenter: true,
-          from: { type: "vertex", index: 2 },
-          to: { type: "edge", index: 0 },
+          from: { type: 'vertex', index: 2 },
+          to: { type: 'edge', index: 0 },
         },
       ],
     },
@@ -42,8 +42,8 @@ export const DieD12 = createDie({
         {
           faceIndex: 4,
           polygonCenter: true,
-          from: { type: "vertex", index: 4 },
-          to: { type: "edge", index: 2 },
+          from: { type: 'vertex', index: 4 },
+          to: { type: 'edge', index: 2 },
         },
       ],
     },
@@ -54,8 +54,8 @@ export const DieD12 = createDie({
         {
           faceIndex: 6,
           polygonCenter: true,
-          from: { type: "vertex", index: 3 },
-          to: { type: "edge", index: 1 },
+          from: { type: 'vertex', index: 3 },
+          to: { type: 'edge', index: 1 },
         },
       ],
     },
@@ -66,8 +66,8 @@ export const DieD12 = createDie({
         {
           faceIndex: 2,
           polygonCenter: true,
-          from: { type: "vertex", index: 1 },
-          to: { type: "edge", index: 4 },
+          from: { type: 'vertex', index: 1 },
+          to: { type: 'edge', index: 4 },
         },
       ],
     },
@@ -78,8 +78,8 @@ export const DieD12 = createDie({
         {
           faceIndex: 5,
           polygonCenter: true,
-          from: { type: "vertex", index: 0 },
-          to: { type: "edge", index: 3 },
+          from: { type: 'vertex', index: 0 },
+          to: { type: 'edge', index: 3 },
         },
       ],
     },
@@ -90,8 +90,8 @@ export const DieD12 = createDie({
         {
           faceIndex: 10,
           polygonCenter: true,
-          from: { type: "vertex", index: 3 },
-          to: { type: "edge", index: 1 },
+          from: { type: 'vertex', index: 3 },
+          to: { type: 'edge', index: 1 },
         },
       ],
     },
@@ -102,8 +102,8 @@ export const DieD12 = createDie({
         {
           faceIndex: 11,
           polygonCenter: true,
-          from: { type: "vertex", index: 2 },
-          to: { type: "edge", index: 0 },
+          from: { type: 'vertex', index: 2 },
+          to: { type: 'edge', index: 0 },
         },
       ],
     },
@@ -114,8 +114,8 @@ export const DieD12 = createDie({
         {
           faceIndex: 1,
           polygonCenter: true,
-          from: { type: "vertex", index: 0 },
-          to: { type: "edge", index: 3 },
+          from: { type: 'vertex', index: 0 },
+          to: { type: 'edge', index: 3 },
         },
       ],
     },
@@ -126,8 +126,8 @@ export const DieD12 = createDie({
         {
           faceIndex: 0,
           polygonCenter: true,
-          from: { type: "vertex", index: 4 },
-          to: { type: "edge", index: 2 },
+          from: { type: 'vertex', index: 4 },
+          to: { type: 'edge', index: 2 },
         },
       ],
     },
@@ -138,8 +138,8 @@ export const DieD12 = createDie({
         {
           faceIndex: 3,
           polygonCenter: true,
-          from: { type: "vertex", index: 1 },
-          to: { type: "edge", index: 4 },
+          from: { type: 'vertex', index: 1 },
+          to: { type: 'edge', index: 4 },
         },
       ],
     },
@@ -150,10 +150,10 @@ export const DieD12 = createDie({
         {
           faceIndex: 9,
           polygonCenter: true,
-          from: { type: "vertex", index: 1 },
-          to: { type: "edge", index: 4 },
+          from: { type: 'vertex', index: 1 },
+          to: { type: 'edge', index: 4 },
         },
       ],
     },
   ],
-});
+})

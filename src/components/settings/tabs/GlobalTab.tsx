@@ -1,35 +1,35 @@
-import { AVAILABLE_EVALUATORS } from "~/components/three/csg/availableEvaluators";
-import { AVAILABLE_OPERATIONS } from "~/components/three/csg/availableOperations";
-import { Button } from "~/shadcn/components/ui/button";
-import { Separator } from "~/shadcn/components/ui/separator";
+import type { FC } from 'react'
+import { useAtom } from 'jotai'
+import { AVAILABLE_EVALUATORS } from '~/components/three/csg/availableEvaluators'
+import { AVAILABLE_OPERATIONS } from '~/components/three/csg/availableOperations'
+import { Button } from '~/shadcn/components/ui/button'
+import { Separator } from '~/shadcn/components/ui/separator'
 import {
   getExportObject,
   useExportSettings,
-} from "~/stores/ExportSettingsStore";
+} from '~/stores/ExportSettingsStore'
 import {
   baseOpacityAtom,
   enableWireframeAtom,
   showGridAtom,
   smoothCameraAtom,
-} from "~/stores/SceneSettingsStore";
-import { exportObject } from "~/utils/exportObject";
-import { useAtom } from "jotai";
-import { FC } from "react";
-import { SettingsTabContent } from "../SettingsTabContent";
-import { SettingsSelect } from "../controls/SettingsSelect";
-import { SettingsSlider } from "../controls/SettingsSlider";
-import { SettingsSwitch } from "../controls/SettingsSwitch";
+} from '~/stores/SceneSettingsStore'
+import { exportObject } from '~/utils/exportObject'
+import { SettingsSelect } from '../controls/SettingsSelect'
+import { SettingsSlider } from '../controls/SettingsSlider'
+import { SettingsSwitch } from '../controls/SettingsSwitch'
+import { SettingsTabContent } from '../SettingsTabContent'
 
 export const GlobalTab: FC = () => {
-  const [showGrid, setShowGrid] = useAtom(showGridAtom);
-  const [smoothCamera, setSmoothCamera] = useAtom(smoothCameraAtom);
-  const [baseOpacity, setBaseOpacity] = useAtom(baseOpacityAtom);
-  const [enableWireframe, setEnableWireframe] = useAtom(enableWireframeAtom);
+  const [showGrid, setShowGrid] = useAtom(showGridAtom)
+  const [smoothCamera, setSmoothCamera] = useAtom(smoothCameraAtom)
+  const [baseOpacity, setBaseOpacity] = useAtom(baseOpacityAtom)
+  const [enableWireframe, setEnableWireframe] = useAtom(enableWireframeAtom)
 
-  const exportSettings = useExportSettings();
+  const exportSettings = useExportSettings()
 
   function handleExport() {
-    exportObject(getExportObject());
+    exportObject(getExportObject())
   }
 
   return (
@@ -66,35 +66,32 @@ export const GlobalTab: FC = () => {
       <SettingsSwitch
         label="Enable align"
         checked={exportSettings.enableAlign}
-        onChange={(enableAlign) => useExportSettings.setState({ enableAlign })}
+        onChange={enableAlign => useExportSettings.setState({ enableAlign })}
       />
 
       <SettingsSwitch
         label="Enable render"
         checked={exportSettings.enableRender}
-        onChange={(enableRender) =>
-          useExportSettings.setState({ enableRender })
-        }
+        onChange={enableRender =>
+          useExportSettings.setState({ enableRender })}
       />
 
       <SettingsSelect
         label="Render operation"
         options={Object.keys(AVAILABLE_OPERATIONS)}
         value={exportSettings.renderOperation}
-        onChange={(renderOperation) =>
-          useExportSettings.setState({ renderOperation })
-        }
+        onChange={renderOperation =>
+          useExportSettings.setState({ renderOperation })}
       />
       <SettingsSelect
         label="Render method"
         options={Object.keys(AVAILABLE_EVALUATORS)}
         value={exportSettings.renderMethod}
-        onChange={(renderMethod) =>
-          useExportSettings.setState({ renderMethod })
-        }
+        onChange={renderMethod =>
+          useExportSettings.setState({ renderMethod })}
       />
 
       <Button onClick={handleExport}>Export STL</Button>
     </SettingsTabContent>
-  );
-};
+  )
+}

@@ -1,12 +1,12 @@
-import { cube } from "@jscad/modeling/src/primitives";
-import { createDie } from "./utils/createDie";
+import { cube } from '@jscad/modeling/src/primitives'
+import { createDie } from './utils/createDie'
 
 export const DieD6 = createDie({
-  name: "d6",
+  name: 'd6',
   defaultSize: 16,
   extraOptions: {},
   base({ size }) {
-    return cube({ size });
+    return cube({ size })
   },
   faces: [
     // Face 1
@@ -14,8 +14,8 @@ export const DieD6 = createDie({
       instances: [
         {
           faceIndex: 5,
-          from: { type: "edge", index: 3 },
-          to: { type: "edge", index: 1 },
+          from: { type: 'edge', index: 3 },
+          to: { type: 'edge', index: 1 },
         },
       ],
     },
@@ -25,8 +25,8 @@ export const DieD6 = createDie({
       instances: [
         {
           faceIndex: 2,
-          from: { type: "edge", index: 0 },
-          to: { type: "edge", index: 2 },
+          from: { type: 'edge', index: 0 },
+          to: { type: 'edge', index: 2 },
         },
       ],
     },
@@ -36,8 +36,8 @@ export const DieD6 = createDie({
       instances: [
         {
           faceIndex: 1,
-          from: { type: "edge", index: 1 },
-          to: { type: "edge", index: 3 },
+          from: { type: 'edge', index: 1 },
+          to: { type: 'edge', index: 3 },
         },
       ],
     },
@@ -47,8 +47,8 @@ export const DieD6 = createDie({
       instances: [
         {
           faceIndex: 0,
-          from: { type: "edge", index: 1 },
-          to: { type: "edge", index: 3 },
+          from: { type: 'edge', index: 1 },
+          to: { type: 'edge', index: 3 },
         },
       ],
     },
@@ -58,8 +58,8 @@ export const DieD6 = createDie({
       instances: [
         {
           faceIndex: 3,
-          from: { type: "edge", index: 2 },
-          to: { type: "edge", index: 0 },
+          from: { type: 'edge', index: 2 },
+          to: { type: 'edge', index: 0 },
         },
       ],
     },
@@ -69,10 +69,10 @@ export const DieD6 = createDie({
       instances: [
         {
           faceIndex: 4,
-          from: { type: "edge", index: 3 },
-          to: { type: "edge", index: 1 },
+          from: { type: 'edge', index: 3 },
+          to: { type: 'edge', index: 1 },
         },
       ],
     },
   ],
-});
+})

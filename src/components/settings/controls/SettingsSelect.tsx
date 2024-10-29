@@ -1,18 +1,19 @@
+import type { FC } from 'react'
+import { useId } from 'react'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "~/shadcn/components/ui/select";
-import { FC, useId } from "react";
-import { SettingsRow } from "./SettingsRow";
+} from '~/shadcn/components/ui/select'
+import { SettingsRow } from './SettingsRow'
 
 export interface SettingsSelectProps {
-  label: string;
-  options: string[];
-  value: string;
-  onChange: (value: string) => void;
+  label: string
+  options: string[]
+  value: string
+  onChange: (value: string) => void
 }
 
 export const SettingsSelect: FC<SettingsSelectProps> = ({
@@ -21,7 +22,7 @@ export const SettingsSelect: FC<SettingsSelectProps> = ({
   value,
   onChange,
 }) => {
-  const id = useId();
+  const id = useId()
 
   return (
     <SettingsRow label={label} id={id}>
@@ -31,13 +32,13 @@ export const SettingsSelect: FC<SettingsSelectProps> = ({
         </SelectTrigger>
 
         <SelectContent>
-          {options.map((item, i) => (
-            <SelectItem key={i} value={item}>
+          {options.map(item => (
+            <SelectItem key={item} value={item}>
               {item}
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
     </SettingsRow>
-  );
-};
+  )
+}

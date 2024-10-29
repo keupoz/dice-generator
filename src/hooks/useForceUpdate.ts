@@ -1,21 +1,21 @@
-import { createContext, useContext, useLayoutEffect, useReducer } from "react";
+import { createContext, useContext, useLayoutEffect, useReducer } from 'react'
 
 export function useForceUpdate() {
-  const [, forceUpdate] = useReducer((x) => x + 1, 0);
+  const [, forceUpdate] = useReducer(x => x + 1, 0)
 
-  return forceUpdate;
+  return forceUpdate
 }
 
 export function createForceUpdateContext() {
-  const context = createContext(() => {});
+  const context = createContext(() => {})
 
   function useUpdateContext() {
-    const updateCSG = useContext(context);
+    const updateCSG = useContext(context)
 
     useLayoutEffect(() => {
-      updateCSG();
-    });
+      updateCSG()
+    })
   }
 
-  return [context, useUpdateContext] as const;
+  return [context, useUpdateContext] as const
 }

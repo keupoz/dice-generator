@@ -1,18 +1,18 @@
-import { polyhedron } from "@jscad/modeling/src/primitives";
-import { createDie } from "./utils/createDie";
+import { polyhedron } from '@jscad/modeling/src/primitives'
+import { createDie } from './utils/createDie'
 
 export const DieD4 = createDie({
-  name: "d4",
+  name: 'd4',
   defaultSize: 16,
   defaultFontScale: 0.5,
   extraOptions: {},
   base({ size }) {
-    const r = (size * Math.sqrt(3)) / 3; // base radius
-    const s = size;
-    const h = (size * Math.sqrt(6)) / 3; // pyramid height
+    const r = (size * Math.sqrt(3)) / 3 // base radius
+    const s = size
+    const h = (size * Math.sqrt(6)) / 3 // pyramid height
 
-    const x = s / 2;
-    const y = -r / 2;
+    const x = s / 2
+    const y = -r / 2
 
     return polyhedron({
       points: [
@@ -38,8 +38,8 @@ export const DieD4 = createDie({
         [1, 3, 2],
       ],
 
-      orientation: "inward",
-    });
+      orientation: 'inward',
+    })
   },
   faces: [
     // Face 1
@@ -47,18 +47,18 @@ export const DieD4 = createDie({
       instances: [
         {
           faceIndex: 3,
-          from: { type: "vertex", index: 1 },
-          to: { type: "center" },
+          from: { type: 'vertex', index: 1 },
+          to: { type: 'center' },
         },
         {
           faceIndex: 1,
-          from: { type: "vertex", index: 1 },
-          to: { type: "center" },
+          from: { type: 'vertex', index: 1 },
+          to: { type: 'center' },
         },
         {
           faceIndex: 2,
-          from: { type: "vertex", index: 0 },
-          to: { type: "center" },
+          from: { type: 'vertex', index: 0 },
+          to: { type: 'center' },
         },
       ],
     },
@@ -68,18 +68,18 @@ export const DieD4 = createDie({
       instances: [
         {
           faceIndex: 3,
-          from: { type: "vertex", index: 0 },
-          to: { type: "center" },
+          from: { type: 'vertex', index: 0 },
+          to: { type: 'center' },
         },
         {
           faceIndex: 0,
-          from: { type: "vertex", index: 0 },
-          to: { type: "center" },
+          from: { type: 'vertex', index: 0 },
+          to: { type: 'center' },
         },
         {
           faceIndex: 2,
-          from: { type: "vertex", index: 1 },
-          to: { type: "center" },
+          from: { type: 'vertex', index: 1 },
+          to: { type: 'center' },
         },
       ],
     },
@@ -89,18 +89,18 @@ export const DieD4 = createDie({
       instances: [
         {
           faceIndex: 3,
-          from: { type: "vertex", index: 2 },
-          to: { type: "center" },
+          from: { type: 'vertex', index: 2 },
+          to: { type: 'center' },
         },
         {
           faceIndex: 1,
-          from: { type: "vertex", index: 0 },
-          to: { type: "center" },
+          from: { type: 'vertex', index: 0 },
+          to: { type: 'center' },
         },
         {
           faceIndex: 0,
-          from: { type: "vertex", index: 1 },
-          to: { type: "center" },
+          from: { type: 'vertex', index: 1 },
+          to: { type: 'center' },
         },
       ],
     },
@@ -110,20 +110,20 @@ export const DieD4 = createDie({
       instances: [
         {
           faceIndex: 0,
-          from: { type: "vertex", index: 2 },
-          to: { type: "center" },
+          from: { type: 'vertex', index: 2 },
+          to: { type: 'center' },
         },
         {
           faceIndex: 1,
-          from: { type: "vertex", index: 2 },
-          to: { type: "center" },
+          from: { type: 'vertex', index: 2 },
+          to: { type: 'center' },
         },
         {
           faceIndex: 2,
-          from: { type: "vertex", index: 2 },
-          to: { type: "center" },
+          from: { type: 'vertex', index: 2 },
+          to: { type: 'center' },
         },
       ],
     },
   ],
-});
+})

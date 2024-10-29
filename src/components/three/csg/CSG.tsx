@@ -1,15 +1,17 @@
-import "./extendR3F";
+import type { FC, PropsWithChildren } from 'react'
+import type { Group } from 'three'
 
-import { useForceUpdate } from "~/hooks/useForceUpdate";
-import { useExportSettings } from "~/stores/ExportSettingsStore";
-import { FC, PropsWithChildren, useLayoutEffect, useRef } from "react";
-import { Group, Mesh } from "three";
-import { CSGContext } from "./CSGContext";
-import { getEvaluator } from "./availableEvaluators";
-import { getOperation } from "./availableOperations";
+import { useLayoutEffect, useRef } from 'react'
+import { Mesh } from 'three'
+import { useForceUpdate } from '~/hooks/useForceUpdate'
+import { useExportSettings } from '~/stores/ExportSettingsStore'
+import { getEvaluator } from './availableEvaluators'
+import { getOperation } from './availableOperations'
+import { CSGContext } from './CSGContext'
+import './extendR3F'
 
 export interface CSGProps {
-  disabled?: boolean;
+  disabled?: boolean
 }
 
 /** Adapted from https://github.com/pmndrs/react-three-csg/blob/7b6d31616085476975f6592ff424948acb5bfcd4/src/index.tsx#L81 */
@@ -17,32 +19,36 @@ export const CSG: FC<PropsWithChildren<CSGProps>> = ({
   disabled,
   children,
 }) => {
-  const rootRef = useRef<Group>(null);
-  const outputRef = useRef<Mesh>(null);
+  const rootRef = useRef<Group>(null)
+  const outputRef = useRef<Mesh>(null)
 
-  const forceUpdate = useForceUpdate();
+  const forceUpdate = useForceUpdate()
 
-  const renderOperation = useExportSettings((store) => store.renderOperation);
-  const renderMethod = useExportSettings((store) => store.renderMethod);
+  const renderOperation = useExportSettings(store => store.renderOperation)
+  const renderMethod = useExportSettings(store => store.renderMethod)
 
-  const operation = getOperation(renderOperation);
+  const operation = getOperation(renderOperation)
 
   function update() {
-    if (!outputRef.current) return;
+    if (!outputRef.current) {
+      return
+    }
 
     if (disabled || !rootRef.current) {
-      outputRef.current.copy(new Mesh());
+      outputRef.current.copy(new Mesh())
     } else {
-      const evaluate = getEvaluator(renderMethod);
-      const result = evaluate(rootRef.current, operation);
+      const evaluate = getEvaluator(renderMethod)
+      const result = evaluate(rootRef.current, operation)
 
-      if (result) outputRef.current.copy(result);
+      if (result) {
+        outputRef.current.copy(result)
+      }
     }
   }
 
   useLayoutEffect(() => {
-    update();
-  });
+    update()
+  })
 
   return (
     <>
@@ -54,5 +60,5 @@ export const CSG: FC<PropsWithChildren<CSGProps>> = ({
 
       <mesh ref={outputRef} raycast={() => null} />
     </>
-  );
-};
+  )
+}

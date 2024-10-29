@@ -1,7 +1,7 @@
-import { defineScaledPolyhedron } from "./defineScaledPolyhedron";
+import { defineScaledPolyhedron } from './defineScaledPolyhedron'
 
 // http://dmccooey.com/polyhedra/Icosahedron.html
-const C0 = (1 + Math.sqrt(5)) / 4;
+const C0 = (1 + Math.sqrt(5)) / 4
 
 export const icosahedron = defineScaledPolyhedron({
   points: [
@@ -40,4 +40,4 @@ export const icosahedron = defineScaledPolyhedron({
     [8, 9, 6],
     [8, 6, 2],
   ],
-});
+})

@@ -1,19 +1,19 @@
-import { polyhedron } from "@jscad/modeling/src/primitives";
-import { createDie } from "./utils/createDie";
+import { polyhedron } from '@jscad/modeling/src/primitives'
+import { createDie } from './utils/createDie'
 
-const t = 2 / 3;
+const t = 2 / 3
 
 export const DieD4P = createDie({
-  name: "d4p",
+  name: 'd4p',
   defaultSize: 14,
   alignFaceIndex: 0,
   extraOptions: {
-    length1: { value: 20, min: 1, max: 40, step: 1, label: "Body length" },
-    length2: { value: 6, min: 1, max: 40, step: 1, label: "Point length" },
+    length1: { value: 20, min: 1, max: 40, step: 1, label: 'Body length' },
+    length2: { value: 6, min: 1, max: 40, step: 1, label: 'Point length' },
   },
   base({ size, length1, length2 }) {
-    const center = size / 2;
-    const y = (length1 - length2) / 2;
+    const center = size / 2
+    const y = (length1 - length2) / 2
 
     return polyhedron({
       points: [
@@ -52,8 +52,8 @@ export const DieD4P = createDie({
         [1, 2, 4],
       ],
 
-      orientation: "inward",
-    });
+      orientation: 'inward',
+    })
   },
   faces: [
     // Face 1
@@ -61,8 +61,8 @@ export const DieD4P = createDie({
       instances: [
         {
           faceIndex: 2,
-          from: { type: "edge", index: 1 },
-          to: { type: "center" },
+          from: { type: 'edge', index: 1 },
+          to: { type: 'center' },
           t,
         },
       ],
@@ -73,8 +73,8 @@ export const DieD4P = createDie({
       instances: [
         {
           faceIndex: 3,
-          from: { type: "edge", index: 1 },
-          to: { type: "center" },
+          from: { type: 'edge', index: 1 },
+          to: { type: 'center' },
           t,
         },
       ],
@@ -85,8 +85,8 @@ export const DieD4P = createDie({
       instances: [
         {
           faceIndex: 1,
-          from: { type: "edge", index: 1 },
-          to: { type: "center" },
+          from: { type: 'edge', index: 1 },
+          to: { type: 'center' },
           t,
         },
       ],
@@ -97,11 +97,11 @@ export const DieD4P = createDie({
       instances: [
         {
           faceIndex: 0,
-          from: { type: "edge", index: 1 },
-          to: { type: "center" },
+          from: { type: 'edge', index: 1 },
+          to: { type: 'center' },
           t,
         },
       ],
     },
   ],
-});
+})

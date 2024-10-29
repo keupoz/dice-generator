@@ -1,79 +1,89 @@
-import { cad2geometry } from "~/utils/cad2three";
-import { mesh2cad } from "~/utils/three2cad";
-import { subtract, union } from "@jscad/modeling/src/operations/booleans";
-import { Mesh, Object3D } from "three";
-import { ADDITION, Brush, CSGOperation, Evaluator } from "three-bvh-csg";
+import type { Object3D } from 'three'
+import type { CSGOperation } from 'three-bvh-csg'
+import { subtract, union } from '@jscad/modeling/src/operations/booleans'
+import { Mesh } from 'three'
+import { ADDITION, Brush, Evaluator } from 'three-bvh-csg'
+import { cad2geometry } from '~/utils/cad2three'
+import { mesh2cad } from '~/utils/three2cad'
 
-const evaluator = new Evaluator();
-evaluator.attributes = ["position", "normal"];
+const evaluator = new Evaluator()
+evaluator.attributes = ['position', 'normal']
 
 export function evaluateWithBVH(object: Object3D, operation: CSGOperation) {
   return processBrushes(object, (brushes) => {
-    let result = brushes[0];
+    let result = brushes[0]
 
-    if (!result) return null;
-
-    for (let i = 1; i < brushes.length; i++) {
-      const brush = brushes[i];
-
-      if (!brush) continue;
-
-      result = evaluator.evaluate(result, brush, operation);
+    if (!result) {
+      return null
     }
 
-    return result;
-  });
+    for (let i = 1; i < brushes.length; i++) {
+      const brush = brushes[i]
+
+      if (!brush) {
+        continue
+      }
+
+      result = evaluator.evaluate(result, brush, operation)
+    }
+
+    return result
+  })
 }
 
 export function evaluateWithCad(object: Object3D, operation: CSGOperation) {
   return processBrushes(object, (brushes) => {
-    const baseBrush = brushes[0];
+    const baseBrush = brushes[0]
 
-    if (!baseBrush) return null;
+    if (!baseBrush) {
+      return null
+    }
 
-    let result = mesh2cad(baseBrush);
+    let result = mesh2cad(baseBrush)
 
     for (let i = 1; i < brushes.length; i++) {
-      const brush = brushes[i];
+      const brush = brushes[i]
 
-      if (!brush) continue;
+      if (!brush) {
+        continue
+      }
 
-      const cad = mesh2cad(brush);
+      const cad = mesh2cad(brush)
 
       if (operation === ADDITION) {
-        result = union(result, cad);
+        result = union(result, cad)
       } else {
-        result = subtract(result, cad);
+        result = subtract(result, cad)
       }
     }
 
-    const geometry = cad2geometry(result);
-    const mesh = new Mesh(geometry, baseBrush.material);
+    const geometry = cad2geometry(result)
+    const mesh = new Mesh(geometry, baseBrush.material)
 
-    return mesh;
-  });
+    return mesh
+  })
 }
 
 function processBrushes(
   object: Object3D,
-  callback: (brushes: Brush[]) => Mesh | null
+  callback: (brushes: Brush[]) => Mesh | null,
 ) {
-  const parent = object.parent;
+  const parent = object.parent
 
-  object.removeFromParent();
-  object.updateMatrixWorld(true);
+  object.removeFromParent()
+  object.updateMatrixWorld(true)
 
-  const brushes: Brush[] = [];
+  const brushes: Brush[] = []
 
   object.traverse((child) => {
     if (child.visible && child instanceof Brush) {
-      brushes.push(child);
+      brushes.push(child)
     }
-  });
+  })
 
-  const result = callback(brushes);
+  const result = callback(brushes)
 
-  parent?.add(object);
+  parent?.add(object)
 
-  return result;
+  return result
 }

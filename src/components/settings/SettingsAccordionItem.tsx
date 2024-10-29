@@ -1,12 +1,12 @@
+import type { FC, PropsWithChildren } from 'react'
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "~/shadcn/components/ui/accordion";
-import { FC, PropsWithChildren } from "react";
+} from '~/shadcn/components/ui/accordion'
 
 export interface SettingsAccordionItemProps {
-  name: string;
+  name: string
 }
 
 export const SettingsAccordionItem: FC<
@@ -19,5 +19,5 @@ export const SettingsAccordionItem: FC<
         {children}
       </AccordionContent>
     </AccordionItem>
-  );
-};
+  )
+}

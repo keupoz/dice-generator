@@ -1,6 +1,6 @@
-import { octahedron } from "~/utils/shapes/octahedron";
-import { createDie } from "./utils/createDie";
-import { DieFaceConfig } from "./utils/types";
+import type { DieFaceConfig } from './utils/types'
+import { octahedron } from '~/utils/shapes/octahedron'
+import { createDie } from './utils/createDie'
 
 function createFaceConfig(index: number): DieFaceConfig {
   return {
@@ -8,22 +8,22 @@ function createFaceConfig(index: number): DieFaceConfig {
       {
         faceIndex: index,
         polygonCenter: true,
-        from: { type: "vertex", index: 0 },
-        to: { type: "edge", index: 2 },
+        from: { type: 'vertex', index: 0 },
+        to: { type: 'edge', index: 2 },
       },
     ],
-  };
+  }
 }
 
 export const DieD8 = createDie({
-  name: "d8",
+  name: 'd8',
   defaultSize: 16,
   defaultFontScale: 0.6,
   alignFaceIndex: 0,
   invertAlignMatrix: true,
   extraOptions: {},
   base({ size }) {
-    return octahedron(size / 2);
+    return octahedron(size / 2)
   },
   faces: [
     createFaceConfig(0),
@@ -35,4 +35,4 @@ export const DieD8 = createDie({
     createFaceConfig(1),
     createFaceConfig(5),
   ],
-});
+})

@@ -1,8 +1,9 @@
 {
   "name": "dice-generator",
-  "private": true,
-  "version": "0.0.0",
   "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@9.12.3",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -69,6 +70,5 @@
     "tailwindcss": "^3.4.1",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
-  },
-  "packageManager": "pnpm@9.12.3"
+  }
 }

@@ -1,39 +1,44 @@
-import { MutedText } from "~/shadcn/components/typography/muted-text";
-import { Button } from "~/shadcn/components/ui/button";
-import { Card, CardContent, CardFooter } from "~/shadcn/components/ui/card";
-import { Separator } from "~/shadcn/components/ui/separator";
-import { SVGInfo, useFontsStore } from "~/stores/FontSettingsStore";
-import { TrashIcon } from "@radix-ui/react-icons";
-import prettyBytes from "pretty-bytes";
-import { FC, memo } from "react";
-import { SettingsSwitch } from "../controls/SettingsSwitch";
+import type { FC } from 'react'
+import { TrashIcon } from '@radix-ui/react-icons'
+import prettyBytes from 'pretty-bytes'
+import { memo } from 'react'
+import { MutedText } from '~/shadcn/components/typography/muted-text'
+import { Button } from '~/shadcn/components/ui/button'
+import { Card, CardContent, CardFooter } from '~/shadcn/components/ui/card'
+import { Separator } from '~/shadcn/components/ui/separator'
+import type { SVGInfo } from '~/stores/FontSettingsStore'
+import { useFontsStore } from '~/stores/FontSettingsStore'
+import { SettingsSwitch } from '../controls/SettingsSwitch'
 
 export interface SVGCardProps {
-  info: SVGInfo;
+  info: SVGInfo
 }
 
 export const SVGCard: FC<SVGCardProps> = memo(({ info }) => {
-  const lastModified = new Date(info.lastModified).toLocaleString();
+  const lastModified = new Date(info.lastModified).toLocaleString()
 
   function handleDelete() {
-    useFontsStore.setState((prev) => ({
-      svgs: prev.svgs.filter((svg) => svg.id !== info.id),
-    }));
+    useFontsStore.setState(prev => ({
+      svgs: prev.svgs.filter(svg => svg.id !== info.id),
+    }))
   }
 
   function handleScaleToggle(value: boolean) {
-    useFontsStore.setState((prev) => ({
+    useFontsStore.setState(prev => ({
       svgs: prev.svgs.map((svg) => {
-        if (svg.id !== info.id) return svg;
+        if (svg.id !== info.id) {
+          return svg
+        }
 
-        return { ...info, scaleByViewbox: value };
+        return { ...info, scaleByViewbox: value }
       }),
-    }));
+    }))
   }
 
   return (
     <Card>
       <CardContent className="flex gap-4 p-4">
+        {/* eslint-disable-next-line react-dom/no-dangerously-set-innerhtml */}
         <div
           className="bg-checker rounded-sm shrink-0 size-16 [&>*]:size-full"
           dangerouslySetInnerHTML={{
@@ -76,5 +81,5 @@ export const SVGCard: FC<SVGCardProps> = memo(({ info }) => {
         </MutedText>
       </CardFooter>
     </Card>
-  );
-});
+  )
+})

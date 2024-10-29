@@ -1,10 +1,11 @@
-import { getAlignment } from "~/utils/alignObject";
-import { FC, PropsWithChildren, useLayoutEffect, useRef } from "react";
-import { Group, Object3D } from "three";
+import type { FC, PropsWithChildren } from 'react'
+import type { Group, Object3D } from 'three'
+import { useLayoutEffect, useRef } from 'react'
+import { getAlignment } from '~/utils/alignObject'
 
 export interface AlignBottomProps {
-  disabled?: boolean;
-  alignBy?: Object3D | null;
+  disabled?: boolean
+  alignBy?: Object3D | null
 }
 
 export const AlignBottom: FC<PropsWithChildren<AlignBottomProps>> = ({
@@ -12,25 +13,27 @@ export const AlignBottom: FC<PropsWithChildren<AlignBottomProps>> = ({
   alignBy,
   children,
 }) => {
-  const rootRef = useRef<Group>(null);
+  const rootRef = useRef<Group>(null)
 
   useLayoutEffect(() => {
-    if (!rootRef.current) return;
+    if (!rootRef.current) {
+      return
+    }
 
-    rootRef.current.position.set(0, 0, 0);
+    rootRef.current.position.set(0, 0, 0)
 
     if (!disabled) {
-      rootRef.current.updateMatrixWorld();
+      rootRef.current.updateMatrixWorld()
 
-      const target = alignBy ?? rootRef.current;
+      const target = alignBy ?? rootRef.current
       const alignment = getAlignment(
-        { modes: ["none", "min", "none"] },
-        target
-      );
+        { modes: ['none', 'min', 'none'] },
+        target,
+      )
 
-      rootRef.current.position.add(alignment);
+      rootRef.current.position.add(alignment)
     }
-  });
+  })
 
-  return <group ref={rootRef}>{children}</group>;
-};
+  return <group ref={rootRef}>{children}</group>
+}

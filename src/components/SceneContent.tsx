@@ -1,66 +1,67 @@
-import { CAMERA_POSITION } from "~/consts";
-import { useHighlight } from "~/hooks/useHighlight";
-import { BASE_MATERIAL, FONT_MATERIAL } from "~/materials";
-import { useTheme } from "~/shadcn/components/theme-provider";
-import { setExportObject } from "~/stores/ExportSettingsStore";
+import type { ThreeEvent } from '@react-three/fiber'
+import type { FC } from 'react'
+import { CameraControls, Grid, PerspectiveCamera } from '@react-three/drei'
+import { Box, Flex } from '@react-three/flex'
+import { useAtom } from 'jotai'
+import { memo, useLayoutEffect } from 'react'
+import { DoubleSide } from 'three'
+import { CAMERA_POSITION } from '~/consts'
+import { useHighlight } from '~/hooks/useHighlight'
+import { BASE_MATERIAL, FONT_MATERIAL } from '~/materials'
+import { useTheme } from '~/shadcn/components/theme-provider'
+import { setExportObject } from '~/stores/ExportSettingsStore'
 import {
   baseOpacityAtom,
   enableWireframeAtom,
   showGridAtom,
   smoothCameraAtom,
-} from "~/stores/SceneSettingsStore";
+} from '~/stores/SceneSettingsStore'
 import {
   focusObject,
   resetFocus,
   setCameraControls,
-} from "~/utils/focusObject";
-import { getFirstItem } from "~/utils/getFirstItem";
-import { CameraControls, Grid, PerspectiveCamera } from "@react-three/drei";
-import { ThreeEvent } from "@react-three/fiber";
-import { Box, Flex } from "@react-three/flex";
-import { useAtom } from "jotai";
-import { FC, memo, useLayoutEffect } from "react";
-import { DoubleSide } from "three";
-import { DieD10, DieD100 } from "./dice/DieD10";
-import { DieD12 } from "./dice/DieD12";
-import { DieD12R } from "./dice/DieD12R";
-import { DieD2 } from "./dice/DieD2";
-import { DieD20 } from "./dice/DieD20";
-import { DieD3 } from "./dice/DieD3";
-import { DieD4 } from "./dice/DieD4";
-import { DieD4C } from "./dice/DieD4C";
-import { DieD4I } from "./dice/DieD4I";
-import { DieD4P } from "./dice/DieD4P";
-import { DieD6 } from "./dice/DieD6";
-import { DieD8 } from "./dice/DieD8";
+} from '~/utils/focusObject'
+import { getFirstItem } from '~/utils/getFirstItem'
+import { DieD2 } from './dice/DieD2'
+import { DieD3 } from './dice/DieD3'
+import { DieD4 } from './dice/DieD4'
+import { DieD4C } from './dice/DieD4C'
+import { DieD4I } from './dice/DieD4I'
+import { DieD4P } from './dice/DieD4P'
+import { DieD6 } from './dice/DieD6'
+import { DieD8 } from './dice/DieD8'
+import { DieD10, DieD100 } from './dice/DieD10'
+import { DieD12 } from './dice/DieD12'
+import { DieD12R } from './dice/DieD12R'
+import { DieD20 } from './dice/DieD20'
 
 export const SceneContent: FC = memo(() => {
-  const [showGrid] = useAtom(showGridAtom);
-  const [smoothCamera] = useAtom(smoothCameraAtom);
-  const [baseOpacity] = useAtom(baseOpacityAtom);
-  const [enableWireframe] = useAtom(enableWireframeAtom);
+  const [showGrid] = useAtom(showGridAtom)
+  const [smoothCamera] = useAtom(smoothCameraAtom)
+  const [baseOpacity] = useAtom(baseOpacityAtom)
+  const [enableWireframe] = useAtom(enableWireframeAtom)
 
-  const { isDark } = useTheme();
+  const { isDark } = useTheme()
 
-  const dividerColor = isDark ? 0x2f2f2f : 0x9f9f9f;
+  const dividerColor = isDark ? 0x2F2F2F : 0x9F9F9F
 
-  const { highlight, updateHighlight, hideHighlight } = useHighlight();
-
-  useLayoutEffect(() => {
-    BASE_MATERIAL.opacity = baseOpacity;
-    BASE_MATERIAL.transparent = baseOpacity < 1;
-    BASE_MATERIAL.needsUpdate = true;
-  }, [baseOpacity]);
+  const { highlight, updateHighlight, hideHighlight } = useHighlight()
 
   useLayoutEffect(() => {
-    BASE_MATERIAL.wireframe = enableWireframe;
-    FONT_MATERIAL.wireframe = enableWireframe;
-  }, [baseOpacity, enableWireframe]);
+    BASE_MATERIAL.opacity = baseOpacity
+    BASE_MATERIAL.transparent = baseOpacity < 1
+    BASE_MATERIAL.needsUpdate = true
+  }, [baseOpacity])
+
+  useLayoutEffect(() => {
+    BASE_MATERIAL.wireframe = enableWireframe
+    FONT_MATERIAL.wireframe = enableWireframe
+  }, [baseOpacity, enableWireframe])
 
   function focus(e: ThreeEvent<MouseEvent>) {
-    e.stopPropagation();
+    e.stopPropagation()
 
-    focusObject(getFirstItem(e.intersections).object);
+    focusObject(getFirstItem(e.intersections).object)
   }
 
   return (
@@ -134,5 +135,5 @@ export const SceneContent: FC = memo(() => {
         </Box>
       </Flex>
     </>
-  );
-});
+  )
+})

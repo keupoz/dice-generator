@@ -1,11 +1,12 @@
-import { Input } from "~/shadcn/components/ui/input";
-import { FC, useId } from "react";
-import { SettingsRow } from "./SettingsRow";
+import type { FC } from 'react'
+import { useId } from 'react'
+import { Input } from '~/shadcn/components/ui/input'
+import { SettingsRow } from './SettingsRow'
 
 export interface SettingsTextProps {
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
+  label: string
+  value: string
+  onChange: (value: string) => void
 }
 
 export const SettingsText: FC<SettingsTextProps> = ({
@@ -13,7 +14,7 @@ export const SettingsText: FC<SettingsTextProps> = ({
   value,
   onChange,
 }) => {
-  const id = useId();
+  const id = useId()
 
   return (
     <SettingsRow label={label} id={id}>
@@ -22,8 +23,8 @@ export const SettingsText: FC<SettingsTextProps> = ({
         id={id}
         type="text"
         value={value}
-        onChange={(e) => onChange(e.currentTarget.value)}
+        onChange={e => onChange(e.currentTarget.value)}
       />
     </SettingsRow>
-  );
-};
+  )
+}

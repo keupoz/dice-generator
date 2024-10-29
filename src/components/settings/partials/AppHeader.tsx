@@ -1,13 +1,13 @@
-import { useTheme } from "~/shadcn/components/theme-provider";
+import type { FC } from 'react'
+import { MoonIcon, SunIcon } from '@radix-ui/react-icons'
+import { useTheme } from '~/shadcn/components/theme-provider'
 import {
   ToggleGroup,
   ToggleGroupItem,
-} from "~/shadcn/components/ui/toggle-group";
-import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
-import { FC } from "react";
+} from '~/shadcn/components/ui/toggle-group'
 
 export const AppHeader: FC = () => {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme()
 
   return (
     <div className="flex items-center h-14 px-2">
@@ -19,9 +19,8 @@ export const AppHeader: FC = () => {
         type="single"
         size="sm"
         value={theme}
-        onValueChange={(value) =>
-          setTheme(value ? (value as "light" | "dark") : "system")
-        }
+        onValueChange={value =>
+          setTheme(value ? (value as 'light' | 'dark') : 'system')}
       >
         <ToggleGroupItem value="dark">
           <MoonIcon />
@@ -32,5 +31,5 @@ export const AppHeader: FC = () => {
         </ToggleGroupItem>
       </ToggleGroup>
     </div>
-  );
-};
+  )
+}
