@@ -120,6 +120,9 @@ importers:
         specifier: ^4.4.1
         version: 4.5.5(@types/react@18.3.12)(react@18.3.1)
     devDependencies:
+      '@total-typescript/tsconfig':
+        specifier: ^1.0.4
+        version: 1.0.4
       '@types/file-saver':
         specifier: ^2.0.5
         version: 2.0.7
@@ -1058,6 +1061,9 @@ packages:
 
   '@swc/types@0.1.13':
     resolution: {integrity: sha512-JL7eeCk6zWCbiYQg2xQSdLXQJl8Qoc9rXmG2cEKvHe3CKwMHwHGpfOb8frzNLmbycOo6I51qxnLnn9ESf4I20Q==}
+
+  '@total-typescript/tsconfig@1.0.4':
+    resolution: {integrity: sha512-fO4ctMPGz1kOFOQ4RCPBRBfMy3gDn+pegUfrGyUFRMv/Rd0ZM3/SHH3hFCYG4u6bPLG8OlmOGcBLDexvyr3A5w==}
 
   '@tweenjs/tween.js@23.1.3':
     resolution: {integrity: sha512-vJmvvwFxYuGnF2axRtPYocag6Clbb5YS7kLL+SO/TeVFzHqDIWrNKYtcsPMibjDx9O+bu+psAy9NKfWklassUA==}
@@ -3159,6 +3165,8 @@ snapshots:
   '@swc/types@0.1.13':
     dependencies:
       '@swc/counter': 0.1.3
+
+  '@total-typescript/tsconfig@1.0.4': {}
 
   '@tweenjs/tween.js@23.1.3': {}
 
