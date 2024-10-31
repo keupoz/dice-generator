@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Group, Stack, Text, Title } from '@mantine/core'
 import { DropzoneFullScreen } from '@mantine/dropzone'
 import { notifications } from '@mantine/notifications'
-import { type SVGInfo, useFontsStore } from '~/stores/FontSettingsStore'
+import { setAppState, type SVGInfo } from '~/appState'
 import { flatFontCollection } from '~/utils/flatFontCollection'
 import { readFont } from '~/utils/readFont'
 import { readSVG } from '~/utils/readSVG'
@@ -46,9 +46,9 @@ export function AppDropzone() {
     const [fontCollection, svgs] = await Promise.all([fontsPromise, svgsPromise])
     const fonts = flatFontCollection(fontCollection)
 
-    useFontsStore.setState(prev => ({
-      fonts: fonts.length ? [...prev.fonts, ...fonts] : prev.fonts,
-      svgs: svgs.length ? [...prev.svgs, ...svgs] : prev.svgs,
+    setAppState(prev => ({
+      userFonts: fonts.length ? [...prev.userFonts, ...fonts] : prev.userFonts,
+      userSVGs: svgs.length ? [...prev.userSVGs, ...svgs] : prev.userSVGs,
     }))
 
     showAddedNotification('font', fonts)

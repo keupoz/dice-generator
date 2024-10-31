@@ -4,8 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ActionIcon, Box, Card, Divider, Group, Stack, Switch, Text, Tooltip } from '@mantine/core'
 import prettyBytes from 'pretty-bytes'
 import { memo } from 'react'
-import type { SVGInfo } from '~/stores/FontSettingsStore'
-import { useFontsStore } from '~/stores/FontSettingsStore'
+import { setAppState, type SVGInfo } from '~/appState'
 import classes from './SVGCard.module.scss'
 
 export interface SVGCardProps {
@@ -16,16 +15,16 @@ export const SVGCard: FC<SVGCardProps> = memo(({ info }) => {
   const lastModified = new Date(info.lastModified).toLocaleString()
 
   function handleDelete() {
-    useFontsStore.setState(prev => ({
-      svgs: prev.svgs.filter(svg => svg.id !== info.id),
+    setAppState(prev => ({
+      userSVGs: prev.userSVGs.filter(svg => svg.id !== info.id),
     }))
   }
 
   function handleScaleToggle(e: ChangeEvent<HTMLInputElement>) {
     const value = e.currentTarget.checked
 
-    useFontsStore.setState(prev => ({
-      svgs: prev.svgs.map((svg) => {
+    setAppState(prev => ({
+      userSVGs: prev.userSVGs.map((svg) => {
         if (svg.id !== info.id) {
           return svg
         }

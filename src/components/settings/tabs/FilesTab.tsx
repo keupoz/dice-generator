@@ -1,11 +1,11 @@
 import type { FC } from 'react'
 import { Text, Title } from '@mantine/core'
-import { useFontsStore } from '~/stores/FontSettingsStore'
+import { useAppState } from '~/appState'
 import { SVGCard } from '../partials/SVGCard'
 import { SettingsTabContent } from '../SettingsTabContent'
 
 export const FilesTab: FC = () => {
-  const svgs = useFontsStore(state => state.svgs)
+  const svgs = useAppState(state => state.userSVGs)
 
   return (
     <SettingsTabContent value="files">

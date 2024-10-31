@@ -1,5 +1,5 @@
 import { SVGLoader } from 'three/addons/loaders/SVGLoader.js'
-import type { SVGInfo } from '~/stores/FontSettingsStore'
+import type { SVGInfo } from '~/appState'
 import { readTextFile } from './readTextFile'
 
 let lastId = 0

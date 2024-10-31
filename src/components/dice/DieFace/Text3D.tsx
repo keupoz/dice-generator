@@ -1,9 +1,9 @@
 import type { Font } from 'fontkit'
 import type { FC } from 'react'
 import { memo, useMemo } from 'react'
+import { useAppState } from '~/appState'
 import { useUpdateCSG } from '~/components/three/csg/CSGContext'
 import { FONT_MATERIAL } from '~/materials'
-import { useFontSettings } from '~/stores/FontSettingsStore'
 import { getGlyphGeometry } from '~/utils/fonts/getGlyphGeometry'
 import { getArrayItem } from '~/utils/getArrayItem'
 
@@ -16,7 +16,7 @@ export interface Text3DProps {
 export const Text3D: FC<Text3DProps> = memo(({ text, font, features }) => {
   useUpdateCSG()
 
-  const segments = useFontSettings(state => state.segments)
+  const segments = useAppState(state => state.fontSegments)
 
   const layout = useMemo(() => {
     const trimmedText = text.trim()

@@ -1,5 +1,5 @@
 import type { BufferGeometry } from 'three'
-import type { SVGInfo } from '~/stores/FontSettingsStore'
+import type { SVGInfo } from '~/appState'
 import { paths2geometry } from './paths2geometry'
 
 export interface SVGCache {

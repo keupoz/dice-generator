@@ -3,8 +3,7 @@ import { faImage } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ActionIcon, Menu, TextInput } from '@mantine/core'
 import { useMemo } from 'react'
-
-import { useFontsStore } from '~/stores/FontSettingsStore'
+import { useAppState } from '~/appState'
 
 export interface SettingsSVGSelectProps {
   label: string
@@ -17,7 +16,7 @@ export const SettingsSVGSelect: FC<SettingsSVGSelectProps> = ({
   value,
   onChange,
 }) => {
-  const svgs = useFontsStore(state => state.svgs)
+  const svgs = useAppState(state => state.userSVGs)
 
   const placeholder = useMemo(() => {
     if (typeof value === 'string') {

@@ -1,17 +1,17 @@
 import type { Object3D } from 'three'
-import { useExportSettings } from '~/stores/ExportSettingsStore'
+import { getAppState, setAppState } from '~/appState'
 import { exportSTL } from './exportSTL'
 
 export function exportObject(object: Object3D | null, name?: string) {
-  const { enableAlign, enableRender } = useExportSettings.getState()
+  const { enableAlign, enableRender } = getAppState()
 
-  useExportSettings.setState({ enableAlign: true, enableRender: true })
+  setAppState({ enableAlign: true, enableRender: true })
 
   setTimeout(() => {
     if (object) {
       exportSTL(object, name)
     }
 
-    useExportSettings.setState({ enableAlign, enableRender })
+    setAppState({ enableAlign, enableRender })
   })
 }

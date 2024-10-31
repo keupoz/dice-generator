@@ -3,11 +3,11 @@ import type { DieInfo } from './utils/types'
 import { Box } from '@react-three/flex'
 import { useMemo } from 'react'
 import { Brush } from 'three-bvh-csg'
+import { useAppState } from '~/appState'
 import { DieFace } from '~/components/dice/DieFace/DieFace'
 import { AlignBottom } from '~/components/three/AlignBottom'
 import { CSG } from '~/components/three/csg/CSG'
 import { BASE_MATERIAL } from '~/materials'
-import { useExportSettings } from '~/stores/ExportSettingsStore'
 import { cad2geometry } from '~/utils/cad2three'
 import { getInstanceFaceInfo } from '~/utils/faces/getInstanceFaceInfo'
 import { getFirstItem } from '~/utils/getFirstItem'
@@ -31,8 +31,8 @@ export const AbstractDie: FC<AbstractDieProps> = ({ info }) => {
     return new Brush(cad2geometry(baseGeom), BASE_MATERIAL)
   }, [baseGeom])
 
-  const enableAlign = useExportSettings(store => store.enableAlign)
-  const enableRender = useExportSettings(store => store.enableRender)
+  const enableAlign = useAppState(state => state.enableAlign)
+  const enableRender = useAppState(state => state.enableRender)
 
   const alignMatrix = useMemo(() => {
     if (!enableAlign) {

@@ -1,9 +1,9 @@
 import type { FC } from 'react'
 import { memo, useMemo } from 'react'
 import { Vector3 } from 'three'
+import { useAppState } from '~/appState'
 import { useUpdateCSG } from '~/components/three/csg/CSGContext'
 import { FONT_MATERIAL } from '~/materials'
-import { useFontSettings, useFontsStore } from '~/stores/FontSettingsStore'
 import { getBoundingBox } from '~/utils/alignObject'
 import { getSVGGeometry } from '~/utils/fonts/getSVGGeometry'
 import { useUpdateFaceLayout } from './FaceLayoutContext'
@@ -16,10 +16,10 @@ export const SVG3D: FC<SVG3DProps> = memo(({ id }) => {
   useUpdateFaceLayout()
   useUpdateCSG()
 
-  const svgs = useFontsStore(state => state.svgs)
-  const segments = useFontSettings(state => state.segments)
-  const fontScale = useFontSettings(state => state.fontScale)
-  const svgScale = useFontSettings(state => state.svgScale)
+  const svgs = useAppState(state => state.userSVGs)
+  const segments = useAppState(state => state.fontSegments)
+  const fontScale = useAppState(state => state.fontScale)
+  const svgScale = useAppState(state => state.svgScale)
 
   const svg = useMemo(() => {
     return svgs.find(svg => svg.id === id) ?? null

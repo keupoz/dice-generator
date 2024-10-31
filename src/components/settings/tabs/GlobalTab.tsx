@@ -1,10 +1,10 @@
 import type { FC } from 'react'
 import { Button, Divider, Select, Switch } from '@mantine/core'
 import { useAtom } from 'jotai'
+import { getExportObject, setAppState, useAppState } from '~/appState'
+import { baseOpacityAtom, enableWireframeAtom, showGridAtom, smoothCameraAtom } from '~/atoms'
 import { AVAILABLE_EVALUATORS } from '~/components/three/csg/availableEvaluators'
 import { AVAILABLE_OPERATIONS } from '~/components/three/csg/availableOperations'
-import { getExportObject, useExportSettings } from '~/stores/ExportSettingsStore'
-import { baseOpacityAtom, enableWireframeAtom, showGridAtom, smoothCameraAtom } from '~/stores/SceneSettingsStore'
 import { exportObject } from '~/utils/exportObject'
 import { SettingsSlider } from '../controls/SettingsSlider'
 import { SettingsTabContent } from '../SettingsTabContent'
@@ -15,7 +15,10 @@ export const GlobalTab: FC = () => {
   const [baseOpacity, setBaseOpacity] = useAtom(baseOpacityAtom)
   const [enableWireframe, setEnableWireframe] = useAtom(enableWireframeAtom)
 
-  const exportSettings = useExportSettings()
+  const enableAlign = useAppState(state => state.enableAlign)
+  const enableRender = useAppState(state => state.enableRender)
+  const renderOperation = useAppState(state => state.renderOperation)
+  const renderMethod = useAppState(state => state.renderMethod)
 
   function handleExport() {
     exportObject(getExportObject())
@@ -54,28 +57,28 @@ export const GlobalTab: FC = () => {
 
       <Switch
         label="Enable align"
-        checked={exportSettings.enableAlign}
-        onChange={e => useExportSettings.setState({ enableAlign: e.currentTarget.checked })}
+        checked={enableAlign}
+        onChange={e => setAppState({ enableAlign: e.currentTarget.checked })}
       />
 
       <Switch
         label="Enable render"
-        checked={exportSettings.enableRender}
-        onChange={e => useExportSettings.setState({ enableRender: e.currentTarget.checked })}
+        checked={enableRender}
+        onChange={e => setAppState({ enableRender: e.currentTarget.checked })}
       />
 
       <Select
         label="Render operation"
         data={Object.keys(AVAILABLE_OPERATIONS)}
-        value={exportSettings.renderOperation}
-        onChange={renderOperation => renderOperation && useExportSettings.setState({ renderOperation })}
+        value={renderOperation}
+        onChange={renderOperation => renderOperation && setAppState({ renderOperation })}
       />
 
       <Select
         label="Render method"
         data={Object.keys(AVAILABLE_EVALUATORS)}
-        value={exportSettings.renderMethod}
-        onChange={renderMethod => renderMethod && useExportSettings.setState({ renderMethod })}
+        value={renderMethod}
+        onChange={renderMethod => renderMethod && setAppState({ renderMethod })}
       />
 
       <Button onClick={handleExport}>Export STL</Button>

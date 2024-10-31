@@ -4,9 +4,9 @@ import type { FaceInfo } from '../utils/types'
 import { Fragment, memo } from 'react'
 import { degToRad } from 'three/src/math/MathUtils.js'
 import { useStore } from 'zustand'
+import { useAppState } from '~/appState'
 import { useUpdateCSG } from '~/components/three/csg/CSGContext'
 import { useCurrentFontsStore } from '~/contexts/CurrentFontsStoreContext'
-import { useFontSettings } from '~/stores/FontSettingsStore'
 import { FaceLayout } from './FaceLayout'
 import { FaceText } from './FaceText'
 import { useInfos } from './useInfos'
@@ -29,8 +29,8 @@ export const DieFace: FC<DieFaceProps> = memo(({ info, geom, fontScale }) => {
   const textFeatures = useStore(currentFontsStore, state => state.textFeatures)
   const markFeatures = useStore(currentFontsStore, state => state.markFeatures)
 
-  const globalFontScale = useFontSettings(state => state.fontScale)
-  const depth = useFontSettings(state => state.depth)
+  const globalFontScale = useAppState(state => state.fontScale)
+  const textDepth = useAppState(state => state.textDepth)
 
   const infos = useInfos(info.config.instances, geom)
 
@@ -44,7 +44,7 @@ export const DieFace: FC<DieFaceProps> = memo(({ info, geom, fontScale }) => {
       <Fragment key={i}>
         <group position={subInfo.center}>
           <group {...subInfo.rotationMatrix}>
-            <group scale-x={scale} scale-y={scale} scale-z={depth}>
+            <group scale-x={scale} scale-y={scale} scale-z={textDepth}>
               <group position-x={state.offsetX} position-y={state.offsetY}>
                 <group rotation-z={rotation}>
                   <FaceLayout

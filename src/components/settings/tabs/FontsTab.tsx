@@ -1,8 +1,8 @@
 import type { FC } from 'react'
 import { Divider, Tabs } from '@mantine/core'
 import { useStore } from 'zustand'
+import { setAppState, useAppState } from '~/appState'
 import { useCurrentFontsStore } from '~/contexts/CurrentFontsStoreContext'
-import { useFontSettings } from '~/stores/FontSettingsStore'
 import { SettingsSlider } from '../controls/SettingsSlider'
 import { FontSelect } from '../partials/FontSelect/FontSelect'
 import { SettingsTabContent } from '../SettingsTabContent'
@@ -16,7 +16,10 @@ export const FontsTab: FC = () => {
   const textFeatures = useStore(currentFontsStore, state => state.textFeatures)
   const markFeatures = useStore(currentFontsStore, state => state.markFeatures)
 
-  const fontSettings = useFontSettings()
+  const fontSegments = useAppState(state => state.fontSegments)
+  const fontScale = useAppState(state => state.fontScale)
+  const svgScale = useAppState(state => state.svgScale)
+  const textDepth = useAppState(state => state.textDepth)
 
   return (
     <SettingsTabContent value="fonts">
@@ -60,8 +63,8 @@ export const FontsTab: FC = () => {
         min={1}
         max={24}
         step={1}
-        value={fontSettings.segments}
-        onChange={segments => useFontSettings.setState({ segments })}
+        value={fontSegments}
+        onChange={fontSegments => setAppState({ fontSegments })}
       />
 
       <SettingsSlider
@@ -69,8 +72,8 @@ export const FontsTab: FC = () => {
         min={0.05}
         max={2}
         step={0.05}
-        value={fontSettings.fontScale}
-        onChange={fontScale => useFontSettings.setState({ fontScale })}
+        value={fontScale}
+        onChange={fontScale => setAppState({ fontScale })}
       />
 
       <SettingsSlider
@@ -78,8 +81,8 @@ export const FontsTab: FC = () => {
         min={0.05}
         max={2}
         step={0.05}
-        value={fontSettings.svgScale}
-        onChange={svgScale => useFontSettings.setState({ svgScale })}
+        value={svgScale}
+        onChange={svgScale => setAppState({ svgScale })}
       />
 
       <SettingsSlider
@@ -87,8 +90,8 @@ export const FontsTab: FC = () => {
         min={0.05}
         max={2}
         step={0.05}
-        value={fontSettings.depth}
-        onChange={depth => useFontSettings.setState({ depth })}
+        value={textDepth}
+        onChange={textDepth => setAppState({ textDepth })}
       />
     </SettingsTabContent>
   )

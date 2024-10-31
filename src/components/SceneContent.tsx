@@ -6,16 +6,16 @@ import { Box, Flex } from '@react-three/flex'
 import { useAtom } from 'jotai'
 import { memo, useLayoutEffect } from 'react'
 import { DoubleSide } from 'three'
-import { CAMERA_POSITION } from '~/consts'
-import { useHighlight } from '~/hooks/useHighlight'
-import { BASE_MATERIAL, FONT_MATERIAL } from '~/materials'
-import { setExportObject } from '~/stores/ExportSettingsStore'
+import { setExportObject } from '~/appState'
 import {
   baseOpacityAtom,
   enableWireframeAtom,
   showGridAtom,
   smoothCameraAtom,
-} from '~/stores/SceneSettingsStore'
+} from '~/atoms'
+import { CAMERA_POSITION } from '~/consts'
+import { useHighlight } from '~/hooks/useHighlight'
+import { BASE_MATERIAL, FONT_MATERIAL } from '~/materials'
 import {
   focusObject,
   resetFocus,

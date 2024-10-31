@@ -1,10 +1,9 @@
 import type { FC, PropsWithChildren } from 'react'
 import type { Group } from 'three'
-
 import { useLayoutEffect, useRef } from 'react'
 import { Mesh } from 'three'
+import { useAppState } from '~/appState'
 import { useForceUpdate } from '~/hooks/useForceUpdate'
-import { useExportSettings } from '~/stores/ExportSettingsStore'
 import { getEvaluator } from './availableEvaluators'
 import { getOperation } from './availableOperations'
 import { CSGContext } from './CSGContext'
@@ -24,8 +23,8 @@ export const CSG: FC<PropsWithChildren<CSGProps>> = ({
 
   const forceUpdate = useForceUpdate()
 
-  const renderOperation = useExportSettings(store => store.renderOperation)
-  const renderMethod = useExportSettings(store => store.renderMethod)
+  const renderOperation = useAppState(store => store.renderOperation)
+  const renderMethod = useAppState(store => store.renderMethod)
 
   const operation = getOperation(renderOperation)
 
