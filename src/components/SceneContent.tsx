@@ -1,5 +1,6 @@
 import type { ThreeEvent } from '@react-three/fiber'
 import type { FC } from 'react'
+import { useComputedColorScheme, useMantineTheme } from '@mantine/core'
 import { CameraControls, Grid, PerspectiveCamera } from '@react-three/drei'
 import { Box, Flex } from '@react-three/flex'
 import { useAtom } from 'jotai'
@@ -40,7 +41,9 @@ export const SceneContent: FC = memo(() => {
   const [baseOpacity] = useAtom(baseOpacityAtom)
   const [enableWireframe] = useAtom(enableWireframeAtom)
 
-  const dividerColor = 0x2F2F2F
+  const colorScheme = useComputedColorScheme()
+  const { colors } = useMantineTheme()
+  const dividerColor = colorScheme === 'dark' ? colors.dark[4] : colors.gray[2]
 
   const { highlight, updateHighlight, hideHighlight } = useHighlight()
 
