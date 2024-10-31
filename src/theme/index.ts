@@ -2,6 +2,8 @@ import { createTheme, Select, Switch, TabsList } from '@mantine/core'
 import SelectClassNames from './styles/Select.module.scss'
 import SwitchClassNames from './styles/Switch.module.scss'
 import '@mantine/core/styles.css'
+import '@mantine/notifications/styles.css'
+import '@mantine/dropzone/styles.css'
 import './styles/main.scss'
 
 export const theme = createTheme({

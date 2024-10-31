@@ -9,6 +9,7 @@ import { collectFeatures } from '~/utils/collectFontFeatures'
 import { flatFontCollection } from '~/utils/flatFontCollection'
 import { getFirstItem } from '~/utils/getFirstItem'
 import { AppContent } from './AppContent'
+import { AppDropzone } from './AppDropzone'
 
 const LOCAL_FONTS = import.meta.glob('~/assets/fonts/*', {
   eager: true,
@@ -62,7 +63,12 @@ const AppWrapper: FC = () => {
     markFeatures: features,
   })
 
-  return <AppContent />
+  return (
+    <>
+      <AppContent />
+      <AppDropzone />
+    </>
+  )
 }
 
 export const App: FC = () => {
