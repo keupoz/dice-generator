@@ -3,7 +3,9 @@ import type { FC } from 'react'
 import type { FaceInfo } from '../utils/types'
 import { Fragment, memo } from 'react'
 import { degToRad } from 'three/src/math/MathUtils.js'
+import { useStore } from 'zustand'
 import { useUpdateCSG } from '~/components/three/csg/CSGContext'
+import { useCurrentFontsStore } from '~/context/CurrentFontsStoreContext'
 import { useFontSettings } from '~/stores/FontSettingsStore'
 import { FaceLayout } from './FaceLayout'
 import { FaceText } from './FaceText'
@@ -19,12 +21,13 @@ export const DieFace: FC<DieFaceProps> = memo(({ info, geom, fontScale }) => {
   useUpdateCSG()
 
   const state = info.useStore()
+  const currentFontsStore = useCurrentFontsStore()
 
-  const textFont = useFontSettings(state => state.textFont)
-  const markFont = useFontSettings(state => state.markFont)
+  const textFont = useStore(currentFontsStore, state => state.textFont)
+  const markFont = useStore(currentFontsStore, state => state.markFont)
 
-  const textFeatures = useFontSettings(state => state.textFeatures)
-  const markFeatures = useFontSettings(state => state.markFeatures)
+  const textFeatures = useStore(currentFontsStore, state => state.textFeatures)
+  const markFeatures = useStore(currentFontsStore, state => state.markFeatures)
 
   const globalFontScale = useFontSettings(state => state.fontScale)
   const depth = useFontSettings(state => state.depth)

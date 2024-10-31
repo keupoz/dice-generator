@@ -2,13 +2,12 @@ import type { Font, FontVariationSettings } from 'fontkit'
 import type { FC } from 'react'
 import { Select } from '@mantine/core'
 import { useCallback, useMemo, useState } from 'react'
-import { getFont } from '~/stores/FontSettingsStore'
+import { useCombinedFonts } from '~/context/CombinedFontsContext'
 import { collectFeatures } from '~/utils/collectFontFeatures'
 import { SettingsSlider } from '../../controls/SettingsSlider'
 import { FontFeatures } from './FontFeatures'
 
 export interface FontSelectProps {
-  options: string[]
   defaultValue: Font
   features: Record<string, boolean>
   onFont: (value: Font) => void
@@ -26,13 +25,13 @@ function collectVariationSettings(font: Font) {
 }
 
 export const FontSelect: FC<FontSelectProps> = ({
-  options,
   defaultValue,
   features,
   onFont,
   onFeatures,
 }) => {
   const [baseFont, setBaseFont] = useState(defaultValue)
+  const { data, findFont } = useCombinedFonts()
 
   const defaultVariationSettings = useMemo(() => {
     return collectVariationSettings(defaultValue)
@@ -51,7 +50,7 @@ export const FontSelect: FC<FontSelectProps> = ({
       return
     }
 
-    const font = getFont(fontName)
+    const font = findFont(fontName)
 
     setBaseFont(font)
     setVariationSettings(collectVariationSettings(font))
@@ -95,7 +94,7 @@ export const FontSelect: FC<FontSelectProps> = ({
     <>
       <Select
         label="Font"
-        data={options}
+        data={data}
         value={baseFont.fullName}
         onChange={handleBaseChange}
       />

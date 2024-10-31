@@ -1,19 +1,22 @@
 import type { FC } from 'react'
 import { Divider, Tabs } from '@mantine/core'
-import { useMemo } from 'react'
-import { useFontSettings, useFontsStore } from '~/stores/FontSettingsStore'
-import { getFirstItem } from '~/utils/getFirstItem'
+import { useStore } from 'zustand'
+import { useCurrentFontsStore } from '~/context/CurrentFontsStoreContext'
+import { useFontSettings } from '~/stores/FontSettingsStore'
 import { SettingsSlider } from '../controls/SettingsSlider'
 import { FontSelect } from '../partials/FontSelect/FontSelect'
 import { SettingsTabContent } from '../SettingsTabContent'
 
 export const FontsTab: FC = () => {
-  const fontSettings = useFontSettings()
-  const fonts = useFontsStore(state => state.fonts)
+  const currentFontsStore = useCurrentFontsStore()
 
-  const fontOptions = useMemo(() => {
-    return fonts.map(font => font.fullName)
-  }, [fonts])
+  const textFont = useStore(currentFontsStore, state => state.textFont)
+  const markFont = useStore(currentFontsStore, state => state.markFont)
+
+  const textFeatures = useStore(currentFontsStore, state => state.textFeatures)
+  const markFeatures = useStore(currentFontsStore, state => state.markFeatures)
+
+  const fontSettings = useFontSettings()
 
   return (
     <SettingsTabContent value="fonts">
@@ -25,28 +28,26 @@ export const FontsTab: FC = () => {
 
         <SettingsTabContent value="text">
           <FontSelect
-            options={fontOptions}
-            defaultValue={fontSettings.textFont ?? getFirstItem(fonts)}
-            features={fontSettings.textFeatures}
+            defaultValue={textFont}
+            features={textFeatures}
             onFont={(textFont) => {
-              useFontSettings.setState({ textFont })
+              currentFontsStore.setState({ textFont })
             }}
             onFeatures={(textFeatures) => {
-              useFontSettings.setState({ textFeatures })
+              currentFontsStore.setState({ textFeatures })
             }}
           />
         </SettingsTabContent>
 
         <SettingsTabContent value="mark">
           <FontSelect
-            options={fontOptions}
-            defaultValue={fontSettings.markFont ?? getFirstItem(fonts)}
-            features={fontSettings.markFeatures}
+            defaultValue={markFont}
+            features={markFeatures}
             onFont={(markFont) => {
-              useFontSettings.setState({ markFont })
+              currentFontsStore.setState({ markFont })
             }}
             onFeatures={(markFeatures) => {
-              useFontSettings.setState({ markFeatures })
+              currentFontsStore.setState({ markFeatures })
             }}
           />
         </SettingsTabContent>
