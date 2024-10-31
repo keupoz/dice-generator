@@ -1,8 +1,8 @@
 import type { Font } from 'fontkit'
 import type { Object3D, Path } from 'three'
-import { create } from 'zustand'
 import { AVAILABLE_EVALUATORS } from './components/three/csg/availableEvaluators'
 import { AVAILABLE_OPERATIONS } from './components/three/csg/availableOperations'
+import { createPersistStore } from './utils/createPersistStore'
 import { getFirstItem } from './utils/getFirstItem'
 
 export interface SVGInfo {
@@ -31,7 +31,7 @@ export interface AppState {
   renderMethod: string
 }
 
-export const useAppState = create<AppState>(() => ({
+export const useAppState = createPersistStore<AppState>('app-state', () => ({
   userFonts: [],
   userSVGs: [],
 
@@ -44,6 +44,15 @@ export const useAppState = create<AppState>(() => ({
   enableRender: false,
   renderOperation: getFirstItem(Object.keys(AVAILABLE_OPERATIONS)),
   renderMethod: getFirstItem(Object.keys(AVAILABLE_EVALUATORS)),
+}), state => ({
+  fontSegments: state.fontSegments,
+  fontScale: state.fontScale,
+  svgScale: state.svgScale,
+  textDepth: state.textDepth,
+
+  enableAlign: state.enableAlign,
+  renderOperation: state.renderOperation,
+  renderMethod: state.renderMethod,
 }))
 
 export const setAppState = useAppState.setState
