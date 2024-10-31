@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 import { Divider, Tabs } from '@mantine/core'
 import { useStore } from 'zustand'
-import { useCurrentFontsStore } from '~/context/CurrentFontsStoreContext'
+import { useCurrentFontsStore } from '~/contexts/CurrentFontsStoreContext'
 import { useFontSettings } from '~/stores/FontSettingsStore'
 import { SettingsSlider } from '../controls/SettingsSlider'
 import { FontSelect } from '../partials/FontSelect/FontSelect'

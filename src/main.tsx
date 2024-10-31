@@ -4,9 +4,9 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { App } from './components/App'
 import { AppDropzone } from './components/AppDropzone'
-import { BuiltInFontsProvider } from './context/BuiltInFontsContext'
-import { CombinedFontsProvider } from './context/CombinedFontsContext'
-import { CurrentFontsStoreProvider } from './context/CurrentFontsStoreContext'
+import { BuiltInFontsProvider } from './contexts/BuiltInFontsContext'
+import { CombinedFontsProvider } from './contexts/CombinedFontsContext'
+import { CurrentFontsStoreProvider } from './contexts/CurrentFontsStoreContext'
 import { theme } from './theme'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
