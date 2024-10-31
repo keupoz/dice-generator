@@ -1,8 +1,6 @@
 import type { FC } from 'react'
 import { Button, Divider, Select, Switch } from '@mantine/core'
-import { useAtom } from 'jotai'
 import { getExportObject, setAppState, useAppState } from '~/appState'
-import { baseOpacityAtom, enableWireframeAtom, showGridAtom, smoothCameraAtom } from '~/atoms'
 import { AVAILABLE_EVALUATORS } from '~/components/three/csg/availableEvaluators'
 import { AVAILABLE_OPERATIONS } from '~/components/three/csg/availableOperations'
 import { exportObject } from '~/utils/exportObject'
@@ -10,10 +8,10 @@ import { SettingsSlider } from '../controls/SettingsSlider'
 import { SettingsTabContent } from '../SettingsTabContent'
 
 export const GlobalTab: FC = () => {
-  const [showGrid, setShowGrid] = useAtom(showGridAtom)
-  const [smoothCamera, setSmoothCamera] = useAtom(smoothCameraAtom)
-  const [baseOpacity, setBaseOpacity] = useAtom(baseOpacityAtom)
-  const [enableWireframe, setEnableWireframe] = useAtom(enableWireframeAtom)
+  const showGrid = useAppState(state => state.showGrid)
+  const smoothCamera = useAppState(state => state.smoothCamera)
+  const baseOpacity = useAppState(state => state.baseOpacity)
+  const enableWireframe = useAppState(state => state.enableWireframe)
 
   const enableAlign = useAppState(state => state.enableAlign)
   const enableRender = useAppState(state => state.enableRender)
@@ -29,19 +27,19 @@ export const GlobalTab: FC = () => {
       <Switch
         label="Show grid"
         checked={showGrid}
-        onChange={e => setShowGrid(e.currentTarget.checked)}
+        onChange={e => setAppState({ showGrid: e.currentTarget.checked })}
       />
 
       <Switch
         label="Smooth camera"
         checked={smoothCamera}
-        onChange={e => setSmoothCamera(e.currentTarget.checked)}
+        onChange={e => setAppState({ smoothCamera: e.currentTarget.checked })}
       />
 
       <Switch
         label="Enable wireframe"
         checked={enableWireframe}
-        onChange={e => setEnableWireframe(e.currentTarget.checked)}
+        onChange={e => setAppState({ enableWireframe: e.currentTarget.checked })}
       />
 
       <SettingsSlider
@@ -50,7 +48,7 @@ export const GlobalTab: FC = () => {
         max={1}
         step={0.1}
         value={baseOpacity}
-        onChange={setBaseOpacity}
+        onChange={baseOpacity => setAppState({ baseOpacity })}
       />
 
       <Divider />

@@ -3,16 +3,9 @@ import type { FC } from 'react'
 import { useComputedColorScheme, useMantineTheme } from '@mantine/core'
 import { CameraControls, Grid, PerspectiveCamera } from '@react-three/drei'
 import { Box, Flex } from '@react-three/flex'
-import { useAtom } from 'jotai'
 import { memo, useLayoutEffect } from 'react'
 import { DoubleSide } from 'three'
-import { setExportObject } from '~/appState'
-import {
-  baseOpacityAtom,
-  enableWireframeAtom,
-  showGridAtom,
-  smoothCameraAtom,
-} from '~/atoms'
+import { setExportObject, useAppState } from '~/appState'
 import { CAMERA_POSITION } from '~/consts'
 import { useHighlight } from '~/hooks/useHighlight'
 import { BASE_MATERIAL, FONT_MATERIAL } from '~/materials'
@@ -36,10 +29,10 @@ import { DieD12R } from './dice/DieD12R'
 import { DieD20 } from './dice/DieD20'
 
 export const SceneContent: FC = memo(() => {
-  const [showGrid] = useAtom(showGridAtom)
-  const [smoothCamera] = useAtom(smoothCameraAtom)
-  const [baseOpacity] = useAtom(baseOpacityAtom)
-  const [enableWireframe] = useAtom(enableWireframeAtom)
+  const showGrid = useAppState(state => state.showGrid)
+  const smoothCamera = useAppState(state => state.smoothCamera)
+  const baseOpacity = useAppState(state => state.baseOpacity)
+  const enableWireframe = useAppState(state => state.enableWireframe)
 
   const colorScheme = useComputedColorScheme()
   const { colors } = useMantineTheme()

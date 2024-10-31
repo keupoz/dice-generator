@@ -20,6 +20,11 @@ export interface AppState {
   userFonts: Font[]
   userSVGs: SVGInfo[]
 
+  showGrid: boolean
+  smoothCamera: boolean
+  baseOpacity: number
+  enableWireframe: boolean
+
   fontSegments: number
   fontScale: number
   svgScale: number
@@ -35,6 +40,11 @@ export const useAppState = createPersistStore<AppState>('app-state', () => ({
   userFonts: [],
   userSVGs: [],
 
+  showGrid: true,
+  smoothCamera: true,
+  baseOpacity: 0.9,
+  enableWireframe: false,
+
   fontSegments: 4,
   fontScale: 0.75,
   svgScale: 0.75,
@@ -45,6 +55,10 @@ export const useAppState = createPersistStore<AppState>('app-state', () => ({
   renderOperation: getFirstItem(Object.keys(AVAILABLE_OPERATIONS)),
   renderMethod: getFirstItem(Object.keys(AVAILABLE_EVALUATORS)),
 }), state => ({
+  showGrid: state.showGrid,
+  smoothCamera: state.smoothCamera,
+  baseOpacity: state.baseOpacity,
+
   fontSegments: state.fontSegments,
   fontScale: state.fontScale,
   svgScale: state.svgScale,
