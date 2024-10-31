@@ -1,4 +1,3 @@
-import type { FC } from 'react'
 import { faImage } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ActionIcon, Menu, TextInput } from '@mantine/core'
@@ -11,11 +10,11 @@ export interface SettingsSVGSelectProps {
   onChange: (value: string | number) => void
 }
 
-export const SettingsSVGSelect: FC<SettingsSVGSelectProps> = ({
+export function SettingsSVGSelect({
   label,
   value,
   onChange,
-}) => {
+}: SettingsSVGSelectProps) {
   const svgs = useAppState(state => state.userSVGs)
 
   const placeholder = useMemo(() => {

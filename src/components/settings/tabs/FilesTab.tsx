@@ -1,10 +1,9 @@
-import type { FC } from 'react'
 import { Text, Title } from '@mantine/core'
 import { useAppState } from '~/appState'
 import { SVGCard } from '../partials/SVGCard'
 import { SettingsTabContent } from '../SettingsTabContent'
 
-export const FilesTab: FC = () => {
+export function FilesTab() {
   const svgs = useAppState(state => state.userSVGs)
 
   return (

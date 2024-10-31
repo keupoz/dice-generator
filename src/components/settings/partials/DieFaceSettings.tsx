@@ -1,4 +1,3 @@
-import type { FC } from 'react'
 import { Switch } from '@mantine/core'
 import type { FaceInfo } from '~/components/dice/utils/types'
 import { SettingsSlider } from '../controls/SettingsSlider'
@@ -8,7 +7,7 @@ export interface DieFaceSettingsProps {
   info: FaceInfo
 }
 
-export const DieFaceSettings: FC<DieFaceSettingsProps> = ({ info }) => {
+export function DieFaceSettings({ info }: DieFaceSettingsProps) {
   const state = info.useStore()
 
   return (

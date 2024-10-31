@@ -1,4 +1,3 @@
-import type { FC } from 'react'
 import { Divider, Tabs } from '@mantine/core'
 import { useStore } from 'zustand'
 import { setAppState, useAppState } from '~/appState'
@@ -7,7 +6,7 @@ import { SettingsSlider } from '../controls/SettingsSlider'
 import { FontSelect } from '../partials/FontSelect/FontSelect'
 import { SettingsTabContent } from '../SettingsTabContent'
 
-export const FontsTab: FC = () => {
+export function FontsTab() {
   const currentFontsStore = useCurrentFontsStore()
 
   const textFont = useStore(currentFontsStore, state => state.textFont)

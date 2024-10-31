@@ -1,4 +1,3 @@
-import type { FC } from 'react'
 import type { DieInfo } from './utils/types'
 import { Box } from '@react-three/flex'
 import { useMemo } from 'react'
@@ -16,7 +15,7 @@ export interface AbstractDieProps {
   info: DieInfo
 }
 
-export const AbstractDie: FC<AbstractDieProps> = ({ info }) => {
+export function AbstractDie({ info }: AbstractDieProps) {
   const { visible, size, fontScale, extraOptions } = info.useStore()
 
   const baseGeom = useMemo(() => {

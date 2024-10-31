@@ -1,4 +1,4 @@
-import type { FC, PropsWithChildren } from 'react'
+import type { PropsWithChildren } from 'react'
 import type { Group } from 'three'
 import { useLayoutEffect, useRef } from 'react'
 import { Mesh } from 'three'
@@ -14,10 +14,10 @@ export interface CSGProps {
 }
 
 /** Adapted from https://github.com/pmndrs/react-three-csg/blob/7b6d31616085476975f6592ff424948acb5bfcd4/src/index.tsx#L81 */
-export const CSG: FC<PropsWithChildren<CSGProps>> = ({
+export function CSG({
   disabled,
   children,
-}) => {
+}: PropsWithChildren<CSGProps>) {
   const rootRef = useRef<Group>(null)
   const outputRef = useRef<Mesh>(null)
 

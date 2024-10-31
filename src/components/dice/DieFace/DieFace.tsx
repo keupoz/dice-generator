@@ -1,5 +1,4 @@
 import type { Geom3 } from '@jscad/modeling/src/geometries/types'
-import type { FC } from 'react'
 import type { FaceInfo } from '../utils/types'
 import { Fragment, memo } from 'react'
 import { degToRad } from 'three/src/math/MathUtils.js'
@@ -17,7 +16,7 @@ export interface DieFaceProps {
   fontScale: number
 }
 
-export const DieFace: FC<DieFaceProps> = memo(({ info, geom, fontScale }) => {
+export const DieFace = memo<DieFaceProps>(({ info, geom, fontScale }) => {
   useUpdateCSG()
 
   const state = info.useStore()

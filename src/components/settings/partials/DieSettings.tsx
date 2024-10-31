@@ -1,4 +1,3 @@
-import type { FC } from 'react'
 import { Button, Divider, Select, SimpleGrid, Switch } from '@mantine/core'
 import { useMemo, useState } from 'react'
 import type { DieInfo } from '~/components/dice/utils/types'
@@ -11,7 +10,7 @@ export interface DieSettingsProps {
   info: DieInfo
 }
 
-export const DieSettings: FC<DieSettingsProps> = ({ info }) => {
+export function DieSettings({ info }: DieSettingsProps) {
   const state = info.useStore()
 
   const extraOptionsEntries = Object.entries(info.config.extraOptions)

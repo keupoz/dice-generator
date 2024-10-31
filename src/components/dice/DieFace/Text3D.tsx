@@ -1,5 +1,4 @@
 import type { Font } from 'fontkit'
-import type { FC } from 'react'
 import { memo, useMemo } from 'react'
 import { useAppState } from '~/appState'
 import { useUpdateCSG } from '~/components/three/csg/CSGContext'
@@ -13,7 +12,7 @@ export interface Text3DProps {
   features: Record<string, boolean>
 }
 
-export const Text3D: FC<Text3DProps> = memo(({ text, font, features }) => {
+export const Text3D = memo<Text3DProps>(({ text, font, features }) => {
   useUpdateCSG()
 
   const segments = useAppState(state => state.fontSegments)

@@ -1,5 +1,4 @@
 import type { Font, FontVariationSettings } from 'fontkit'
-import type { FC } from 'react'
 import { Select } from '@mantine/core'
 import { useCallback, useMemo, useState } from 'react'
 import { useCombinedFonts } from '~/contexts/CombinedFontsContext'
@@ -24,12 +23,12 @@ function collectVariationSettings(font: Font) {
   return result
 }
 
-export const FontSelect: FC<FontSelectProps> = ({
+export function FontSelect({
   defaultValue,
   features,
   onFont,
   onFeatures,
-}) => {
+}: FontSelectProps) {
   const [baseFont, setBaseFont] = useState(defaultValue)
   const { data, findFont } = useCombinedFonts()
 

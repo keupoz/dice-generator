@@ -1,4 +1,4 @@
-import type { FC, PropsWithChildren } from 'react'
+import type { PropsWithChildren } from 'react'
 import type { Group, Object3D } from 'three'
 import { useLayoutEffect, useRef } from 'react'
 import { getAlignment } from '~/utils/alignObject'
@@ -8,11 +8,11 @@ export interface AlignBottomProps {
   alignBy?: Object3D | null
 }
 
-export const AlignBottom: FC<PropsWithChildren<AlignBottomProps>> = ({
+export function AlignBottom({
   disabled,
   alignBy,
   children,
-}) => {
+}: PropsWithChildren<AlignBottomProps>) {
   const rootRef = useRef<Group>(null)
 
   useLayoutEffect(() => {

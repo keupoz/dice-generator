@@ -1,4 +1,4 @@
-import type { ChangeEvent, FC } from 'react'
+import type { ChangeEvent } from 'react'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ActionIcon, Box, Card, Divider, Group, Stack, Switch, Text, Tooltip } from '@mantine/core'
@@ -11,7 +11,7 @@ export interface SVGCardProps {
   info: SVGInfo
 }
 
-export const SVGCard: FC<SVGCardProps> = memo(({ info }) => {
+export const SVGCard = memo<SVGCardProps>(({ info }) => {
   const lastModified = new Date(info.lastModified).toLocaleString()
 
   function handleDelete() {

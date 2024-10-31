@@ -1,4 +1,3 @@
-import type { FC } from 'react'
 import { Switch } from '@mantine/core'
 import { memo } from 'react'
 import { SettingsAccordion } from '../../SettingsAccordion'
@@ -10,7 +9,7 @@ export interface FontFeaturesProps {
   onChange: (key: string, value: boolean) => void
 }
 
-export const FontFeatures: FC<FontFeaturesProps> = memo(
+export const FontFeatures = memo<FontFeaturesProps>(
   ({ options, values, onChange }) => {
     if (!options.length) {
       return null

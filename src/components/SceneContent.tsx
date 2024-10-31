@@ -1,5 +1,4 @@
 import type { ThreeEvent } from '@react-three/fiber'
-import type { FC } from 'react'
 import { useComputedColorScheme, useMantineTheme } from '@mantine/core'
 import { CameraControls, Grid, PerspectiveCamera } from '@react-three/drei'
 import { Box, Flex } from '@react-three/flex'
@@ -28,7 +27,7 @@ import { DieD12 } from './dice/DieD12'
 import { DieD12R } from './dice/DieD12R'
 import { DieD20 } from './dice/DieD20'
 
-export const SceneContent: FC = memo(() => {
+export const SceneContent = memo(() => {
   const showGrid = useAppState(state => state.showGrid)
   const smoothCamera = useAppState(state => state.smoothCamera)
   const baseOpacity = useAppState(state => state.baseOpacity)

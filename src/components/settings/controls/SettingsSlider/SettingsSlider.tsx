@@ -1,4 +1,3 @@
-import type { FC } from 'react'
 import { NumberInput, Slider } from '@mantine/core'
 import classes from './SettingsSlider.module.scss'
 
@@ -11,14 +10,14 @@ export interface SettingsSliderProps {
   onChange: (value: number) => void
 }
 
-export const SettingsSlider: FC<SettingsSliderProps> = ({
+export function SettingsSlider({
   label,
   min,
   max,
   step,
   value,
   onChange,
-}) => {
+}: SettingsSliderProps) {
   function handleInputChange(value: string | number) {
     if (typeof value === 'string') {
       value = +value

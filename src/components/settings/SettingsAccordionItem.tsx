@@ -1,13 +1,11 @@
-import type { FC, PropsWithChildren } from 'react'
+import type { PropsWithChildren } from 'react'
 import { Accordion, Stack } from '@mantine/core'
 
 export interface SettingsAccordionItemProps {
   name: string
 }
 
-export const SettingsAccordionItem: FC<
-  PropsWithChildren<SettingsAccordionItemProps>
-> = ({ name, children }) => {
+export function SettingsAccordionItem({ name, children }: PropsWithChildren<SettingsAccordionItemProps>) {
   return (
     <Accordion.Item value={name}>
       <Accordion.Control>{name}</Accordion.Control>

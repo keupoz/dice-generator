@@ -1,4 +1,3 @@
-import type { FC } from 'react'
 import { memo, useMemo } from 'react'
 import { Vector3 } from 'three'
 import { useAppState } from '~/appState'
@@ -12,7 +11,7 @@ export interface SVG3DProps {
   id: number
 }
 
-export const SVG3D: FC<SVG3DProps> = memo(({ id }) => {
+export const SVG3D = memo<SVG3DProps>(({ id }) => {
   useUpdateFaceLayout()
   useUpdateCSG()
 

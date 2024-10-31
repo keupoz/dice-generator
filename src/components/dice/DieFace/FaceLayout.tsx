@@ -1,4 +1,4 @@
-import type { FC, PropsWithChildren } from 'react'
+import type { PropsWithChildren } from 'react'
 import type { Group } from 'three'
 import { useLayoutEffect, useRef } from 'react'
 import { Vector3 } from 'three'
@@ -12,11 +12,11 @@ export interface FaceLayoutProps {
   markGap: number
 }
 
-export const FaceLayout: FC<PropsWithChildren<FaceLayoutProps>> = ({
+export function FaceLayout({
   isUnderscore,
   markGap,
   children,
-}) => {
+}: PropsWithChildren<FaceLayoutProps>) {
   const rootRef = useRef<Group>(null)
   const forceUpdate = useForceUpdate()
 

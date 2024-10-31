@@ -1,4 +1,3 @@
-import type { FC } from 'react'
 import { Stack, Tabs } from '@mantine/core'
 import { memo } from 'react'
 import { DiceTab } from './tabs/DiceTab'
@@ -7,7 +6,7 @@ import { FontsTab } from './tabs/FontsTab'
 import { GlobalTab } from './tabs/GlobalTab'
 import { ThemeSwitcher } from './ThemeSwitcher'
 
-export const Settings: FC = memo(() => {
+export const Settings = memo(() => {
   return (
     <Stack gap="sm" p="sm">
       <ThemeSwitcher />

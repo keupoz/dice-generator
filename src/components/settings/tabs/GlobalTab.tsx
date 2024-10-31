@@ -1,4 +1,3 @@
-import type { FC } from 'react'
 import { Button, Divider, Select, Switch } from '@mantine/core'
 import { getExportObject, setAppState, useAppState } from '~/appState'
 import { AVAILABLE_EVALUATORS } from '~/components/three/csg/availableEvaluators'
@@ -7,7 +6,7 @@ import { exportObject } from '~/utils/exportObject'
 import { SettingsSlider } from '../controls/SettingsSlider'
 import { SettingsTabContent } from '../SettingsTabContent'
 
-export const GlobalTab: FC = () => {
+export function GlobalTab() {
   const showGrid = useAppState(state => state.showGrid)
   const smoothCamera = useAppState(state => state.smoothCamera)
   const baseOpacity = useAppState(state => state.baseOpacity)

@@ -1,11 +1,10 @@
-import type { FC } from 'react'
 import { Select } from '@mantine/core'
 import { useMemo, useState } from 'react'
 import { useDiceRegistryStore } from '~/components/dice/utils/registry'
 import { DieSettings } from '../partials/DieSettings'
 import { SettingsTabContent } from '../SettingsTabContent'
 
-export const DiceTab: FC = () => {
+export function DiceTab() {
   const dice = useDiceRegistryStore(state => state.dice)
 
   const [currentDie, setCurrentDie] = useState(() => dice[0])
