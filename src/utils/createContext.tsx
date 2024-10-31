@@ -1,8 +1,8 @@
-import type { Pretty } from './types'
+import type { Prettify } from './types'
 import { LoadingOverlay } from '@mantine/core'
 import { createContext as createReactContext, type FC, type PropsWithChildren, useContext as useReactContext } from 'react'
 
-export type CreateContextResult<T, Name extends string> = Pretty<{
+export type CreateContextResult<T, Name extends string> = Prettify<{
   [HookName in `use${Name}`]: () => T;
 } & {
   [ProviderName in `${Name}Provider`]: FC<PropsWithChildren>
