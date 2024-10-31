@@ -1,12 +1,13 @@
+import { MantineProvider } from '@mantine/core'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { App } from './components/App'
-import { ThemeProvider } from './shadcn/components/theme-provider'
+import { theme } from './theme'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <MantineProvider defaultColorScheme="auto" theme={theme}>
       <App />
-    </ThemeProvider>
+    </MantineProvider>
   </React.StrictMode>,
 )

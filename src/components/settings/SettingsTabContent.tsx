@@ -1,5 +1,5 @@
 import type { FC, PropsWithChildren } from 'react'
-import { TabsContent } from '~/shadcn/components/ui/tabs'
+import { Stack, Tabs } from '@mantine/core'
 
 export interface SettingsTabContentProps {
   value: string
@@ -9,8 +9,10 @@ export const SettingsTabContent: FC<
   PropsWithChildren<SettingsTabContentProps>
 > = ({ value, children }) => {
   return (
-    <TabsContent value={value}>
-      <div className="py-2 flex flex-col gap-2">{children}</div>
-    </TabsContent>
+    <Tabs.Panel value={value} pt="md">
+      <Stack gap="md">
+        {children}
+      </Stack>
+    </Tabs.Panel>
   )
 }

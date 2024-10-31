@@ -1,7 +1,6 @@
 import type { FC } from 'react'
+import { Divider, Tabs } from '@mantine/core'
 import { useMemo } from 'react'
-import { Separator } from '~/shadcn/components/ui/separator'
-import { Tabs, TabsList, TabsTrigger } from '~/shadcn/components/ui/tabs'
 import { useFontSettings, useFontsStore } from '~/stores/FontSettingsStore'
 import { getFirstItem } from '~/utils/getFirstItem'
 import { SettingsSlider } from '../controls/SettingsSlider'
@@ -19,10 +18,10 @@ export const FontsTab: FC = () => {
   return (
     <SettingsTabContent value="fonts">
       <Tabs defaultValue="text">
-        <TabsList className="grid grid-cols-2">
-          <TabsTrigger value="text">Text</TabsTrigger>
-          <TabsTrigger value="mark">Mark</TabsTrigger>
-        </TabsList>
+        <Tabs.List className="grid grid-cols-2">
+          <Tabs.Tab value="text">Text</Tabs.Tab>
+          <Tabs.Tab value="mark">Mark</Tabs.Tab>
+        </Tabs.List>
 
         <SettingsTabContent value="text">
           <FontSelect
@@ -53,7 +52,7 @@ export const FontsTab: FC = () => {
         </SettingsTabContent>
       </Tabs>
 
-      <Separator />
+      <Divider />
 
       <SettingsSlider
         label="Segments"

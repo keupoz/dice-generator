@@ -8,7 +8,6 @@ import { DoubleSide } from 'three'
 import { CAMERA_POSITION } from '~/consts'
 import { useHighlight } from '~/hooks/useHighlight'
 import { BASE_MATERIAL, FONT_MATERIAL } from '~/materials'
-import { useTheme } from '~/shadcn/components/theme-provider'
 import { setExportObject } from '~/stores/ExportSettingsStore'
 import {
   baseOpacityAtom,
@@ -41,9 +40,7 @@ export const SceneContent: FC = memo(() => {
   const [baseOpacity] = useAtom(baseOpacityAtom)
   const [enableWireframe] = useAtom(enableWireframeAtom)
 
-  const { isDark } = useTheme()
-
-  const dividerColor = isDark ? 0x2F2F2F : 0x9F9F9F
+  const dividerColor = 0x2F2F2F
 
   const { highlight, updateHighlight, hideHighlight } = useHighlight()
 

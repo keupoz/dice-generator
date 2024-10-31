@@ -1,7 +1,7 @@
 import type { FC } from 'react'
+import { Select } from '@mantine/core'
 import { useMemo, useState } from 'react'
 import { useDiceRegistryStore } from '~/components/dice/utils/registry'
-import { SettingsSelect } from '../controls/SettingsSelect'
 import { DieSettings } from '../partials/DieSettings'
 import { SettingsTabContent } from '../SettingsTabContent'
 
@@ -14,7 +14,11 @@ export const DiceTab: FC = () => {
     return dice.map(info => info.config.name)
   }, [dice])
 
-  function selectDie(name: string) {
+  function selectDie(name: string | null) {
+    if (!name) {
+      return
+    }
+
     const info = dice.find(info => info.config.name === name)
 
     setCurrentDie(info)
@@ -22,10 +26,11 @@ export const DiceTab: FC = () => {
 
   return (
     <SettingsTabContent value="dice">
-      <SettingsSelect
+      <Select
         label="Die"
-        options={options}
+        data={options}
         value={currentDie?.config.name ?? ''}
+        placeholder="Select a die"
         onChange={selectDie}
       />
 

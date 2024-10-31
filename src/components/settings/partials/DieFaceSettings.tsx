@@ -1,8 +1,8 @@
 import type { FC } from 'react'
+import { Switch } from '@mantine/core'
 import type { FaceInfo } from '~/components/dice/utils/types'
 import { SettingsSlider } from '../controls/SettingsSlider'
 import { SettingsSVGSelect } from '../controls/SettingsSVGSelect'
-import { SettingsSwitch } from '../controls/SettingsSwitch'
 
 export interface DieFaceSettingsProps {
   info: FaceInfo
@@ -25,10 +25,10 @@ export const DieFaceSettings: FC<DieFaceSettingsProps> = ({ info }) => {
         onChange={mark => info.useStore.setState({ mark })}
       />
 
-      <SettingsSwitch
+      <Switch
         label="Align mark as underscore"
         checked={state.isUnderscore}
-        onChange={isUnderscore => info.useStore.setState({ isUnderscore })}
+        onChange={e => info.useStore.setState({ isUnderscore: e.currentTarget.checked })}
       />
 
       <SettingsSlider

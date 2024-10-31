@@ -1,23 +1,12 @@
 import type { FC } from 'react'
+import { Button, Divider, Select, Switch } from '@mantine/core'
 import { useAtom } from 'jotai'
 import { AVAILABLE_EVALUATORS } from '~/components/three/csg/availableEvaluators'
 import { AVAILABLE_OPERATIONS } from '~/components/three/csg/availableOperations'
-import { Button } from '~/shadcn/components/ui/button'
-import { Separator } from '~/shadcn/components/ui/separator'
-import {
-  getExportObject,
-  useExportSettings,
-} from '~/stores/ExportSettingsStore'
-import {
-  baseOpacityAtom,
-  enableWireframeAtom,
-  showGridAtom,
-  smoothCameraAtom,
-} from '~/stores/SceneSettingsStore'
+import { getExportObject, useExportSettings } from '~/stores/ExportSettingsStore'
+import { baseOpacityAtom, enableWireframeAtom, showGridAtom, smoothCameraAtom } from '~/stores/SceneSettingsStore'
 import { exportObject } from '~/utils/exportObject'
-import { SettingsSelect } from '../controls/SettingsSelect'
 import { SettingsSlider } from '../controls/SettingsSlider'
-import { SettingsSwitch } from '../controls/SettingsSwitch'
 import { SettingsTabContent } from '../SettingsTabContent'
 
 export const GlobalTab: FC = () => {
@@ -34,22 +23,22 @@ export const GlobalTab: FC = () => {
 
   return (
     <SettingsTabContent value="global">
-      <SettingsSwitch
+      <Switch
         label="Show grid"
         checked={showGrid}
-        onChange={setShowGrid}
+        onChange={e => setShowGrid(e.currentTarget.checked)}
       />
 
-      <SettingsSwitch
+      <Switch
         label="Smooth camera"
         checked={smoothCamera}
-        onChange={setSmoothCamera}
+        onChange={e => setSmoothCamera(e.currentTarget.checked)}
       />
 
-      <SettingsSwitch
+      <Switch
         label="Enable wireframe"
         checked={enableWireframe}
-        onChange={setEnableWireframe}
+        onChange={e => setEnableWireframe(e.currentTarget.checked)}
       />
 
       <SettingsSlider
@@ -61,34 +50,32 @@ export const GlobalTab: FC = () => {
         onChange={setBaseOpacity}
       />
 
-      <Separator />
+      <Divider />
 
-      <SettingsSwitch
+      <Switch
         label="Enable align"
         checked={exportSettings.enableAlign}
-        onChange={enableAlign => useExportSettings.setState({ enableAlign })}
+        onChange={e => useExportSettings.setState({ enableAlign: e.currentTarget.checked })}
       />
 
-      <SettingsSwitch
+      <Switch
         label="Enable render"
         checked={exportSettings.enableRender}
-        onChange={enableRender =>
-          useExportSettings.setState({ enableRender })}
+        onChange={e => useExportSettings.setState({ enableRender: e.currentTarget.checked })}
       />
 
-      <SettingsSelect
+      <Select
         label="Render operation"
-        options={Object.keys(AVAILABLE_OPERATIONS)}
+        data={Object.keys(AVAILABLE_OPERATIONS)}
         value={exportSettings.renderOperation}
-        onChange={renderOperation =>
-          useExportSettings.setState({ renderOperation })}
+        onChange={renderOperation => renderOperation && useExportSettings.setState({ renderOperation })}
       />
-      <SettingsSelect
+
+      <Select
         label="Render method"
-        options={Object.keys(AVAILABLE_EVALUATORS)}
+        data={Object.keys(AVAILABLE_EVALUATORS)}
         value={exportSettings.renderMethod}
-        onChange={renderMethod =>
-          useExportSettings.setState({ renderMethod })}
+        onChange={renderMethod => renderMethod && useExportSettings.setState({ renderMethod })}
       />
 
       <Button onClick={handleExport}>Export STL</Button>

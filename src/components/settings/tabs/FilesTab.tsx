@@ -1,6 +1,5 @@
 import type { FC } from 'react'
-import { LargeText } from '~/shadcn/components/typography/large-text'
-import { MutedText } from '~/shadcn/components/typography/muted-text'
+import { Text, Title } from '@mantine/core'
 import { useFontsStore } from '~/stores/FontSettingsStore'
 import { SVGCard } from '../partials/SVGCard'
 import { SettingsTabContent } from '../SettingsTabContent'
@@ -10,11 +9,11 @@ export const FilesTab: FC = () => {
 
   return (
     <SettingsTabContent value="files">
-      <LargeText>SVGs</LargeText>
+      <Title order={2}>SVGs</Title>
 
       {svgs.length === 0
         ? (
-            <MutedText>No SVGs loaded</MutedText>
+            <Text c="gray">No SVGs loaded</Text>
           )
         : (
             svgs.map(svg => <SVGCard key={svg.id} info={svg} />)

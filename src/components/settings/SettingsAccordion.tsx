@@ -1,9 +1,9 @@
 import type { FC, PropsWithChildren } from 'react'
-import { Accordion } from '~/shadcn/components/ui/accordion'
+import { Accordion } from '@mantine/core'
 
 export const SettingsAccordion: FC<PropsWithChildren> = ({ children }) => {
   return (
-    <Accordion type="single" collapsible className="w-full">
+    <Accordion>
       {children}
     </Accordion>
   )

@@ -1,14 +1,10 @@
 import type { FC } from 'react'
-import { useId, useMemo } from 'react'
-import { Input } from '~/shadcn/components/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-} from '~/shadcn/components/ui/select'
+import { faImage } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { ActionIcon, Menu, TextInput } from '@mantine/core'
+import { useMemo } from 'react'
+
 import { useFontsStore } from '~/stores/FontSettingsStore'
-import { SettingsRow } from './SettingsRow'
 
 export interface SettingsSVGSelectProps {
   label: string
@@ -21,8 +17,6 @@ export const SettingsSVGSelect: FC<SettingsSVGSelectProps> = ({
   value,
   onChange,
 }) => {
-  const id = useId()
-
   const svgs = useFontsStore(state => state.svgs)
 
   const placeholder = useMemo(() => {
@@ -33,39 +27,33 @@ export const SettingsSVGSelect: FC<SettingsSVGSelectProps> = ({
     return svgs.find(svg => svg.id === value)?.name ?? 'SVG selected'
   }, [svgs, value])
 
-  return (
-    <SettingsRow label={label} id={id}>
-      <Input
-        className="col-span-6 h-8"
-        id={id}
-        type="text"
-        value={typeof value === 'number' ? '' : value}
-        placeholder={placeholder}
-        onChange={e => onChange(e.currentTarget.value)}
-      />
+  const rightSection = (
+    <Menu>
+      <Menu.Target>
+        <ActionIcon variant="default">
+          <FontAwesomeIcon icon={faImage} />
+        </ActionIcon>
+      </Menu.Target>
 
-      <Select
-        value={typeof value === 'number' ? value.toString() : '-1'}
-        onValueChange={value => onChange(Number.parseInt(value))}
-      >
-        <SelectTrigger className="col-span-2 h-8" />
-
-        <SelectContent>
-          {svgs.length === 0
-            ? (
-                <SelectItem value="None" disabled>
-                  No SVGs loaded
-                </SelectItem>
-              )
-            : (
-                svgs.map(item => (
-                  <SelectItem key={item.id} value={item.id.toString()}>
-                    {item.name}
-                  </SelectItem>
-                ))
-              )}
-        </SelectContent>
-      </Select>
-    </SettingsRow>
+      <Menu.Dropdown>
+        {svgs.map(item => (
+          <Menu.Item key={item.id} value={item.id.toString()} onClick={() => onChange(item.id)}>
+            {item.name}
+          </Menu.Item>
+        ))}
+      </Menu.Dropdown>
+    </Menu>
   )
+
+  const variant2 = (
+    <TextInput
+      label={label}
+      value={typeof value === 'number' ? '' : value}
+      placeholder={placeholder}
+      onChange={e => onChange(e.currentTarget.value)}
+      rightSection={svgs.length > 0 && rightSection}
+    />
+  )
+
+  return variant2
 }

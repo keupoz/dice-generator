@@ -1,0 +1,10 @@
+.option {
+  &[data-checked] {
+    background: var(--mantine-primary-color-filled);
+    color: var(--mantine-primary-color-contrast);
+
+    &:hover {
+      background: var(--mantine-primary-color-filled-hover);
+    }
+  }
+}

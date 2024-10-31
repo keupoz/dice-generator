@@ -1,6 +1,6 @@
 import type { FC } from 'react'
+import { Switch } from '@mantine/core'
 import { memo } from 'react'
-import { SettingsSwitch } from '../../controls/SettingsSwitch'
 import { SettingsAccordion } from '../../SettingsAccordion'
 import { SettingsAccordionItem } from '../../SettingsAccordionItem'
 
@@ -20,11 +20,11 @@ export const FontFeatures: FC<FontFeaturesProps> = memo(
       <SettingsAccordion>
         <SettingsAccordionItem name="Features">
           {options.map(feature => (
-            <SettingsSwitch
+            <Switch
               key={feature}
               label={feature}
               checked={values[feature] ?? false}
-              onChange={onChange.bind(null, feature)}
+              onChange={e => onChange(feature, e.currentTarget.checked)}
             />
           ))}
         </SettingsAccordionItem>

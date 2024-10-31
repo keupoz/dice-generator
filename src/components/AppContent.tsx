@@ -1,28 +1,30 @@
 import type { Font, FontCollection } from 'fontkit'
-import type { FC } from 'react'
-import { GearIcon } from '@radix-ui/react-icons'
-import { useMediaQuery } from '@uidotdev/usehooks'
+import { AppShell, Burger, Group, ScrollArea, Text } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
 import { useDropzone } from 'react-dropzone'
-import { Button } from '~/shadcn/components/ui/button'
-import {
-  Drawer,
-  DrawerContent,
-  DrawerTrigger,
-} from '~/shadcn/components/ui/drawer'
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from '~/shadcn/components/ui/resizable'
-import type { SVGInfo } from '~/stores/FontSettingsStore'
-import { useFontsStore } from '~/stores/FontSettingsStore'
+import { type SVGInfo, useFontsStore } from '~/stores/FontSettingsStore'
 import { flatFontCollection } from '~/utils/flatFontCollection'
 import { readFont } from '~/utils/readFont'
 import { readSVG } from '~/utils/readSVG'
 import { Scene } from './Scene'
 import { Settings } from './settings/Settings'
 
-export const AppContent: FC = () => {
+// This magically enables memoization
+const AppShellContent = (
+  <>
+    <AppShell.Aside>
+      <ScrollArea>
+        <Settings />
+      </ScrollArea>
+    </AppShell.Aside>
+
+    <AppShell.Main h="100dvh">
+      <Scene />
+    </AppShell.Main>
+  </>
+)
+
+export function AppContent() {
   const { getRootProps } = useDropzone({
     noClick: true,
     accept: {
@@ -57,48 +59,23 @@ export const AppContent: FC = () => {
     },
   })
 
-  const isDesktop = useMediaQuery('(min-width: 900px)')
-
-  if (isDesktop) {
-    return (
-      <div {...getRootProps()} className="h-screen">
-        <ResizablePanelGroup direction="horizontal">
-          <ResizablePanel
-            style={{ overflowY: 'auto' }}
-            defaultSize={25}
-            minSize={25}
-            maxSize={35}
-          >
-            <Settings />
-          </ResizablePanel>
-
-          <ResizableHandle withHandle />
-
-          <ResizablePanel>
-            <Scene />
-          </ResizablePanel>
-        </ResizablePanelGroup>
-      </div>
-    )
-  }
+  const [opened, { toggle }] = useDisclosure()
 
   return (
-    <div {...getRootProps()} className="h-screen">
-      <Scene />
+    <AppShell
+      header={{ height: 56 }}
+      aside={{ width: 300, breakpoint: 'sm', collapsed: { mobile: !opened } }}
+      {...getRootProps()}
+    >
+      <AppShell.Header px="md">
+        <Group h="100%" justify="space-between">
+          <Text span fw={700} size="xl">Dice Generator</Text>
 
-      <Drawer>
-        <DrawerTrigger asChild>
-          <Button className="rounded-full p-0 w-12 h-12 fixed bottom-8 right-8">
-            <GearIcon className="w-6 h-6" />
-          </Button>
-        </DrawerTrigger>
+          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+        </Group>
+      </AppShell.Header>
 
-        <DrawerContent>
-          <div className="max-h-svh overflow-auto">
-            <Settings />
-          </div>
-        </DrawerContent>
-      </Drawer>
-    </div>
+      {AppShellContent}
+    </AppShell>
   )
 }

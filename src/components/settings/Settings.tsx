@@ -1,30 +1,30 @@
 import type { FC } from 'react'
+import { Stack, Tabs } from '@mantine/core'
 import { memo } from 'react'
-import { Tabs, TabsList, TabsTrigger } from '~/shadcn/components/ui/tabs'
-import { AppHeader } from './partials/AppHeader'
 import { DiceTab } from './tabs/DiceTab'
 import { FilesTab } from './tabs/FilesTab'
 import { FontsTab } from './tabs/FontsTab'
 import { GlobalTab } from './tabs/GlobalTab'
+import { ThemeSwitcher } from './ThemeSwitcher'
 
 export const Settings: FC = memo(() => {
   return (
-    <>
-      <AppHeader />
+    <Stack gap="sm" p="sm">
+      <ThemeSwitcher />
 
-      <Tabs defaultValue="global" className="px-3">
-        <TabsList className="grid grid-cols-4">
-          <TabsTrigger value="global">Global</TabsTrigger>
-          <TabsTrigger value="fonts">Fonts</TabsTrigger>
-          <TabsTrigger value="files">Files</TabsTrigger>
-          <TabsTrigger value="dice">Dice</TabsTrigger>
-        </TabsList>
+      <Tabs defaultValue="global">
+        <Tabs.List>
+          <Tabs.Tab value="global">Global</Tabs.Tab>
+          <Tabs.Tab value="fonts">Fonts</Tabs.Tab>
+          <Tabs.Tab value="files">Files</Tabs.Tab>
+          <Tabs.Tab value="dice">Dice</Tabs.Tab>
+        </Tabs.List>
 
         <GlobalTab />
         <FontsTab />
         <FilesTab />
         <DiceTab />
       </Tabs>
-    </>
+    </Stack>
   )
 })

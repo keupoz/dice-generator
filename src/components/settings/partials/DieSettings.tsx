@@ -1,12 +1,10 @@
 import type { FC } from 'react'
+import { Button, Divider, Select, SimpleGrid, Switch } from '@mantine/core'
 import { useMemo, useState } from 'react'
 import type { DieInfo } from '~/components/dice/utils/types'
-import { Button } from '~/shadcn/components/ui/button'
 import { exportObject } from '~/utils/exportObject'
 import { focusObject } from '~/utils/focusObject'
-import { SettingsSelect } from '../controls/SettingsSelect'
 import { SettingsSlider } from '../controls/SettingsSlider'
-import { SettingsSwitch } from '../controls/SettingsSwitch'
 import { DieFaceSettings } from './DieFaceSettings'
 
 export interface DieSettingsProps {
@@ -34,7 +32,11 @@ export const DieSettings: FC<DieSettingsProps> = ({ info }) => {
     return info.faces.map(faceInfo => faceInfo.name)
   }, [info.faces])
 
-  function selectFace(name: string) {
+  function selectFace(name: string | null) {
+    if (!name) {
+      return
+    }
+
     const face = info.faces.find(faceInfo => faceInfo.name === name)
 
     setCurrentFace(face)
@@ -42,16 +44,15 @@ export const DieSettings: FC<DieSettingsProps> = ({ info }) => {
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-2">
+      <SimpleGrid cols={2} spacing="xs">
         <Button onClick={handleFocus}>Focus</Button>
-
         <Button onClick={handleExport}>Export STL</Button>
-      </div>
+      </SimpleGrid>
 
-      <SettingsSwitch
+      <Switch
         label="Visible"
         checked={state.visible}
-        onChange={value => info.useStore.setState({ visible: value })}
+        onChange={e => info.useStore.setState({ visible: e.currentTarget.checked })}
       />
 
       <SettingsSlider
@@ -72,7 +73,7 @@ export const DieSettings: FC<DieSettingsProps> = ({ info }) => {
         onChange={value => info.useStore.setState({ fontScale: value })}
       />
 
-      {extraOptionsEntries.length > 0 && <div className="border-b" />}
+      {extraOptionsEntries.length > 0 && <Divider />}
 
       {extraOptionsEntries.map(([key, inputConfig]) => (
         <SettingsSlider
@@ -86,11 +87,11 @@ export const DieSettings: FC<DieSettingsProps> = ({ info }) => {
         />
       ))}
 
-      <div className="border-b" />
+      <Divider />
 
-      <SettingsSelect
+      <Select
         label="Face"
-        options={faceOptions}
+        data={faceOptions}
         value={currentFace?.name ?? ''}
         onChange={selectFace}
       />

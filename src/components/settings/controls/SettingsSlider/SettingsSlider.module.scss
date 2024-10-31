@@ -1,0 +1,9 @@
+.wrapper {
+  position: relative;
+}
+
+.slider {
+  position: absolute;
+  width: 100%;
+  bottom: #{calc(2 / 16)}rem;
+}
