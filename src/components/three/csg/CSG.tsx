@@ -35,6 +35,7 @@ export function CSG({
 
     if (disabled || !rootRef.current) {
       outputRef.current.copy(new Mesh())
+      outputRef.current.visible = false
     } else {
       const evaluate = getEvaluator(renderMethod)
       const result = evaluate(rootRef.current, operation)

@@ -1,6 +1,5 @@
-import type { CameraControls } from '@react-three/drei'
 import type { Object3D } from 'three'
-import { Box3, Vector3 } from 'three'
+import CameraControls from 'camera-controls'
 import { CAMERA_POSITION } from '~/consts'
 
 let cameraControls: CameraControls | null = null
@@ -9,28 +8,14 @@ export function setCameraControls(value: CameraControls | null) {
   cameraControls = value
 }
 
-export function focusObject(object: Object3D, repositionCamera = false) {
+export function focusObject(object: Object3D) {
   if (!cameraControls) {
     return
   }
 
-  const box = new Box3()
-  box.setFromObject(object)
-  const target = box.getCenter(new Vector3())
-
-  if (repositionCamera) {
-    void cameraControls.setLookAt(
-      target.x + 32,
-      target.y + 32,
-      target.z + 32,
-      target.x,
-      target.y,
-      target.z,
-      true,
-    )
-  } else {
-    void cameraControls.setTarget(target.x, target.y, target.z, true)
-  }
+  const sphere = CameraControls.createBoundingSphere(object)
+  sphere.radius += 5
+  cameraControls.fitToSphere(sphere, true)
 }
 
 export function resetFocus(e: MouseEvent) {

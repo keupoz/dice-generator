@@ -21,7 +21,7 @@ export function DieSettings({ info }: DieSettingsProps) {
 
   function handleFocus() {
     if (info.object) {
-      focusObject(info.object, true)
+      focusObject(info.object)
     }
   }
 
