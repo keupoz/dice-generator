@@ -3,7 +3,7 @@ import { useComputedColorScheme, useMantineTheme } from '@mantine/core'
 import { Grid, PerspectiveCamera } from '@react-three/drei'
 import { Box, Flex } from '@react-three/flex'
 import { memo, useLayoutEffect } from 'react'
-import { DoubleSide } from 'three'
+import { BackSide } from 'three'
 import { setExportObject, useAppState } from '~/appState'
 import { CAMERA_POSITION } from '~/consts'
 import { useHighlight } from '~/hooks/useHighlight'
@@ -83,7 +83,7 @@ export const SceneContent = memo(() => {
         sectionColor={dividerColor}
         fadeDistance={256}
         infiniteGrid
-        side={DoubleSide}
+        side={BackSide}
       />
 
       <primitive object={highlight} />
