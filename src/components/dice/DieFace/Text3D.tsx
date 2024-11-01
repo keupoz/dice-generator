@@ -47,7 +47,8 @@ export const Text3D = memo<Text3DProps>(({ text, font, features }) => {
 
         return (
           <brush
-            key={glyph.id}
+            // eslint-disable-next-line react/no-array-index-key
+            key={i}
             geometry={geometry}
             material={FONT_MATERIAL}
             position-x={brushOffset}
