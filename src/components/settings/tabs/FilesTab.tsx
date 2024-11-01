@@ -1,6 +1,6 @@
 import { Text, Title } from '@mantine/core'
 import { useAppState } from '~/appState'
-import { SVGCard } from '../partials/SVGCard'
+import { SVGCard } from '~/components/ui/SVGCard'
 import { SettingsTabContent } from '../SettingsTabContent'
 
 export function FilesTab() {

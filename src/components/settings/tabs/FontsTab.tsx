@@ -1,9 +1,9 @@
 import { Divider, Tabs } from '@mantine/core'
 import { useStore } from 'zustand'
 import { setAppState, useAppState } from '~/appState'
+import { FontSelect } from '~/components/ui/FontSelect'
+import { Slider } from '~/components/ui/Slider'
 import { useCurrentFontsStore } from '~/contexts/CurrentFontsStoreContext'
-import { SettingsSlider } from '../controls/SettingsSlider'
-import { FontSelect } from '../partials/FontSelect/FontSelect'
 import { SettingsTabContent } from '../SettingsTabContent'
 
 export function FontsTab() {
@@ -57,7 +57,7 @@ export function FontsTab() {
 
       <Divider />
 
-      <SettingsSlider
+      <Slider
         label="Segments"
         min={1}
         max={24}
@@ -66,7 +66,7 @@ export function FontsTab() {
         onChange={fontSegments => setAppState({ fontSegments })}
       />
 
-      <SettingsSlider
+      <Slider
         label="Font scale"
         min={0.05}
         max={2}
@@ -75,7 +75,7 @@ export function FontsTab() {
         onChange={fontScale => setAppState({ fontScale })}
       />
 
-      <SettingsSlider
+      <Slider
         label="SVG scale"
         min={0.05}
         max={2}
@@ -84,7 +84,7 @@ export function FontsTab() {
         onChange={svgScale => setAppState({ svgScale })}
       />
 
-      <SettingsSlider
+      <Slider
         label="Font depth"
         min={0.05}
         max={2}

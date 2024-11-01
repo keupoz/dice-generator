@@ -1,7 +1,7 @@
 import { Switch } from '@mantine/core'
 import { memo } from 'react'
-import { SettingsAccordion } from '../../SettingsAccordion'
-import { SettingsAccordionItem } from '../../SettingsAccordionItem'
+import { SettingsAccordion } from '../../settings/SettingsAccordion'
+import { SettingsAccordionItem } from '../../settings/SettingsAccordionItem'
 
 export interface FontFeaturesProps {
   options: string[]

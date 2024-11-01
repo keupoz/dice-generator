@@ -2,9 +2,9 @@ import { Button, Divider, Select, SimpleGrid, Switch } from '@mantine/core'
 import { useMemo, useState } from 'react'
 import { useStore } from 'zustand'
 import type { DieInfo } from '~/components/dice/utils/types'
+import { Slider } from '~/components/ui/Slider'
 import { exportObject } from '~/utils/exportObject'
 import { focusObject } from '~/utils/focusObject'
-import { SettingsSlider } from '../controls/SettingsSlider'
 import { DieFaceSettings } from './DieFaceSettings'
 
 export interface DieSettingsProps {
@@ -59,7 +59,7 @@ export function DieSettings({ info }: DieSettingsProps) {
         onChange={e => info.store.setState({ visible: e.currentTarget.checked })}
       />
 
-      <SettingsSlider
+      <Slider
         label="Size"
         min={1}
         max={40}
@@ -68,7 +68,7 @@ export function DieSettings({ info }: DieSettingsProps) {
         onChange={value => info.store.setState({ size: value })}
       />
 
-      <SettingsSlider
+      <Slider
         label="Font scale"
         min={0.05}
         max={2}
@@ -80,7 +80,7 @@ export function DieSettings({ info }: DieSettingsProps) {
       {extraOptionsEntries.length > 0 && <Divider />}
 
       {extraOptionsEntries.map(([key, inputConfig]) => (
-        <SettingsSlider
+        <Slider
           key={key}
           label={inputConfig.label}
           min={inputConfig.min}

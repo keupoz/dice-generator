@@ -1,7 +1,7 @@
-import { NumberInput, Slider } from '@mantine/core'
-import classes from './SettingsSlider.module.scss'
+import { Slider as MantineSlider, NumberInput } from '@mantine/core'
+import classes from './Slider.module.scss'
 
-export interface SettingsSliderProps {
+export interface SliderProps {
   label: string
   min: number
   max: number
@@ -10,14 +10,14 @@ export interface SettingsSliderProps {
   onChange: (value: number) => void
 }
 
-export function SettingsSlider({
+export function Slider({
   label,
   min,
   max,
   step,
   value,
   onChange,
-}: SettingsSliderProps) {
+}: SliderProps) {
   function handleInputChange(value: string | number) {
     if (typeof value === 'string') {
       value = +value
@@ -37,7 +37,7 @@ export function SettingsSlider({
         onChange={handleInputChange}
       />
 
-      <Slider
+      <MantineSlider
         min={min}
         max={max}
         step={step}

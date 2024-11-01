@@ -4,17 +4,17 @@ import { ActionIcon, Menu, TextInput } from '@mantine/core'
 import { useMemo } from 'react'
 import { useAppState } from '~/appState'
 
-export interface SettingsSVGSelectProps {
+export interface SVGSelectProps {
   label: string
   value: string | number
   onChange: (value: string | number) => void
 }
 
-export function SettingsSVGSelect({
+export function SVGSelect({
   label,
   value,
   onChange,
-}: SettingsSVGSelectProps) {
+}: SVGSelectProps) {
   const svgs = useAppState(state => state.userSVGs)
 
   const placeholder = useMemo(() => {

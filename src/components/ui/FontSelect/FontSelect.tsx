@@ -3,7 +3,7 @@ import { Select } from '@mantine/core'
 import { useCallback, useMemo, useState } from 'react'
 import { useCombinedFonts } from '~/contexts/CombinedFontsContext'
 import { collectFeatures } from '~/utils/collectFontFeatures'
-import { SettingsSlider } from '../../controls/SettingsSlider'
+import { Slider } from '../Slider'
 import { FontFeatures } from './FontFeatures'
 
 export interface FontSelectProps {
@@ -108,7 +108,7 @@ export function FontSelect({
       )}
 
       {Object.entries(baseFont.variationAxes).map(([key, value]) => (
-        <SettingsSlider
+        <Slider
           key={key}
           label={value.name}
           min={value.min}

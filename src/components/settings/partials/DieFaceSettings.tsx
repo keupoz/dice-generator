@@ -1,8 +1,8 @@
 import { Switch } from '@mantine/core'
 import { useStore } from 'zustand'
 import type { FaceInfo } from '~/components/dice/utils/types'
-import { SettingsSlider } from '../controls/SettingsSlider'
-import { SettingsSVGSelect } from '../controls/SettingsSVGSelect'
+import { Slider } from '~/components/ui/Slider'
+import { SVGSelect } from '~/components/ui/SVGSelect'
 
 export interface DieFaceSettingsProps {
   info: FaceInfo
@@ -19,13 +19,13 @@ export function DieFaceSettings({ info }: DieFaceSettingsProps) {
 
   return (
     <>
-      <SettingsSVGSelect
+      <SVGSelect
         label="Text"
         value={text}
         onChange={text => info.store.setState({ text })}
       />
 
-      <SettingsSVGSelect
+      <SVGSelect
         label="Mark"
         value={mark}
         onChange={mark => info.store.setState({ mark })}
@@ -37,7 +37,7 @@ export function DieFaceSettings({ info }: DieFaceSettingsProps) {
         onChange={e => info.store.setState({ isUnderscore: e.currentTarget.checked })}
       />
 
-      <SettingsSlider
+      <Slider
         label="Gap"
         min={-2}
         max={2}
@@ -46,7 +46,7 @@ export function DieFaceSettings({ info }: DieFaceSettingsProps) {
         onChange={markGap => info.store.setState({ markGap })}
       />
 
-      <SettingsSlider
+      <Slider
         label="Rotation"
         min={0}
         max={360}
@@ -55,7 +55,7 @@ export function DieFaceSettings({ info }: DieFaceSettingsProps) {
         onChange={rotation => info.store.setState({ rotation })}
       />
 
-      <SettingsSlider
+      <Slider
         label="Offset X"
         min={-2}
         max={2}
@@ -64,7 +64,7 @@ export function DieFaceSettings({ info }: DieFaceSettingsProps) {
         onChange={offsetX => info.store.setState({ offsetX })}
       />
 
-      <SettingsSlider
+      <Slider
         label="Offset Y"
         min={-2}
         max={2}

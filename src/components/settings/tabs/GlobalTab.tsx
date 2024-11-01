@@ -3,7 +3,7 @@ import { getExportObject, setAppState, useAppState } from '~/appState'
 import { AVAILABLE_EVALUATORS } from '~/components/three/csg/availableEvaluators'
 import { AVAILABLE_OPERATIONS } from '~/components/three/csg/availableOperations'
 import { exportObject } from '~/utils/exportObject'
-import { SettingsSlider } from '../controls/SettingsSlider'
+import { Slider } from '../../ui/Slider'
 import { SettingsTabContent } from '../SettingsTabContent'
 
 export function GlobalTab() {
@@ -41,7 +41,7 @@ export function GlobalTab() {
         onChange={e => setAppState({ enableWireframe: e.currentTarget.checked })}
       />
 
-      <SettingsSlider
+      <Slider
         label="Base opacity"
         min={0.1}
         max={1}
