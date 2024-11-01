@@ -1,8 +1,8 @@
-import { Buffer } from 'node:buffer'
-import { create as createFont, type Font } from 'fontkit'
+import type { Font } from 'fontkit'
 import { useEffect, useState } from 'react'
 import { createContext } from '~/utils/createContext'
 import { flatFontCollection } from '~/utils/flatFontCollection'
+import { readFont } from '~/utils/readFont'
 
 const LOCAL_FONTS = import.meta.glob('~/assets/fonts/*', {
   eager: true,
@@ -41,10 +41,7 @@ export const { useBuiltInFonts, BuiltInFontsProvider } = createContext('BuiltInF
 
     const promises = FONTS.map(async (url) => {
       const r = await fetch(url, { signal: abortController.signal })
-      const arrayBuffer = await r.arrayBuffer()
-      const buffer = Buffer.from(arrayBuffer)
-
-      const fontCollection = createFont(buffer)
+      const fontCollection = await readFont(r)
 
       return fontCollection
     })
