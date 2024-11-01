@@ -23,12 +23,7 @@ function collectVariationSettings(font: Font) {
   return result
 }
 
-export function FontSelect({
-  defaultValue,
-  features,
-  onFont,
-  onFeatures,
-}: FontSelectProps) {
+export function FontSelect({ defaultValue, features, onFont, onFeatures }: FontSelectProps) {
   const [baseFont, setBaseFont] = useState(defaultValue)
   const { data, findFont } = useCombinedFonts()
 
@@ -37,8 +32,7 @@ export function FontSelect({
   }, [defaultValue])
 
   const [selectedVariation, setSelectedVariation] = useState('Default')
-  const [variationSettings, setVariationSettings]
-    = useState<FontVariationSettings>(defaultVariationSettings)
+  const [variationSettings, setVariationSettings] = useState<FontVariationSettings>(defaultVariationSettings)
 
   const variations = useMemo(() => {
     return ['Default', ...Object.keys(baseFont.namedVariations)]
@@ -63,8 +57,7 @@ export function FontSelect({
       return
     }
 
-    const variationSettings
-      = baseFont.namedVariations[value] ?? defaultVariationSettings
+    const variationSettings = baseFont.namedVariations[value] ?? defaultVariationSettings
 
     setSelectedVariation(value)
     setVariationSettings(variationSettings)
@@ -82,12 +75,9 @@ export function FontSelect({
     })
   }
 
-  const handleFeatureChange = useCallback(
-    (key: string, value: boolean) => {
-      onFeatures({ ...features, [key]: value })
-    },
-    [features, onFeatures],
-  )
+  const handleFeatureChange = useCallback((key: string, value: boolean) => {
+    onFeatures({ ...features, [key]: value })
+  }, [features, onFeatures])
 
   return (
     <>

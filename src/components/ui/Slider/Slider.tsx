@@ -10,14 +10,7 @@ export interface SliderProps {
   onChange: (value: number) => void
 }
 
-export function Slider({
-  label,
-  min,
-  max,
-  step,
-  value,
-  onChange,
-}: SliderProps) {
+export function Slider({ label, min, max, step, value, onChange }: SliderProps) {
   function handleInputChange(value: string | number) {
     if (typeof value === 'string') {
       value = +value

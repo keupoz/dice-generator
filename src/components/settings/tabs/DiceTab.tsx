@@ -33,9 +33,7 @@ export function DiceTab() {
         onChange={selectDie}
       />
 
-      {currentDie && (
-        <DieSettings key={currentDie.config.name} info={currentDie} />
-      )}
+      {currentDie && <DieSettings key={currentDie.config.name} info={currentDie} />}
     </SettingsTabContent>
   )
 }

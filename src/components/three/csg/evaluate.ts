@@ -64,10 +64,7 @@ export function evaluateWithCad(object: Object3D, operation: CSGOperation) {
   })
 }
 
-function processBrushes(
-  object: Object3D,
-  callback: (brushes: Brush[]) => Mesh | null,
-) {
+function processBrushes(object: Object3D, callback: (brushes: Brush[]) => Mesh | null) {
   const parent = object.parent
 
   object.removeFromParent()

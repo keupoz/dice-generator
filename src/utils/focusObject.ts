@@ -23,13 +23,5 @@ export function resetFocus(e: MouseEvent) {
     return
   }
 
-  cameraControls?.setLookAt(
-    CAMERA_POSITION,
-    CAMERA_POSITION,
-    CAMERA_POSITION,
-    0,
-    0,
-    0,
-    true,
-  )
+  cameraControls?.setLookAt(CAMERA_POSITION, CAMERA_POSITION, CAMERA_POSITION, 0, 0, 0, true)
 }

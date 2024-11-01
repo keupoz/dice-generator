@@ -2,11 +2,7 @@ import type { Vec3 } from '@jscad/modeling/src/maths/vec3'
 import { polyhedron } from '@jscad/modeling/src/primitives'
 
 // Adapted from https://github.com/BelfrySCAD/BOSL2/blob/204b7bf643d87f3097fe9b782bb79dcfb32ca497/polyhedra.scad#L749
-export function trapezohedron(
-  faceCount: number,
-  height: number,
-  radius: number,
-) {
+export function trapezohedron(faceCount: number, height: number, radius: number) {
   if (faceCount % 2 !== 0) {
     throw new Error('Face count must be even number')
   }

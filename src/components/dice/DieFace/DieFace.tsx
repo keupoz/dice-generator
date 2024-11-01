@@ -42,8 +42,7 @@ export const DieFace = memo<DieFaceProps>(({ info, geom, fontScale }) => {
 
   return infos.map((subInfo, i) => {
     const scale = subInfo.length * globalFontScale * fontScale
-    const rotation
-      = (info.config.localRotation ?? 0) + degToRad(userRotation)
+    const rotation = (info.config.localRotation ?? 0) + degToRad(userRotation)
 
     return (
       // eslint-disable-next-line react/no-array-index-key

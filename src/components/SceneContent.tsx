@@ -8,11 +8,7 @@ import { setExportObject, useAppState } from '~/appState'
 import { CAMERA_POSITION } from '~/consts'
 import { useHighlight } from '~/hooks/useHighlight'
 import { BASE_MATERIAL, FONT_MATERIAL } from '~/materials'
-import {
-  focusObject,
-  resetFocus,
-  setCameraControls,
-} from '~/utils/focusObject'
+import { focusObject, resetFocus, setCameraControls } from '~/utils/focusObject'
 import { getFirstItem } from '~/utils/getFirstItem'
 import { DieD2 } from './dice/DieD2'
 import { DieD3 } from './dice/DieD3'

@@ -27,12 +27,8 @@ export function FontsTab() {
           <FontSelect
             defaultValue={textFont}
             features={textFeatures}
-            onFont={(textFont) => {
-              currentFontsStore.setState({ textFont })
-            }}
-            onFeatures={(textFeatures) => {
-              currentFontsStore.setState({ textFeatures })
-            }}
+            onFont={textFont => currentFontsStore.setState({ textFont })}
+            onFeatures={textFeatures => currentFontsStore.setState({ textFeatures })}
           />
         </SettingsTabContent>
 
@@ -40,12 +36,8 @@ export function FontsTab() {
           <FontSelect
             defaultValue={markFont}
             features={markFeatures}
-            onFont={(markFont) => {
-              currentFontsStore.setState({ markFont })
-            }}
-            onFeatures={(markFeatures) => {
-              currentFontsStore.setState({ markFeatures })
-            }}
+            onFont={markFont => currentFontsStore.setState({ markFont })}
+            onFeatures={markFeatures => currentFontsStore.setState({ markFeatures })}
           />
         </SettingsTabContent>
       </Tabs>

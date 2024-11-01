@@ -99,9 +99,7 @@ export function DieSettings({ info }: DieSettingsProps) {
         onChange={selectFace}
       />
 
-      {currentFace && (
-        <DieFaceSettings key={currentFace.name} info={currentFace} />
-      )}
+      {currentFace && <DieFaceSettings key={currentFace.name} info={currentFace} />}
     </>
   )
 }

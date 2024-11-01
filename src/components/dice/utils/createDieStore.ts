@@ -1,20 +1,10 @@
-import type {
-  DieConfig,
-  DieInputConfig,
-  DieInputValues,
-  DieOptionsStore,
-} from './types'
+import type { DieConfig, DieInputConfig, DieInputValues, DieOptionsStore } from './types'
 import { createStore } from 'zustand'
 
-export function createDieStore<T extends Record<string, DieInputConfig>>(
-  config: DieConfig<T>,
-) {
+export function createDieStore<T extends Record<string, DieInputConfig>>(config: DieConfig<T>) {
   return createStore<DieOptionsStore<T>>((set) => {
     const extraOptionsValues = Object.fromEntries(
-      Object.entries(config.extraOptions).map(([key, value]) => [
-        key,
-        value.value,
-      ]),
+      Object.entries(config.extraOptions).map(([key, value]) => [key, value.value]),
     )
 
     return {

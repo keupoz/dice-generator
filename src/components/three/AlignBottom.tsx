@@ -8,11 +8,7 @@ export interface AlignBottomProps {
   alignBy?: Object3D | null
 }
 
-export function AlignBottom({
-  disabled,
-  alignBy,
-  children,
-}: PropsWithChildren<AlignBottomProps>) {
+export function AlignBottom({ disabled, alignBy, children }: PropsWithChildren<AlignBottomProps>) {
   const rootRef = useRef<Group>(null)
 
   useLayoutEffect(() => {
@@ -26,10 +22,7 @@ export function AlignBottom({
       rootRef.current.updateMatrixWorld()
 
       const target = alignBy ?? rootRef.current
-      const alignment = getAlignment(
-        { modes: ['none', 'min', 'none'] },
-        target,
-      )
+      const alignment = getAlignment({ modes: ['none', 'min', 'none'] }, target)
 
       rootRef.current.position.add(alignment)
     }

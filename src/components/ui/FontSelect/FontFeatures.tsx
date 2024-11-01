@@ -8,25 +8,23 @@ export interface FontFeaturesProps {
   onChange: (key: string, value: boolean) => void
 }
 
-export const FontFeatures = memo<FontFeaturesProps>(
-  ({ options, values, onChange }) => {
-    if (!options.length) {
-      return null
-    }
+export const FontFeatures = memo<FontFeaturesProps>(({ options, values, onChange }) => {
+  if (!options.length) {
+    return null
+  }
 
-    return (
-      <CollapseButton label="Font features">
-        <Stack gap="sm">
-          {options.map(feature => (
-            <Switch
-              key={feature}
-              label={feature}
-              checked={values[feature] ?? false}
-              onChange={e => onChange(feature, e.currentTarget.checked)}
-            />
-          ))}
-        </Stack>
-      </CollapseButton>
-    )
-  },
-)
+  return (
+    <CollapseButton label="Font features">
+      <Stack gap="sm">
+        {options.map(feature => (
+          <Switch
+            key={feature}
+            label={feature}
+            checked={values[feature] ?? false}
+            onChange={e => onChange(feature, e.currentTarget.checked)}
+          />
+        ))}
+      </Stack>
+    </CollapseButton>
+  )
+})

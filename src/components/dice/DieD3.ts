@@ -1,9 +1,5 @@
 import { intersect } from '@jscad/modeling/src/operations/booleans'
-import {
-  rotateX,
-  scale,
-  translateZ,
-} from '@jscad/modeling/src/operations/transforms'
+import { rotateX, scale, translateZ } from '@jscad/modeling/src/operations/transforms'
 import { cube, sphere } from '@jscad/modeling/src/primitives'
 import { DEG_60 } from '~/consts'
 import { createDie } from './utils/createDie'

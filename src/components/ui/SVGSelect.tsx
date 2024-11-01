@@ -10,11 +10,7 @@ export interface SVGSelectProps {
   onChange: (value: string | number) => void
 }
 
-export function SVGSelect({
-  label,
-  value,
-  onChange,
-}: SVGSelectProps) {
+export function SVGSelect({ label, value, onChange }: SVGSelectProps) {
   const svgs = useAppState(state => state.userSVGs)
 
   const placeholder = useMemo(() => {

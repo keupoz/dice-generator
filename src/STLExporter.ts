@@ -1,14 +1,5 @@
-import type {
-  BufferAttribute,
-  BufferGeometry,
-  InterleavedBufferAttribute,
-  Object3D,
-} from 'three'
-import {
-  Mesh,
-  SkinnedMesh,
-  Vector3,
-} from 'three'
+import type { BufferAttribute, BufferGeometry, InterleavedBufferAttribute, Object3D } from 'three'
+import { Mesh, SkinnedMesh, Vector3 } from 'three'
 
 export interface STLExporterOptions {
   binary?: boolean

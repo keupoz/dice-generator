@@ -12,11 +12,7 @@ export interface FaceLayoutProps {
   markGap: number
 }
 
-export function FaceLayout({
-  isUnderscore,
-  markGap,
-  children,
-}: PropsWithChildren<FaceLayoutProps>) {
+export function FaceLayout({ isUnderscore, markGap, children }: PropsWithChildren<FaceLayoutProps>) {
   const rootRef = useRef<Group>(null)
   const forceUpdate = useForceUpdate()
 

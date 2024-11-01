@@ -28,11 +28,7 @@ export interface InstanceFace {
   rotationMatrix: Decomposition
 }
 
-export function getInstanceFaceInfo(
-  geom: Geom3,
-  config: InstanceFaceConfig,
-  invertRotation?: boolean,
-): InstanceFace {
+export function getInstanceFaceInfo(geom: Geom3, config: InstanceFaceConfig, invertRotation?: boolean): InstanceFace {
   const polygon = getArrayItem(geom3.toPolygons(geom), config.faceIndex)
 
   const points = poly3.toPoints(polygon)

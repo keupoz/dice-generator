@@ -49,21 +49,10 @@ export function AbstractDie({ info }: AbstractDieProps) {
     }
 
     const instance = getFirstItem(alignFaceConfig.instances)
-    const faceInfo = getInstanceFaceInfo(
-      facesGeom ?? baseGeom,
-      instance,
-      info.config.invertAlignMatrix,
-    )
+    const faceInfo = getInstanceFaceInfo(facesGeom ?? baseGeom, instance, info.config.invertAlignMatrix)
 
     return faceInfo.rotationMatrix
-  }, [
-    baseGeom,
-    enableAlign,
-    facesGeom,
-    info.config.alignFaceIndex,
-    info.config.faces,
-    info.config.invertAlignMatrix,
-  ])
+  }, [baseGeom, enableAlign, facesGeom, info.config.alignFaceIndex, info.config.faces, info.config.invertAlignMatrix])
 
   return (
     <Box

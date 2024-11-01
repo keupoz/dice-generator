@@ -11,12 +11,8 @@ export function FilesTab() {
       <Title order={2}>SVGs</Title>
 
       {svgs.length === 0
-        ? (
-            <Text c="gray">No SVGs loaded</Text>
-          )
-        : (
-            svgs.map(svg => <SVGCard key={svg.id} info={svg} />)
-          )}
+        ? <Text c="gray">No SVGs loaded</Text>
+        : svgs.map(svg => <SVGCard key={svg.id} info={svg} />)}
     </SettingsTabContent>
   )
 }
