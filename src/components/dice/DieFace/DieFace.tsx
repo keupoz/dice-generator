@@ -19,8 +19,15 @@ export interface DieFaceProps {
 export const DieFace = memo<DieFaceProps>(({ info, geom, fontScale }) => {
   useUpdateCSG()
 
-  const state = info.useStore()
   const currentFontsStore = useCurrentFontsStore()
+
+  const userRotation = useStore(info.store, state => state.rotation)
+  const offsetX = useStore(info.store, state => state.offsetX)
+  const offsetY = useStore(info.store, state => state.offsetY)
+  const isUnderscore = useStore(info.store, state => state.isUnderscore)
+  const markGap = useStore(info.store, state => state.markGap)
+  const text = useStore(info.store, state => state.text)
+  const mark = useStore(info.store, state => state.mark)
 
   const textFont = useStore(currentFontsStore, state => state.textFont)
   const markFont = useStore(currentFontsStore, state => state.markFont)
@@ -36,7 +43,7 @@ export const DieFace = memo<DieFaceProps>(({ info, geom, fontScale }) => {
   return infos.map((subInfo, i) => {
     const scale = subInfo.length * globalFontScale * fontScale
     const rotation
-      = (info.config.localRotation ?? 0) + degToRad(state.rotation)
+      = (info.config.localRotation ?? 0) + degToRad(userRotation)
 
     return (
       // eslint-disable-next-line react/no-array-index-key
@@ -44,20 +51,20 @@ export const DieFace = memo<DieFaceProps>(({ info, geom, fontScale }) => {
         <group position={subInfo.center}>
           <group {...subInfo.rotationMatrix}>
             <group scale-x={scale} scale-y={scale} scale-z={textDepth}>
-              <group position-x={state.offsetX} position-y={state.offsetY}>
+              <group position-x={offsetX} position-y={offsetY}>
                 <group rotation-z={rotation}>
                   <FaceLayout
-                    isUnderscore={state.isUnderscore}
-                    markGap={state.markGap}
+                    isUnderscore={isUnderscore}
+                    markGap={markGap}
                   >
                     <FaceText
-                      text={state.text}
+                      text={text}
                       font={textFont}
                       features={textFeatures}
                     />
 
                     <FaceText
-                      text={state.mark}
+                      text={mark}
                       font={markFont}
                       features={markFeatures}
                     />

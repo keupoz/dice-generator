@@ -1,6 +1,6 @@
 import type { Geom3 } from '@jscad/modeling/src/geometries/types'
 import type { Object3D } from 'three'
-import type { StoreApi, UseBoundStore } from 'zustand'
+import type { StoreApi } from 'zustand'
 import type { InstanceFaceConfig } from '~/utils/faces/getInstanceFaceInfo'
 
 export interface DieInputConfig {
@@ -74,14 +74,12 @@ export interface DieFaceStore {
 export interface FaceInfo {
   name: string
   config: DieFaceConfig
-  useStore: UseBoundStore<StoreApi<DieFaceStore>>
+  store: StoreApi<DieFaceStore>
 }
 
 export interface DieInfo {
   object: Object3D | null
   config: DieConfig<Record<string, DieInputConfig>>
-  useStore: UseBoundStore<
-    StoreApi<DieOptionsStore<Record<string, DieInputConfig>>>
-  >
+  store: StoreApi<DieOptionsStore<Record<string, DieInputConfig>>>
   faces: FaceInfo[]
 }

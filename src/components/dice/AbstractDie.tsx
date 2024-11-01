@@ -2,6 +2,7 @@ import type { DieInfo } from './utils/types'
 import { Box } from '@react-three/flex'
 import { useMemo } from 'react'
 import { Brush } from 'three-bvh-csg'
+import { useStore } from 'zustand'
 import { useAppState } from '~/appState'
 import { DieFace } from '~/components/dice/DieFace/DieFace'
 import { AlignBottom } from '~/components/three/AlignBottom'
@@ -16,7 +17,10 @@ export interface AbstractDieProps {
 }
 
 export function AbstractDie({ info }: AbstractDieProps) {
-  const { visible, size, fontScale, extraOptions } = info.useStore()
+  const visible = useStore(info.store, state => state.visible)
+  const size = useStore(info.store, state => state.size)
+  const fontScale = useStore(info.store, state => state.fontScale)
+  const extraOptions = useStore(info.store, state => state.extraOptions)
 
   const baseGeom = useMemo(() => {
     return info.config.base({ size, ...extraOptions })

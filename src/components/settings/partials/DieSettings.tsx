@@ -1,5 +1,6 @@
 import { Button, Divider, Select, SimpleGrid, Switch } from '@mantine/core'
 import { useMemo, useState } from 'react'
+import { useStore } from 'zustand'
 import type { DieInfo } from '~/components/dice/utils/types'
 import { exportObject } from '~/utils/exportObject'
 import { focusObject } from '~/utils/focusObject'
@@ -11,7 +12,11 @@ export interface DieSettingsProps {
 }
 
 export function DieSettings({ info }: DieSettingsProps) {
-  const state = info.useStore()
+  const visible = useStore(info.store, state => state.visible)
+  const size = useStore(info.store, state => state.size)
+  const fontScale = useStore(info.store, state => state.fontScale)
+  const extraOptions = useStore(info.store, state => state.extraOptions)
+  const setExtraOptions = useStore(info.store, state => state.setExtraOptions)
 
   const extraOptionsEntries = Object.entries(info.config.extraOptions)
 
@@ -50,8 +55,8 @@ export function DieSettings({ info }: DieSettingsProps) {
 
       <Switch
         label="Visible"
-        checked={state.visible}
-        onChange={e => info.useStore.setState({ visible: e.currentTarget.checked })}
+        checked={visible}
+        onChange={e => info.store.setState({ visible: e.currentTarget.checked })}
       />
 
       <SettingsSlider
@@ -59,8 +64,8 @@ export function DieSettings({ info }: DieSettingsProps) {
         min={1}
         max={40}
         step={1}
-        value={state.size}
-        onChange={value => info.useStore.setState({ size: value })}
+        value={size}
+        onChange={value => info.store.setState({ size: value })}
       />
 
       <SettingsSlider
@@ -68,8 +73,8 @@ export function DieSettings({ info }: DieSettingsProps) {
         min={0.05}
         max={2}
         step={0.05}
-        value={state.fontScale}
-        onChange={value => info.useStore.setState({ fontScale: value })}
+        value={fontScale}
+        onChange={value => info.store.setState({ fontScale: value })}
       />
 
       {extraOptionsEntries.length > 0 && <Divider />}
@@ -81,8 +86,8 @@ export function DieSettings({ info }: DieSettingsProps) {
           min={inputConfig.min}
           max={inputConfig.max}
           step={inputConfig.step}
-          value={state.extraOptions[key] ?? inputConfig.value}
-          onChange={value => state.setExtraOptions(key, value)}
+          value={extraOptions[key] ?? inputConfig.value}
+          onChange={value => setExtraOptions(key, value)}
         />
       ))}
 

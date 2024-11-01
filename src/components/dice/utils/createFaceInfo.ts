@@ -1,5 +1,5 @@
 import type { DieFaceConfig, DieFaceStore, FaceInfo } from './types'
-import { create } from 'zustand'
+import { createStore } from 'zustand'
 
 export function createFaceInfo(config: DieFaceConfig, index: number): FaceInfo {
   const defaultText = config.text ?? `${index + 1}`
@@ -7,7 +7,7 @@ export function createFaceInfo(config: DieFaceConfig, index: number): FaceInfo {
 
   const name = `Face ${defaultText}`
 
-  const useStore = create<DieFaceStore>(() => ({
+  const store = createStore<DieFaceStore>(() => ({
     text: defaultText,
     mark: defaultMark,
     isUnderscore: true,
@@ -17,5 +17,5 @@ export function createFaceInfo(config: DieFaceConfig, index: number): FaceInfo {
     offsetY: 0,
   }))
 
-  return { name, config, useStore }
+  return { name, config, store }
 }
