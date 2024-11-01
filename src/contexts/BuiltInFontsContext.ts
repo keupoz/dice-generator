@@ -4,9 +4,10 @@ import { createContext } from '~/utils/createContext'
 import { flatFontCollection } from '~/utils/flatFontCollection'
 import { readFont } from '~/utils/readFont'
 
-const LOCAL_FONTS = import.meta.glob('~/assets/fonts/*', {
+const LOCAL_FONTS = import.meta.glob<string>('~/assets/fonts/*', {
+  query: '?url',
+  import: 'default',
   eager: true,
-  as: 'url',
 })
 
 const FONTS = [
