@@ -31,6 +31,8 @@ const FONTS = [
   ...Object.values(LOCAL_FONTS),
 ]
 
+const UNMOUNT_REASON = 'UNMOUNT_REASON'
+
 export const { useBuiltInFonts, BuiltInFontsProvider } = createContext('BuiltInFonts', () => {
   const [fonts, setFonts] = useState<Font[] | null>(null)
 
@@ -51,9 +53,13 @@ export const { useBuiltInFonts, BuiltInFontsProvider } = createContext('BuiltInF
       const flatFonts = flatFontCollection(fontCollections)
 
       setFonts(flatFonts)
+    }).catch((error) => {
+      if (error !== UNMOUNT_REASON) {
+        throw error
+      }
     })
 
-    return () => abortController.abort('Component unmount')
+    return () => abortController.abort(UNMOUNT_REASON)
   }, [])
 
   return fonts
