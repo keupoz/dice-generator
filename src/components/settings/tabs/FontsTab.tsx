@@ -18,7 +18,7 @@ export function FontsTab() {
   return (
     <SettingsTabContent value="fonts">
       <Tabs defaultValue="text">
-        <Tabs.List className="grid grid-cols-2">
+        <Tabs.List>
           <Tabs.Tab value="text">Text</Tabs.Tab>
           <Tabs.Tab value="mark">Mark</Tabs.Tab>
         </Tabs.List>
