@@ -1,7 +1,6 @@
-import { Switch } from '@mantine/core'
+import { Stack, Switch } from '@mantine/core'
 import { memo } from 'react'
-import { SettingsAccordion } from '../../settings/SettingsAccordion'
-import { SettingsAccordionItem } from '../../settings/SettingsAccordionItem'
+import { CollapseButton } from '../CollapseButton'
 
 export interface FontFeaturesProps {
   options: string[]
@@ -16,8 +15,8 @@ export const FontFeatures = memo<FontFeaturesProps>(
     }
 
     return (
-      <SettingsAccordion>
-        <SettingsAccordionItem name="Features">
+      <CollapseButton label="Font features">
+        <Stack gap="sm">
           {options.map(feature => (
             <Switch
               key={feature}
@@ -26,8 +25,8 @@ export const FontFeatures = memo<FontFeaturesProps>(
               onChange={e => onChange(feature, e.currentTarget.checked)}
             />
           ))}
-        </SettingsAccordionItem>
-      </SettingsAccordion>
+        </Stack>
+      </CollapseButton>
     )
   },
 )
