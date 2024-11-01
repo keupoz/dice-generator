@@ -1,8 +1,7 @@
 import { Buffer } from 'node:buffer'
 import { create } from 'fontkit'
-import { readFile } from './readFile'
 
 export async function readFont(file: File) {
-  const rawFont = await readFile(file)
+  const rawFont = await file.arrayBuffer()
   return create(Buffer.from(rawFont))
 }

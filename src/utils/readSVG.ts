@@ -1,11 +1,10 @@
 import { SVGLoader } from 'three/addons/loaders/SVGLoader.js'
 import type { SVGInfo } from '~/appState'
-import { readTextFile } from './readTextFile'
 
 let lastId = 0
 
 export async function readSVG(file: File): Promise<SVGInfo> {
-  const raw = await readTextFile(file)
+  const raw = await file.text()
 
   const loader = new SVGLoader()
   const data = loader.parse(raw)
