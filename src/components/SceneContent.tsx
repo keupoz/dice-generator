@@ -1,6 +1,6 @@
 import type { ThreeEvent } from '@react-three/fiber'
 import { useComputedColorScheme, useMantineTheme } from '@mantine/core'
-import { CameraControls, Grid, PerspectiveCamera } from '@react-three/drei'
+import { Grid, PerspectiveCamera } from '@react-three/drei'
 import { Box, Flex } from '@react-three/flex'
 import { memo, useLayoutEffect } from 'react'
 import { DoubleSide } from 'three'
@@ -26,6 +26,7 @@ import { DieD10, DieD100 } from './dice/DieD10'
 import { DieD12 } from './dice/DieD12'
 import { DieD12R } from './dice/DieD12R'
 import { DieD20 } from './dice/DieD20'
+import { CameraControls } from './scene/CameraControls'
 
 export const SceneContent = memo(() => {
   const showGrid = useAppState(state => state.showGrid)
