@@ -1,36 +1,52 @@
 import type { ThreeEvent } from '@react-three/fiber'
 import { useThree } from '@react-three/fiber'
-import { useCallback } from 'react'
-import { BoxHelper, Object3D } from 'three'
-import { updateBoxHelperPrecise } from '~/utils/updateBoxHelperPrecise'
-import { getFirstItem } from '../utils/getFirstItem'
+import { useEffect } from 'react'
+import { EdgesGeometry, LineSegments, Mesh } from 'three'
 import { useConst } from './useConst'
 
 export function useHighlight() {
-  const invalidate = useThree(state => state.invalidate)
+  const scene = useThree(ctx => ctx.scene)
+  const invalidate = useThree(ctx => ctx.invalidate)
 
   const highlight = useConst(() => {
-    const result = new BoxHelper(new Object3D(), 0xFFFFFF)
+    const lineSegments = new LineSegments()
 
-    result.visible = false
+    lineSegments.matrixAutoUpdate = false
 
-    return result
+    return lineSegments
   })
 
-  const updateHighlight = useCallback(
-    (e: ThreeEvent<PointerEvent>) => {
-      updateBoxHelperPrecise(highlight, getFirstItem(e.intersections).object)
-      highlight.visible = true
+  useEffect(() => {
+    scene.add(highlight)
 
-      invalidate()
-    },
-    [highlight, invalidate],
-  )
+    return () => {
+      scene.remove(highlight)
+    }
+  }, [highlight, scene])
 
-  const hideHighlight = useCallback(() => {
+  function updateHighlight(e: ThreeEvent<PointerEvent>) {
+    const object = e.intersections[0]?.object
+
+    if (!(object instanceof Mesh)) {
+      return
+    }
+
+    const mesh = object as Mesh
+
+    highlight.geometry = new EdgesGeometry(mesh.geometry)
+
+    mesh.updateMatrixWorld()
+    highlight.matrix.identity()
+    highlight.applyMatrix4(mesh.matrixWorld)
+
+    highlight.visible = true
+    invalidate()
+  }
+
+  function hideHighlight() {
     highlight.visible = false
     invalidate()
-  }, [highlight, invalidate])
+  }
 
   return { highlight, updateHighlight, hideHighlight }
 }
