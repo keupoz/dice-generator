@@ -1,8 +1,8 @@
 import { Divider, Tabs } from '@mantine/core'
 import { useStore } from 'zustand'
-import { setAppState, useAppState } from '~/appState'
+import { appState } from '~/appState'
 import { FontSelect } from '~/components/ui/FontSelect'
-import { Slider } from '~/components/ui/Slider'
+import { StoreSlider } from '~/components/ui/StoreSlider'
 import { useCurrentFontsStore } from '~/contexts/CurrentFontsStoreContext'
 import { SettingsTabContent } from '../SettingsTabContent'
 
@@ -14,11 +14,6 @@ export function FontsTab() {
 
   const textFeatures = useStore(currentFontsStore, state => state.textFeatures)
   const markFeatures = useStore(currentFontsStore, state => state.markFeatures)
-
-  const fontSegments = useAppState(state => state.fontSegments)
-  const fontScale = useAppState(state => state.fontScale)
-  const svgScale = useAppState(state => state.svgScale)
-  const textDepth = useAppState(state => state.textDepth)
 
   return (
     <SettingsTabContent value="fonts">
@@ -57,40 +52,40 @@ export function FontsTab() {
 
       <Divider />
 
-      <Slider
+      <StoreSlider
+        store={appState}
+        storeProp="fontSegments"
         label="Segments"
         min={1}
         max={24}
         step={1}
-        value={fontSegments}
-        onChange={fontSegments => setAppState({ fontSegments })}
       />
 
-      <Slider
+      <StoreSlider
+        store={appState}
+        storeProp="fontScale"
         label="Font scale"
         min={0.05}
         max={2}
         step={0.05}
-        value={fontScale}
-        onChange={fontScale => setAppState({ fontScale })}
       />
 
-      <Slider
+      <StoreSlider
+        store={appState}
+        storeProp="svgScale"
         label="SVG scale"
         min={0.05}
         max={2}
         step={0.05}
-        value={svgScale}
-        onChange={svgScale => setAppState({ svgScale })}
       />
 
-      <Slider
+      <StoreSlider
+        store={appState}
+        storeProp="textDepth"
         label="Font depth"
         min={0.05}
         max={2}
         step={0.05}
-        value={textDepth}
-        onChange={textDepth => setAppState({ textDepth })}
       />
     </SettingsTabContent>
   )

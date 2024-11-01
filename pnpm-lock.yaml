@@ -120,6 +120,9 @@ importers:
       typescript:
         specifier: ^5.6.3
         version: 5.6.3
+      utility-types:
+        specifier: ^3.11.0
+        version: 3.11.0
       vite:
         specifier: ^5.4.10
         version: 5.4.10(@types/node@20.17.4)(sass@1.80.5)

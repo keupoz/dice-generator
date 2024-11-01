@@ -1,8 +1,10 @@
-import { Button, Divider, Select, SimpleGrid, Switch } from '@mantine/core'
+import { Button, Divider, Select, SimpleGrid } from '@mantine/core'
 import { useMemo, useState } from 'react'
 import { useStore } from 'zustand'
 import type { DieInfo } from '~/components/dice/utils/types'
 import { Slider } from '~/components/ui/Slider'
+import { StoreSlider } from '~/components/ui/StoreSlider'
+import { StoreSwitch } from '~/components/ui/StoreSwitch'
 import { exportObject } from '~/utils/exportObject'
 import { focusObject } from '~/utils/focusObject'
 import { DieFaceSettings } from './DieFaceSettings'
@@ -12,9 +14,6 @@ export interface DieSettingsProps {
 }
 
 export function DieSettings({ info }: DieSettingsProps) {
-  const visible = useStore(info.store, state => state.visible)
-  const size = useStore(info.store, state => state.size)
-  const fontScale = useStore(info.store, state => state.fontScale)
   const extraOptions = useStore(info.store, state => state.extraOptions)
   const setExtraOptions = useStore(info.store, state => state.setExtraOptions)
 
@@ -53,28 +52,28 @@ export function DieSettings({ info }: DieSettingsProps) {
         <Button onClick={handleExport}>Export STL</Button>
       </SimpleGrid>
 
-      <Switch
+      <StoreSwitch
+        store={info.store}
+        storeProp="visible"
         label="Visible"
-        checked={visible}
-        onChange={e => info.store.setState({ visible: e.currentTarget.checked })}
       />
 
-      <Slider
+      <StoreSlider
+        store={info.store}
+        storeProp="size"
         label="Size"
         min={1}
         max={40}
         step={1}
-        value={size}
-        onChange={value => info.store.setState({ size: value })}
       />
 
-      <Slider
+      <StoreSlider
+        store={info.store}
+        storeProp="fontScale"
         label="Font scale"
         min={0.05}
         max={2}
         step={0.05}
-        value={fontScale}
-        onChange={value => info.store.setState({ fontScale: value })}
       />
 
       {extraOptionsEntries.length > 0 && <Divider />}

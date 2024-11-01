@@ -36,7 +36,7 @@ export interface AppState {
   renderMethod: string
 }
 
-export const useAppState = createPersistStore<AppState>('app-state', () => ({
+export const [appState, useAppState] = createPersistStore<AppState>('app-state', () => ({
   userFonts: [],
   userSVGs: [],
 
@@ -69,8 +69,8 @@ export const useAppState = createPersistStore<AppState>('app-state', () => ({
   renderMethod: state.renderMethod,
 }))
 
-export const setAppState = useAppState.setState
-export const getAppState = useAppState.getState
+export const setAppState = appState.setState
+export const getAppState = appState.getState
 
 let exportObject: Object3D | null = null
 
