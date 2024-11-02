@@ -1,16 +1,14 @@
-import { Button, Divider, Select, SimpleGrid } from '@mantine/core'
-import { appState, getExportObject, setAppState, useAppState } from '~/appState'
+import { Button, Divider, SimpleGrid } from '@mantine/core'
+import { appState, getExportObject } from '~/appState'
 import { AVAILABLE_EVALUATORS } from '~/components/three/csg/availableEvaluators'
 import { AVAILABLE_OPERATIONS } from '~/components/three/csg/availableOperations'
+import { StoreSelect } from '~/components/ui/StoreSelect'
 import { StoreSlider } from '~/components/ui/StoreSlider'
 import { StoreSwitch } from '~/components/ui/StoreSwitch'
 import { exportObject } from '~/utils/exportObject'
 import { SettingsTabContent } from '../SettingsTabContent'
 
 export function GlobalTab() {
-  const renderOperation = useAppState(state => state.renderOperation)
-  const renderMethod = useAppState(state => state.renderMethod)
-
   function handleExport() {
     exportObject(getExportObject())
   }
@@ -59,18 +57,18 @@ export function GlobalTab() {
       />
 
       <SimpleGrid cols={2} spacing="xs">
-        <Select
+        <StoreSelect
+          store={appState}
+          storeProp="renderOperation"
           label="Render operation"
           data={Object.keys(AVAILABLE_OPERATIONS)}
-          value={renderOperation}
-          onChange={renderOperation => renderOperation && setAppState({ renderOperation })}
         />
 
-        <Select
+        <StoreSelect
+          store={appState}
+          storeProp="renderMethod"
           label="Render method"
           data={Object.keys(AVAILABLE_EVALUATORS)}
-          value={renderMethod}
-          onChange={renderMethod => renderMethod && setAppState({ renderMethod })}
         />
       </SimpleGrid>
 
