@@ -10,11 +10,23 @@ import { readFont } from '~/utils/readFont'
 import { readSVG } from '~/utils/readSVG'
 
 const SVG_MIME_TYPE = 'image/svg+xml'
+const SVG_EXTENSION = '.svg'
+
 const FONT_MIME_TYPES = [
   'font/ttf',
   'font/otf',
   'font/woff',
   'font/woff2',
+]
+
+const FONT_EXTENSIONS = [
+  '.ttf',
+  '.otf',
+  '.woff',
+  '.woff2',
+  // Font collections
+  '.ttc',
+  '.dfont',
 ]
 
 function getPluralEnding(array: ArrayLike<unknown>) {
@@ -33,9 +45,9 @@ export function AppDropzone() {
     const svgPromises: Promise<SVGInfo>[] = []
 
     for (const file of files) {
-      if (file.type === SVG_MIME_TYPE) {
+      if (file.type === SVG_MIME_TYPE || file.name.endsWith(SVG_EXTENSION)) {
         svgPromises.push(readSVG(file))
-      } else if (FONT_MIME_TYPES.includes(file.type)) {
+      } else if (FONT_MIME_TYPES.includes(file.type) || FONT_EXTENSIONS.some(ext => file.name.endsWith(ext))) {
         fontPromises.push(readFont(file))
       }
     }
