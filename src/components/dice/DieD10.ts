@@ -1,16 +1,18 @@
 import type { DieFaceConfig } from './utils/types'
+import { SUFFIX_MM } from '~/consts'
 import { trapezohedron } from '~/utils/shapes/trapezohedron'
 import { createDie } from './utils/createDie'
 
 function createD10(isD100: boolean) {
   return createDie({
     name: isD100 ? 'd00' : 'd10',
+    sizeLabel: 'Height',
     defaultSize: 16,
     defaultFontScale: isD100 ? 0.35 : 0.5,
     alignFaceIndex: 0,
     invertAlignMatrix: true,
     extraOptions: {
-      radius: { value: 8, min: 1, max: 40, step: 1, label: 'Radius' },
+      radius: { value: 8, min: 1, max: 40, step: 1, label: 'Radius', suffix: SUFFIX_MM },
     },
     base({ size, radius }) {
       return trapezohedron(10, size / 2, radius)

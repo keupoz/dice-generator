@@ -19,6 +19,7 @@ const TRIANGLE_PRISM = (() => {
 
 export const DieD3 = createDie({
   name: 'd3',
+  sizeLabel: 'Sphere diameter',
   defaultSize: 16,
   extraOptions: {
     segments: { value: 24, min: 24, max: 360, step: 1, label: 'Segments' },

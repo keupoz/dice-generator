@@ -17,6 +17,7 @@ function createFaceConfig(index: number): DieFaceConfig {
 
 export const DieD8 = createDie({
   name: 'd8',
+  sizeLabel: 'Diameter',
   defaultSize: 16,
   defaultFontScale: 0.6,
   alignFaceIndex: 0,

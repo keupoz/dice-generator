@@ -2,10 +2,11 @@ import geom3 from '@jscad/modeling/src/geometries/geom3'
 import { union } from '@jscad/modeling/src/operations/booleans'
 import { rotateY, translateY } from '@jscad/modeling/src/operations/transforms'
 import { cube, cuboid, cylinder } from '@jscad/modeling/src/primitives'
+import { SUFFIX_MM } from '~/consts'
 import { getArrayItem } from '~/utils/getArrayItem'
 import { createDie } from './utils/createDie'
 
-function getCylinderOffset(size: number, length: number) {
+function getCylindersOffset(size: number, length: number) {
   return size / 4 + length / 2
 }
 
@@ -13,11 +14,11 @@ export const DieD4I = createDie({
   name: 'd4i',
   defaultSize: 16,
   extraOptions: {
-    length: { value: 1.4, min: 0, max: 20, step: 0.1, label: 'Body length' },
+    lengthExtension: { value: 2, min: 0, max: 20, step: 1, label: 'Length extension', suffix: SUFFIX_MM },
     segments: { value: 24, min: 4, max: 360, step: 2, label: 'Curve segments' },
   },
-  base({ size, length, segments }) {
-    const cylinderOffset = getCylinderOffset(size, length)
+  base({ size, lengthExtension, segments }) {
+    const cylindersOffset = getCylindersOffset(size, lengthExtension)
     const radius = size / 2
 
     const baseCylinder = cylinder({
@@ -26,23 +27,23 @@ export const DieD4I = createDie({
       segments,
     })
 
-    const baseCuboid = cuboid({ size: [size, cylinderOffset * 2, size] })
+    const spliceCuboid = cuboid({ size: [size, cylindersOffset * 2, size] })
 
-    const cylinder1 = translateY(cylinderOffset, baseCylinder)
+    const cylinder1 = translateY(cylindersOffset, baseCylinder)
 
     let cylinder2 = rotateY(Math.PI / 2, baseCylinder)
-    cylinder2 = translateY(-cylinderOffset, cylinder2)
+    cylinder2 = translateY(-cylindersOffset, cylinder2)
 
-    return union(cylinder1, baseCuboid, cylinder2)
+    return union(cylinder1, spliceCuboid, cylinder2)
   },
-  facesBase({ size, length }) {
-    const cylinderOffset = getCylinderOffset(size, length)
+  facesBase({ size, lengthExtension: length }) {
+    const cylindersOffset = getCylindersOffset(size, length)
     const baseCylinder = cube({ size })
 
-    const cylinder1 = translateY(cylinderOffset, baseCylinder)
+    const cylinder1 = translateY(cylindersOffset, baseCylinder)
 
     let cylinder2 = rotateY(Math.PI / 2, baseCylinder)
-    cylinder2 = translateY(-cylinderOffset, cylinder2)
+    cylinder2 = translateY(-cylindersOffset, cylinder2)
 
     const polygons1 = geom3.toPolygons(cylinder1)
     const polygons2 = geom3.toPolygons(cylinder2)

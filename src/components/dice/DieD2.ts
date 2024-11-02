@@ -1,11 +1,13 @@
 import { cuboid, cylinder } from '@jscad/modeling/src/primitives'
+import { SUFFIX_MM } from '~/consts'
 import { createDie } from './utils/createDie'
 
 export const DieD2 = createDie({
   name: 'd2',
+  sizeLabel: 'Diameter',
   defaultSize: 16,
   extraOptions: {
-    height: { value: 3, min: 1, max: 40, step: 1, label: 'Height' },
+    height: { value: 3, min: 1, max: 40, step: 1, label: 'Height', suffix: SUFFIX_MM },
     segments: { value: 24, min: 4, max: 360, step: 1, label: 'Segments' },
   },
   base({ size, height, segments }) {

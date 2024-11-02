@@ -3,6 +3,7 @@ import { createDie } from './utils/createDie'
 
 export const DieD12 = createDie({
   name: 'd12',
+  sizeLabel: 'Diameter',
   defaultSize: 16,
   defaultFontScale: 0.6,
   alignFaceIndex: 0,

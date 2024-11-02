@@ -1,14 +1,16 @@
 import { union } from '@jscad/modeling/src/operations/booleans'
 import { rotateY, translateY } from '@jscad/modeling/src/operations/transforms'
 import { cube, cuboid, ellipsoid } from '@jscad/modeling/src/primitives'
+import { SUFFIX_MM } from '~/consts'
 import { createDie } from './utils/createDie'
 
 export const DieD4C = createDie({
   name: 'd4c',
+  sizeLabel: 'Body width',
   defaultSize: 14,
   extraOptions: {
-    length: { value: 21, min: 1, max: 40, step: 1, label: 'Body length' },
-    pointLength: { value: 7, min: 1, max: 20, step: 1, label: 'Point length' },
+    length: { value: 21, min: 1, max: 40, step: 1, label: 'Body length', suffix: SUFFIX_MM },
+    pointLength: { value: 7, min: 1, max: 20, step: 1, label: 'Point length', suffix: SUFFIX_MM },
   },
   base({ size, length, pointLength }) {
     const radius = (size / 2) * Math.SQRT2

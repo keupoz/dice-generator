@@ -3,6 +3,7 @@ import { useStore } from 'zustand'
 import { appState } from '~/appState'
 import { FontSelect } from '~/components/ui/FontSelect'
 import { StoreSlider } from '~/components/ui/StoreSlider'
+import { SUFFIX_MM } from '~/consts'
 import { useCurrentFontsStore } from '~/contexts/CurrentFontsStoreContext'
 import { SettingsTabContent } from '../SettingsTabContent'
 
@@ -74,7 +75,8 @@ export function FontsTab() {
       <StoreSlider
         store={appState}
         storeProp="textDepth"
-        label="Font depth"
+        label="Text depth"
+        suffix={SUFFIX_MM}
         min={0.05}
         max={2}
         step={0.05}

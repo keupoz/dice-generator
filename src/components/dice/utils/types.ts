@@ -9,6 +9,7 @@ export interface DieInputConfig {
   max: number
   step: number
   label: string
+  suffix?: string
 }
 
 export type DieInputValues<T extends Record<string, DieInputConfig>> = {
@@ -31,6 +32,7 @@ export interface DieFaceConfig {
 
 export interface DieConfig<T extends Record<string, DieInputConfig>> {
   name: string
+  sizeLabel?: string
   defaultSize: number
   defaultFontScale?: number
   extraOptions: T

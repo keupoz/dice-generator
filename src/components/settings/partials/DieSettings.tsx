@@ -5,6 +5,7 @@ import type { DieInfo } from '~/components/dice/utils/types'
 import { Slider } from '~/components/ui/Slider'
 import { StoreSlider } from '~/components/ui/StoreSlider'
 import { StoreSwitch } from '~/components/ui/StoreSwitch'
+import { SUFFIX_MM } from '~/consts'
 import { exportObject } from '~/utils/exportObject'
 import { focusObject } from '~/utils/focusObject'
 import { DieFaceSettings } from './DieFaceSettings'
@@ -61,7 +62,8 @@ export function DieSettings({ info }: DieSettingsProps) {
       <StoreSlider
         store={info.store}
         storeProp="size"
-        label="Size"
+        label={info.config.sizeLabel ?? 'Size'}
+        suffix={SUFFIX_MM}
         min={1}
         max={40}
         step={1}
@@ -82,6 +84,7 @@ export function DieSettings({ info }: DieSettingsProps) {
         <Slider
           key={key}
           label={inputConfig.label}
+          suffix={inputConfig.suffix}
           min={inputConfig.min}
           max={inputConfig.max}
           step={inputConfig.step}

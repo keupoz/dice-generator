@@ -3,6 +3,7 @@ import classes from './Slider.module.scss'
 
 export interface SliderProps {
   label: string
+  suffix?: string
   min: number
   max: number
   step: number
@@ -10,7 +11,7 @@ export interface SliderProps {
   onChange: (value: number) => void
 }
 
-export function Slider({ label, min, max, step, value, onChange }: SliderProps) {
+export function Slider({ label, suffix, min, max, step, value, onChange }: SliderProps) {
   function handleInputChange(value: string | number) {
     if (typeof value === 'string') {
       value = +value
@@ -23,6 +24,7 @@ export function Slider({ label, min, max, step, value, onChange }: SliderProps) 
     <div className={classes.wrapper}>
       <NumberInput
         label={label}
+        suffix={suffix}
         min={min}
         max={max}
         step={step}

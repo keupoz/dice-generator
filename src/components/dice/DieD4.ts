@@ -1,6 +1,7 @@
 import { polyhedron } from '@jscad/modeling/src/primitives'
 import { createDie } from './utils/createDie'
 
+// TODO Use size value for side length or something else
 export const DieD4 = createDie({
   name: 'd4',
   defaultSize: 16,

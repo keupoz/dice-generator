@@ -2,6 +2,7 @@ import type { FaceInfo } from '~/components/dice/utils/types'
 import { StoreSlider } from '~/components/ui/StoreSlider'
 import { StoreSVGSelect } from '~/components/ui/StoreSVGSelect'
 import { StoreSwitch } from '~/components/ui/StoreSwitch'
+import { SUFFIX_DEG, SUFFIX_EM } from '~/consts'
 
 export interface DieFaceSettingsProps {
   info: FaceInfo
@@ -32,6 +33,7 @@ export function DieFaceSettings({ info }: DieFaceSettingsProps) {
         store={info.store}
         storeProp="markGap"
         label="Gap"
+        suffix={SUFFIX_EM}
         min={-2}
         max={2}
         step={0.1}
@@ -41,6 +43,7 @@ export function DieFaceSettings({ info }: DieFaceSettingsProps) {
         store={info.store}
         storeProp="rotation"
         label="Rotation"
+        suffix={SUFFIX_DEG}
         min={0}
         max={360}
         step={1}
@@ -50,6 +53,7 @@ export function DieFaceSettings({ info }: DieFaceSettingsProps) {
         store={info.store}
         storeProp="offsetX"
         label="Offset X"
+        suffix={SUFFIX_EM}
         min={-2}
         max={2}
         step={0.01}
@@ -59,6 +63,7 @@ export function DieFaceSettings({ info }: DieFaceSettingsProps) {
         store={info.store}
         storeProp="offsetY"
         label="Offset Y"
+        suffix={SUFFIX_EM}
         min={-2}
         max={2}
         step={0.01}
