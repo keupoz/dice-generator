@@ -16,10 +16,8 @@ export async function readFontFile(bufferReadable: Pick<File, 'arrayBuffer'>) {
     fonts = [fonts]
   }
 
-  const id = lastId++
-
   return fonts.map<FontInfo>(font => ({
-    id: id.toString(),
+    id: (lastId++).toString(),
     font,
   }))
 }
