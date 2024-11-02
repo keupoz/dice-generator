@@ -1,12 +1,10 @@
-import type { Font, FontCollection } from 'fontkit'
 import { faFile } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Group, Stack, Text, Title } from '@mantine/core'
 import { DropzoneFullScreen } from '@mantine/dropzone'
 import { notifications } from '@mantine/notifications'
-import { setAppState, type SVGInfo } from '~/appState'
-import { flatFontCollection } from '~/utils/flatFontCollection'
-import { readFont } from '~/utils/readFont'
+import { type FontInfo, setAppState, type SVGInfo } from '~/appState'
+import { readFontFile } from '~/utils/readFont'
 import { readSVG } from '~/utils/readSVG'
 
 const SVG_MIME_TYPE = 'image/svg+xml'
@@ -41,29 +39,29 @@ function showAddedNotification(type: string, items: ArrayLike<unknown>) {
 
 export function AppDropzone() {
   async function handleDrop(files: File[]) {
-    const fontPromises: Promise<Font | FontCollection>[] = []
+    const fontPromises: Promise<FontInfo[]>[] = []
     const svgPromises: Promise<SVGInfo>[] = []
 
     for (const file of files) {
       if (file.type === SVG_MIME_TYPE || file.name.endsWith(SVG_EXTENSION)) {
         svgPromises.push(readSVG(file))
       } else if (FONT_MIME_TYPES.includes(file.type) || FONT_EXTENSIONS.some(ext => file.name.endsWith(ext))) {
-        fontPromises.push(readFont(file))
+        fontPromises.push(readFontFile(file))
       }
     }
 
     const fontsPromise = Promise.all(fontPromises)
     const svgsPromise = Promise.all(svgPromises)
 
-    const [fontCollection, svgs] = await Promise.all([fontsPromise, svgsPromise])
-    const fonts = flatFontCollection(fontCollection)
+    const [fonts, svgs] = await Promise.all([fontsPromise, svgsPromise])
+    const fontsFlat = fonts.flat()
 
     setAppState(prev => ({
-      userFonts: fonts.length ? [...prev.userFonts, ...fonts] : prev.userFonts,
+      userFonts: fontsFlat.length ? [...prev.userFonts, ...fontsFlat] : prev.userFonts,
       userSVGs: svgs.length ? [...prev.userSVGs, ...svgs] : prev.userSVGs,
     }))
 
-    showAddedNotification('font', fonts)
+    showAddedNotification('font', fontsFlat)
     showAddedNotification('SVG', svgs)
   }
 

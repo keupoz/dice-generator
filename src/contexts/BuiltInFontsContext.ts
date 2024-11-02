@@ -1,8 +1,7 @@
-import type { Font } from 'fontkit'
 import { useEffect, useState } from 'react'
+import type { FontInfo } from '~/appState'
 import { createContext } from '~/utils/createContext'
-import { flatFontCollection } from '~/utils/flatFontCollection'
-import { readFont } from '~/utils/readFont'
+import { readFontFile } from '~/utils/readFont'
 
 const LOCAL_FONTS = import.meta.glob<string>('~/assets/fonts/*', {
   query: '?url',
@@ -35,22 +34,20 @@ const FONTS = [
 const UNMOUNT_REASON = 'UNMOUNT_REASON'
 
 export const { useBuiltInFonts, BuiltInFontsProvider } = createContext('BuiltInFonts', () => {
-  const [fonts, setFonts] = useState<Font[] | null>(null)
+  const [fonts, setFonts] = useState<FontInfo[] | null>(null)
 
   useEffect(() => {
     const abortController = new AbortController()
 
     const promises = FONTS.map(async (url) => {
       const r = await fetch(url, { signal: abortController.signal })
-      const fontCollection = await readFont(r)
+      const fonts = await readFontFile(r)
 
-      return fontCollection
+      return fonts
     })
 
-    Promise.all(promises).then((fontCollections) => {
-      const flatFonts = flatFontCollection(fontCollections)
-
-      setFonts(flatFonts)
+    Promise.all(promises).then((fonts) => {
+      setFonts(fonts.flat())
     }).catch((error) => {
       if (error !== UNMOUNT_REASON) {
         throw error

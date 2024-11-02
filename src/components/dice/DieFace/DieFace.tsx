@@ -1,10 +1,12 @@
 import type { Geom3 } from '@jscad/modeling/src/geometries/types'
+import type { Font, FontVariationSettings } from 'fontkit'
 import type { FaceInfo } from '../utils/types'
-import { Fragment, memo } from 'react'
+import { Fragment, memo, useMemo } from 'react'
 import { degToRad } from 'three/src/math/MathUtils.js'
 import { useStore } from 'zustand'
 import { useAppState } from '~/appState'
 import { useUpdateCSG } from '~/components/three/csg/CSGContext'
+import { useCombinedFonts } from '~/contexts/CombinedFontsContext'
 import { useCurrentFontsStore } from '~/contexts/CurrentFontsStoreContext'
 import { FaceLayout } from './FaceLayout'
 import { FaceText } from './FaceText'
@@ -14,6 +16,14 @@ export interface DieFaceProps {
   info: FaceInfo
   geom: Geom3
   fontScale: number
+}
+
+function getFont(font: Font, settings: FontVariationSettings) {
+  if (Object.keys(settings).length === 0) {
+    return font
+  }
+
+  return font.getVariation(settings)
 }
 
 export const DieFace = memo<DieFaceProps>(({ info, geom, fontScale }) => {
@@ -29,8 +39,16 @@ export const DieFace = memo<DieFaceProps>(({ info, geom, fontScale }) => {
   const text = useStore(info.store, state => state.text)
   const mark = useStore(info.store, state => state.mark)
 
-  const textFont = useStore(currentFontsStore, state => state.textFont)
-  const markFont = useStore(currentFontsStore, state => state.markFont)
+  const { findFont } = useCombinedFonts()
+
+  const textFontId = useStore(currentFontsStore, state => state.textFontId)
+  const markFontId = useStore(currentFontsStore, state => state.markFontId)
+
+  const textSettings = useStore(currentFontsStore, state => state.textSettings)
+  const markSettings = useStore(currentFontsStore, state => state.markSettings)
+
+  const textFont = useMemo(() => getFont(findFont(textFontId).font, textSettings), [findFont, textFontId, textSettings])
+  const markFont = useMemo(() => getFont(findFont(markFontId).font, markSettings), [findFont, markFontId, markSettings])
 
   const textFeatures = useStore(currentFontsStore, state => state.textFeatures)
   const markFeatures = useStore(currentFontsStore, state => state.markFeatures)

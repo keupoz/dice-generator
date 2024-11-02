@@ -1,24 +1,44 @@
-import type { Font } from 'fontkit'
+import type { Font, FontVariationSettings } from 'fontkit'
+import type { FontInfo } from '~/appState'
 import { collectFeatures } from '~/utils/collectFontFeatures'
 import { createStoreContext } from '~/utils/createStoreContext'
 import { getFirstItem } from '~/utils/getFirstItem'
 import { useBuiltInFonts } from './BuiltInFontsContext'
 
 export interface CurrentFontsState {
-  textFont: Font
-  markFont: Font
+  textFontId: FontInfo['id']
+  markFontId: FontInfo['id']
+
+  textSettings: FontVariationSettings
+  markSettings: FontVariationSettings
+
   textFeatures: Record<string, boolean>
   markFeatures: Record<string, boolean>
 }
 
+function collectVariationSettings(font: Font) {
+  const result: FontVariationSettings = {}
+
+  for (const [key, value] of Object.entries(font.variationAxes)) {
+    result[key] = value.default
+  }
+
+  return result
+}
+
 export const { useCurrentFontsStore, CurrentFontsStoreProvider } = createStoreContext('CurrentFonts', () => {
   const fonts = useBuiltInFonts()
-  const font = getFirstItem(fonts)
-  const features = collectFeatures(font)
+  const info = getFirstItem(fonts)
+  const settings = collectVariationSettings(info.font)
+  const features = collectFeatures(info.font)
 
   const initialState: CurrentFontsState = {
-    textFont: font,
-    markFont: font,
+    textFontId: info.id,
+    markFontId: info.id,
+
+    textSettings: settings,
+    markSettings: settings,
+
     textFeatures: features,
     markFeatures: features,
   }

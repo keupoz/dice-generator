@@ -5,6 +5,11 @@ import { AVAILABLE_OPERATIONS } from './components/three/csg/availableOperations
 import { createPersistStore } from './utils/createPersistStore'
 import { getFirstItem } from './utils/getFirstItem'
 
+export interface FontInfo {
+  id: string
+  font: Font
+}
+
 export interface SVGInfo {
   id: number
   name: string
@@ -17,7 +22,7 @@ export interface SVGInfo {
 }
 
 export interface AppState {
-  userFonts: Font[]
+  userFonts: FontInfo[]
   userSVGs: SVGInfo[]
 
   showGrid: boolean

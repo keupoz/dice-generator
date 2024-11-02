@@ -1,6 +1,7 @@
 import type { Font, FontVariationSettings } from 'fontkit'
 import { Select } from '@mantine/core'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
+import type { FontInfo } from '~/appState'
 import { useCombinedFonts } from '~/contexts/CombinedFontsContext'
 import { collectFeatures } from '~/utils/collectFontFeatures'
 import { Slider } from '../Slider'
@@ -8,9 +9,11 @@ import { FontFeatures } from './FontFeatures'
 
 export interface FontSelectProps {
   label: string
-  defaultValue: Font
+  fontId: FontInfo['id']
+  settings: FontVariationSettings
   features: Record<string, boolean>
-  onFont: (value: Font) => void
+  onFontId: (value: FontInfo['id']) => void
+  onSettings: (value: FontVariationSettings) => void
   onFeatures: (value: Record<string, boolean>) => void
 }
 
@@ -24,56 +27,48 @@ function collectVariationSettings(font: Font) {
   return result
 }
 
-export function FontSelect({ label, defaultValue, features, onFont, onFeatures }: FontSelectProps) {
-  const [baseFont, setBaseFont] = useState(defaultValue)
+const DEFAULT_VARIATION_NAME = 'Default'
+
+export function FontSelect({ label, fontId, settings, features, onFontId, onSettings, onFeatures }: FontSelectProps) {
   const { data, findFont } = useCombinedFonts()
+  const info = useMemo(() => findFont(fontId), [findFont, fontId])
 
-  const defaultVariationSettings = useMemo(() => {
-    return collectVariationSettings(defaultValue)
-  }, [defaultValue])
-
-  const [selectedVariation, setSelectedVariation] = useState('Default')
-  const [variationSettings, setVariationSettings] = useState<FontVariationSettings>(defaultVariationSettings)
+  const baseVariationSettings = useMemo(() => {
+    return collectVariationSettings(info.font)
+  }, [info.font])
 
   const variations = useMemo(() => {
-    return ['Default', ...Object.keys(baseFont.namedVariations)]
-  }, [baseFont.namedVariations])
+    return [DEFAULT_VARIATION_NAME, ...Object.keys(info.font.namedVariations)]
+  }, [info.font.namedVariations])
 
-  function handleBaseChange(fontName: string | null) {
-    if (!fontName) {
+  function handleFontIdChange(value: string | null) {
+    if (value === null) {
       return
     }
 
-    const font = findFont(fontName)
+    const info = findFont(value)
 
-    setBaseFont(font)
-    setVariationSettings(collectVariationSettings(font))
-
-    onFont(font)
-    onFeatures(collectFeatures(font))
+    onFontId(info.id)
+    onSettings(collectVariationSettings(info.font))
+    onFeatures(collectFeatures(info.font))
   }
 
-  function handleVariationChange(value: string | null) {
-    if (!value) {
+  function selectVariation(name: string | null) {
+    if (!name) {
       return
     }
 
-    const variationSettings = baseFont.namedVariations[value] ?? defaultVariationSettings
+    const variationSettings = name === DEFAULT_VARIATION_NAME ? baseVariationSettings : info.font.namedVariations[name]
 
-    setSelectedVariation(value)
-    setVariationSettings(variationSettings)
-    onFont(baseFont.getVariation(variationSettings))
+    if (!variationSettings) {
+      throw new Error(`Unknown variation name "${name}"`)
+    }
+
+    onSettings(variationSettings)
   }
 
   function handleAxisChange(key: string, value: number) {
-    setVariationSettings((prev) => {
-      const newState = { ...prev, [key]: value }
-      const font = baseFont.getVariation(newState)
-
-      onFont(font)
-
-      return newState
-    })
+    onSettings({ ...settings, [key]: value })
   }
 
   const handleFeatureChange = useCallback((key: string, value: boolean) => {
@@ -85,33 +80,33 @@ export function FontSelect({ label, defaultValue, features, onFont, onFeatures }
       <Select
         label={label}
         data={data}
-        value={baseFont.fullName}
-        onChange={handleBaseChange}
+        value={fontId}
+        onChange={handleFontIdChange}
       />
 
       {variations.length > 1 && (
         <Select
           label="Variation"
           data={variations}
-          value={selectedVariation}
-          onChange={handleVariationChange}
+          defaultValue={DEFAULT_VARIATION_NAME}
+          onChange={selectVariation}
         />
       )}
 
-      {Object.entries(baseFont.variationAxes).map(([key, value]) => (
+      {Object.entries(info.font.variationAxes).map(([key, value]) => (
         <Slider
           key={key}
           label={value.name}
           min={value.min}
           max={value.max}
           step={1}
-          value={variationSettings[key] ?? value.min}
+          value={settings[key] ?? value.min}
           onChange={handleAxisChange.bind(null, key)}
         />
       ))}
 
       <FontFeatures
-        options={baseFont.availableFeatures}
+        options={info.font.availableFeatures}
         values={features}
         onChange={handleFeatureChange}
       />

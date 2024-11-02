@@ -10,8 +10,11 @@ import { SettingsTabContent } from '../SettingsTabContent'
 export function FontsTab() {
   const currentFontsStore = useCurrentFontsStore()
 
-  const textFont = useStore(currentFontsStore, state => state.textFont)
-  const markFont = useStore(currentFontsStore, state => state.markFont)
+  const textFontId = useStore(currentFontsStore, state => state.textFontId)
+  const markFontId = useStore(currentFontsStore, state => state.markFontId)
+
+  const textSettings = useStore(currentFontsStore, state => state.textSettings)
+  const markSettings = useStore(currentFontsStore, state => state.markSettings)
 
   const textFeatures = useStore(currentFontsStore, state => state.textFeatures)
   const markFeatures = useStore(currentFontsStore, state => state.markFeatures)
@@ -27,9 +30,11 @@ export function FontsTab() {
         <SettingsTabContent value="text">
           <FontSelect
             label="Text font"
-            defaultValue={textFont}
+            fontId={textFontId}
+            settings={textSettings}
             features={textFeatures}
-            onFont={textFont => currentFontsStore.setState({ textFont })}
+            onFontId={textFontId => currentFontsStore.setState({ textFontId })}
+            onSettings={textSettings => currentFontsStore.setState({ textSettings })}
             onFeatures={textFeatures => currentFontsStore.setState({ textFeatures })}
           />
         </SettingsTabContent>
@@ -37,9 +42,11 @@ export function FontsTab() {
         <SettingsTabContent value="mark">
           <FontSelect
             label="Mark font"
-            defaultValue={markFont}
+            fontId={markFontId}
+            settings={markSettings}
             features={markFeatures}
-            onFont={markFont => currentFontsStore.setState({ markFont })}
+            onFontId={markFontId => currentFontsStore.setState({ markFontId })}
+            onSettings={markSettings => currentFontsStore.setState({ markSettings })}
             onFeatures={markFeatures => currentFontsStore.setState({ markFeatures })}
           />
         </SettingsTabContent>

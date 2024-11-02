@@ -1,41 +1,40 @@
-import type { ComboboxData } from '@mantine/core'
-import type { Font } from 'fontkit'
-import { useAppState } from '~/appState'
+import type { ComboboxData, ComboboxItem } from '@mantine/core'
+import { type FontInfo, useAppState } from '~/appState'
 import { createContext } from '~/utils/createContext'
 import { useBuiltInFonts } from './BuiltInFontsContext'
 
 export interface CombinedFonts {
   data: ComboboxData
-  findFont: (name: string) => Font
+  findFont: (id: FontInfo['id']) => FontInfo
+}
+
+function collectFontItems(fonts: FontInfo[]) {
+  return fonts.map<ComboboxItem>(info => ({ value: info.id.toString(), label: info.font.fullName }))
 }
 
 export const { useCombinedFonts, CombinedFontsProvider } = createContext('CombinedFonts', () => {
   const builtInFonts = useBuiltInFonts()
   const userFonts = useAppState(state => state.userFonts)
 
-  const builtinFontNames = builtInFonts.map(font => font.fullName)
-  const userFontNames = userFonts.map(font => font.fullName)
-
-  const data: ComboboxData = [
-    { group: 'Built-in fonts', items: builtinFontNames },
-    { group: 'User fonts', items: userFontNames },
-  ]
+  const builtiInItems = collectFontItems(builtInFonts)
+  const userFontItems = collectFontItems(userFonts)
 
   const allFonts = [...userFonts, ...builtInFonts]
 
-  function findFont(name: string) {
-    const font = allFonts.find(font => font.fullName === name)
-
-    if (font === undefined) {
-      throw new Error(`Unknown font name "${name}"`)
-    }
-
-    return font
-  }
-
   const result: CombinedFonts = {
-    data,
-    findFont,
+    data: [
+      { group: 'Built-in fonts', items: builtiInItems },
+      { group: 'User fonts', items: userFontItems },
+    ],
+    findFont(id) {
+      const info = allFonts.find(info => info.id === id)
+
+      if (info === undefined) {
+        throw new Error(`Unknown font ID "${id}"`)
+      }
+
+      return info
+    },
   }
 
   return result
