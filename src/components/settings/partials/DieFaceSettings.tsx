@@ -1,3 +1,4 @@
+import { SimpleGrid } from '@mantine/core'
 import type { FaceInfo } from '~/components/dice/utils/types'
 import { StoreSlider } from '~/components/ui/StoreSlider'
 import { StoreSVGSelect } from '~/components/ui/StoreSVGSelect'
@@ -11,17 +12,19 @@ export interface DieFaceSettingsProps {
 export function DieFaceSettings({ info }: DieFaceSettingsProps) {
   return (
     <>
-      <StoreSVGSelect
-        store={info.store}
-        storeProp="text"
-        label="Text"
-      />
+      <SimpleGrid cols={2} spacing="xs">
+        <StoreSVGSelect
+          store={info.store}
+          storeProp="text"
+          label="Text"
+        />
 
-      <StoreSVGSelect
-        store={info.store}
-        storeProp="mark"
-        label="Mark"
-      />
+        <StoreSVGSelect
+          store={info.store}
+          storeProp="mark"
+          label="Mark"
+        />
+      </SimpleGrid>
 
       <StoreSwitch
         store={info.store}
@@ -49,25 +52,27 @@ export function DieFaceSettings({ info }: DieFaceSettingsProps) {
         step={1}
       />
 
-      <StoreSlider
-        store={info.store}
-        storeProp="offsetX"
-        label="Offset X"
-        suffix={SUFFIX_EM}
-        min={-2}
-        max={2}
-        step={0.01}
-      />
+      <SimpleGrid cols={2} spacing="xs">
+        <StoreSlider
+          store={info.store}
+          storeProp="offsetX"
+          label="Offset X"
+          suffix={SUFFIX_EM}
+          min={-2}
+          max={2}
+          step={0.01}
+        />
 
-      <StoreSlider
-        store={info.store}
-        storeProp="offsetY"
-        label="Offset Y"
-        suffix={SUFFIX_EM}
-        min={-2}
-        max={2}
-        step={0.01}
-      />
+        <StoreSlider
+          store={info.store}
+          storeProp="offsetY"
+          label="Offset Y"
+          suffix={SUFFIX_EM}
+          min={-2}
+          max={2}
+          step={0.01}
+        />
+      </SimpleGrid>
     </>
   )
 }

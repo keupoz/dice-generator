@@ -7,6 +7,7 @@ import { Slider } from '../Slider'
 import { FontFeatures } from './FontFeatures'
 
 export interface FontSelectProps {
+  label: string
   defaultValue: Font
   features: Record<string, boolean>
   onFont: (value: Font) => void
@@ -23,7 +24,7 @@ function collectVariationSettings(font: Font) {
   return result
 }
 
-export function FontSelect({ defaultValue, features, onFont, onFeatures }: FontSelectProps) {
+export function FontSelect({ label, defaultValue, features, onFont, onFeatures }: FontSelectProps) {
   const [baseFont, setBaseFont] = useState(defaultValue)
   const { data, findFont } = useCombinedFonts()
 
@@ -82,7 +83,7 @@ export function FontSelect({ defaultValue, features, onFont, onFeatures }: FontS
   return (
     <>
       <Select
-        label="Font"
+        label={label}
         data={data}
         value={baseFont.fullName}
         onChange={handleBaseChange}

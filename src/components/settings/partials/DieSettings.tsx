@@ -48,6 +48,8 @@ export function DieSettings({ info }: DieSettingsProps) {
 
   return (
     <>
+      <Divider />
+
       <SimpleGrid cols={2} spacing="xs">
         <Button onClick={handleFocus}>Focus</Button>
         <Button onClick={handleExport}>Export STL</Button>

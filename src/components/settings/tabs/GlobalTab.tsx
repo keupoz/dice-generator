@@ -1,4 +1,4 @@
-import { Button, Divider, Select } from '@mantine/core'
+import { Button, Divider, Select, SimpleGrid } from '@mantine/core'
 import { appState, getExportObject, setAppState, useAppState } from '~/appState'
 import { AVAILABLE_EVALUATORS } from '~/components/three/csg/availableEvaluators'
 import { AVAILABLE_OPERATIONS } from '~/components/three/csg/availableOperations'
@@ -58,19 +58,21 @@ export function GlobalTab() {
         label="Enable render"
       />
 
-      <Select
-        label="Render operation"
-        data={Object.keys(AVAILABLE_OPERATIONS)}
-        value={renderOperation}
-        onChange={renderOperation => renderOperation && setAppState({ renderOperation })}
-      />
+      <SimpleGrid cols={2} spacing="xs">
+        <Select
+          label="Render operation"
+          data={Object.keys(AVAILABLE_OPERATIONS)}
+          value={renderOperation}
+          onChange={renderOperation => renderOperation && setAppState({ renderOperation })}
+        />
 
-      <Select
-        label="Render method"
-        data={Object.keys(AVAILABLE_EVALUATORS)}
-        value={renderMethod}
-        onChange={renderMethod => renderMethod && setAppState({ renderMethod })}
-      />
+        <Select
+          label="Render method"
+          data={Object.keys(AVAILABLE_EVALUATORS)}
+          value={renderMethod}
+          onChange={renderMethod => renderMethod && setAppState({ renderMethod })}
+        />
+      </SimpleGrid>
 
       <Button onClick={handleExport}>Export STL</Button>
     </SettingsTabContent>

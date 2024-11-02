@@ -1,4 +1,4 @@
-import { Divider, Tabs } from '@mantine/core'
+import { Divider, SimpleGrid, Tabs } from '@mantine/core'
 import { useStore } from 'zustand'
 import { appState } from '~/appState'
 import { FontSelect } from '~/components/ui/FontSelect'
@@ -26,6 +26,7 @@ export function FontsTab() {
 
         <SettingsTabContent value="text">
           <FontSelect
+            label="Text font"
             defaultValue={textFont}
             features={textFeatures}
             onFont={textFont => currentFontsStore.setState({ textFont })}
@@ -35,6 +36,7 @@ export function FontsTab() {
 
         <SettingsTabContent value="mark">
           <FontSelect
+            label="Mark font"
             defaultValue={markFont}
             features={markFeatures}
             onFont={markFont => currentFontsStore.setState({ markFont })}
@@ -48,29 +50,31 @@ export function FontsTab() {
       <StoreSlider
         store={appState}
         storeProp="fontSegments"
-        label="Segments"
+        label="Curve segments"
         min={1}
         max={24}
         step={1}
       />
 
-      <StoreSlider
-        store={appState}
-        storeProp="fontScale"
-        label="Font scale"
-        min={0.05}
-        max={2}
-        step={0.05}
-      />
+      <SimpleGrid cols={2} spacing="xs">
+        <StoreSlider
+          store={appState}
+          storeProp="fontScale"
+          label="Font scale"
+          min={0.05}
+          max={2}
+          step={0.05}
+        />
 
-      <StoreSlider
-        store={appState}
-        storeProp="svgScale"
-        label="SVG scale"
-        min={0.05}
-        max={2}
-        step={0.05}
-      />
+        <StoreSlider
+          store={appState}
+          storeProp="svgScale"
+          label="SVG scale"
+          min={0.05}
+          max={2}
+          step={0.05}
+        />
+      </SimpleGrid>
 
       <StoreSlider
         store={appState}
