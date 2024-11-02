@@ -33,7 +33,7 @@ export interface AppState {
   enableAlign: boolean
   enableRender: boolean
   renderOperation: string
-  renderMethod: string
+  renderEngine: string
 }
 
 export const [appState, useAppState] = createPersistStore<AppState>('app-state', () => ({
@@ -53,7 +53,7 @@ export const [appState, useAppState] = createPersistStore<AppState>('app-state',
   enableAlign: true,
   enableRender: false,
   renderOperation: getFirstItem(Object.keys(AVAILABLE_OPERATIONS)),
-  renderMethod: getFirstItem(Object.keys(AVAILABLE_EVALUATORS)),
+  renderEngine: getFirstItem(Object.keys(AVAILABLE_EVALUATORS)),
 }), state => ({
   showGrid: state.showGrid,
   smoothCamera: state.smoothCamera,
@@ -66,7 +66,7 @@ export const [appState, useAppState] = createPersistStore<AppState>('app-state',
 
   enableAlign: state.enableAlign,
   renderOperation: state.renderOperation,
-  renderMethod: state.renderMethod,
+  renderEngine: state.renderEngine,
 }))
 
 export const setAppState = appState.setState

@@ -66,8 +66,8 @@ export function GlobalTab() {
 
         <StoreSelect
           store={appState}
-          storeProp="renderMethod"
-          label="Render method"
+          storeProp="renderEngine"
+          label="Render engine"
           data={Object.keys(AVAILABLE_EVALUATORS)}
         />
       </SimpleGrid>

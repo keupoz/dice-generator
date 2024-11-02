@@ -21,7 +21,7 @@ export function CSG({ disabled, children }: PropsWithChildren<CSGProps>) {
   const forceUpdate = useForceUpdate()
 
   const renderOperation = useAppState(store => store.renderOperation)
-  const renderMethod = useAppState(store => store.renderMethod)
+  const renderEngine = useAppState(store => store.renderEngine)
 
   const operation = getOperation(renderOperation)
 
@@ -34,7 +34,7 @@ export function CSG({ disabled, children }: PropsWithChildren<CSGProps>) {
       outputRef.current.copy(new Mesh())
       outputRef.current.visible = false
     } else {
-      const evaluate = getEvaluator(renderMethod)
+      const evaluate = getEvaluator(renderEngine)
       const result = evaluate(rootRef.current, operation)
 
       if (result) {
