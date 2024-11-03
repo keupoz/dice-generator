@@ -4,7 +4,7 @@ import { createDie } from './utils/createDie'
 
 const t = 2 / 3
 
-export const DieD4P = createDie({
+export default createDie({
   name: 'd4p',
   defaultSize: 14,
   alignFaceIndex: 0,

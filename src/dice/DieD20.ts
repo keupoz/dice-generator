@@ -1,7 +1,7 @@
-import { icosahedron } from '~/utils/shapes/icosahedron'
+import { icosahedron } from './shapes/icosahedron'
 import { createDie } from './utils/createDie'
 
-export const DieD20 = createDie({
+export default createDie({
   name: 'd20',
   sizeLabel: 'Diameter',
   defaultSize: 16,

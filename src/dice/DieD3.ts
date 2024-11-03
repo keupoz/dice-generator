@@ -17,7 +17,7 @@ const TRIANGLE_PRISM = (() => {
   return result
 })()
 
-export const DieD3 = createDie({
+export default createDie({
   name: 'd3',
   sizeLabel: 'Sphere diameter',
   defaultSize: 16,

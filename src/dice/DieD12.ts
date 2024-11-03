@@ -1,7 +1,7 @@
-import { dodecahedron } from '~/utils/shapes/dodecahedron'
+import { dodecahedron } from './shapes/dodecahedron'
 import { createDie } from './utils/createDie'
 
-export const DieD12 = createDie({
+export default createDie({
   name: 'd12',
   sizeLabel: 'Diameter',
   defaultSize: 16,

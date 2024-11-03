@@ -2,7 +2,7 @@ import { cuboid, cylinder } from '@jscad/modeling/src/primitives'
 import { SUFFIX_MM } from '~/consts'
 import { createDie } from './utils/createDie'
 
-export const DieD2 = createDie({
+export default createDie({
   name: 'd2',
   sizeLabel: 'Diameter',
   defaultSize: 16,

@@ -1,22 +1,22 @@
-import type { DieInfo } from './utils/types'
 import { Box } from '@react-three/flex'
 import { useMemo } from 'react'
 import { Brush } from 'three-bvh-csg'
 import { useStore } from 'zustand'
 import { useAppState } from '~/appState'
-import { DieFace } from '~/components/dice/DieFace/DieFace'
 import { AlignBottom } from '~/components/three/AlignBottom'
 import { CSG } from '~/components/three/csg/CSG'
 import { useMaterial } from '~/contexts/MaterialContext'
+import type { DieInfo } from '~/dice/utils/types'
 import { cad2geometry } from '~/utils/cad2three'
 import { getInstanceFaceInfo } from '~/utils/faces/getInstanceFaceInfo'
 import { getFirstItem } from '~/utils/getFirstItem'
+import { DieFace } from './DieFace/DieFace'
 
-export interface AbstractDieProps {
+export interface DieProps {
   info: DieInfo
 }
 
-export function AbstractDie({ info }: AbstractDieProps) {
+export function Die({ info }: DieProps) {
   const visible = useStore(info.store, state => state.visible)
   const size = useStore(info.store, state => state.size)
   const fontScale = useStore(info.store, state => state.fontScale)

@@ -10,7 +10,7 @@ function getCylindersOffset(size: number, length: number) {
   return size / 4 + length / 2
 }
 
-export const DieD4I = createDie({
+export default createDie({
   name: 'd4i',
   defaultSize: 16,
   extraOptions: {

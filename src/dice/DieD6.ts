@@ -1,7 +1,7 @@
 import { cube } from '@jscad/modeling/src/primitives'
 import { createDie } from './utils/createDie'
 
-export const DieD6 = createDie({
+export default createDie({
   name: 'd6',
   defaultSize: 16,
   extraOptions: {},

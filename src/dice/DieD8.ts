@@ -1,5 +1,5 @@
 import type { DieFaceConfig } from './utils/types'
-import { octahedron } from '~/utils/shapes/octahedron'
+import { octahedron } from './shapes/octahedron'
 import { createDie } from './utils/createDie'
 
 function createFaceConfig(index: number): DieFaceConfig {
@@ -15,7 +15,7 @@ function createFaceConfig(index: number): DieFaceConfig {
   }
 }
 
-export const DieD8 = createDie({
+export default createDie({
   name: 'd8',
   sizeLabel: 'Diameter',
   defaultSize: 16,

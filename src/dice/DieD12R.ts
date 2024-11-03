@@ -1,7 +1,7 @@
-import { rhombicDodecahedron } from '~/utils/shapes/rhombicDodecahedron'
+import { rhombicDodecahedron } from './shapes/rhombicDodecahedron'
 import { createDie } from './utils/createDie'
 
-export const DieD12R = createDie({
+export default createDie({
   name: 'd12r',
   sizeLabel: 'Diameter',
   defaultSize: 16,

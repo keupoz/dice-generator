@@ -4,7 +4,7 @@ import { cube, cuboid, ellipsoid } from '@jscad/modeling/src/primitives'
 import { SUFFIX_MM } from '~/consts'
 import { createDie } from './utils/createDie'
 
-export const DieD4C = createDie({
+export default createDie({
   name: 'd4c',
   sizeLabel: 'Body width',
   defaultSize: 14,

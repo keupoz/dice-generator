@@ -4,21 +4,11 @@ import { Box, Flex } from '@react-three/flex'
 import { memo } from 'react'
 import { setExportObject, useAppState } from '~/appState'
 import { CAMERA_POSITION } from '~/consts'
+import { DICE_GROUPED } from '~/dice/allDice'
 import { useHighlight } from '~/hooks/useHighlight'
 import { focusObject, resetFocus, setCameraControls } from '~/utils/focusObject'
 import { getFirstItem } from '~/utils/getFirstItem'
-import { DieD2 } from './dice/DieD2'
-import { DieD3 } from './dice/DieD3'
-import { DieD4 } from './dice/DieD4'
-import { DieD4C } from './dice/DieD4C'
-import { DieD4I } from './dice/DieD4I'
-import { DieD4P } from './dice/DieD4P'
-import { DieD6 } from './dice/DieD6'
-import { DieD8 } from './dice/DieD8'
-import { DieD10, DieD100 } from './dice/DieD10'
-import { DieD12 } from './dice/DieD12'
-import { DieD12R } from './dice/DieD12R'
-import { DieD20 } from './dice/DieD20'
+import { Die } from './dice/Die'
 import { CameraControls } from './scene/CameraControls'
 import { Grid } from './scene/Grid'
 
@@ -63,33 +53,14 @@ export const SceneContent = memo(() => {
         onDoubleClick={focus}
         onPointerMissed={resetFocus}
       >
-        <Box flexDirection="row">
-          <DieD2 />
-          <DieD3 />
-          <DieD4 />
-        </Box>
-
-        <Box flexDirection="row">
-          <DieD4C />
-          <DieD4I />
-          <DieD4P />
-        </Box>
-
-        <Box flexDirection="row">
-          <DieD6 />
-          <DieD8 />
-          <DieD10 />
-        </Box>
-
-        <Box flexDirection="row">
-          <DieD100 />
-          <DieD12 />
-          <DieD12R />
-        </Box>
-
-        <Box flexDirection="row">
-          <DieD20 />
-        </Box>
+        {DICE_GROUPED.map((group, i) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <Box key={i} flexDirection="row">
+            {group.map(info => (
+              <Die key={info.config.name} info={info} />
+            ))}
+          </Box>
+        ))}
       </Flex>
     </>
   )

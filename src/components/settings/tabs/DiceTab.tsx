@@ -1,24 +1,18 @@
 import { Select } from '@mantine/core'
-import { useMemo, useState } from 'react'
-import { useDiceRegistryStore } from '~/components/dice/utils/registry'
+import { useState } from 'react'
+import { DICE, DIE_NAMES } from '~/dice/allDice'
 import { DieSettings } from '../partials/DieSettings'
 import { SettingsTabContent } from '../SettingsTabContent'
 
 export function DiceTab() {
-  const dice = useDiceRegistryStore(state => state.dice)
-
-  const [currentDie, setCurrentDie] = useState(() => dice[0])
-
-  const options = useMemo(() => {
-    return dice.map(info => info.config.name)
-  }, [dice])
+  const [currentDie, setCurrentDie] = useState(() => DICE[0])
 
   function selectDie(name: string | null) {
     if (!name) {
       return
     }
 
-    const info = dice.find(info => info.config.name === name)
+    const info = DICE.find(info => info.config.name === name)
 
     setCurrentDie(info)
   }
@@ -27,7 +21,7 @@ export function DiceTab() {
     <SettingsTabContent value="dice">
       <Select
         label="Die"
-        data={options}
+        data={DIE_NAMES}
         value={currentDie?.config.name ?? ''}
         placeholder="Select a die"
         onChange={selectDie}

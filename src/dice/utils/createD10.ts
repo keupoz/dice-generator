@@ -1,9 +1,9 @@
-import type { DieFaceConfig } from './utils/types'
+import type { DieFaceConfig } from './types'
 import { SUFFIX_MM } from '~/consts'
-import { trapezohedron } from '~/utils/shapes/trapezohedron'
-import { createDie } from './utils/createDie'
+import { trapezohedron } from '../shapes/trapezohedron'
+import { createDie } from './createDie'
 
-function createD10(isD100: boolean) {
+export function createD10(isD100: boolean) {
   return createDie({
     name: isD100 ? 'd00' : 'd10',
     sizeLabel: 'Height',
@@ -56,6 +56,3 @@ function createFaceConfig(isD100: boolean, index: number, i: number) {
 
   return config
 }
-
-export const DieD10 = createD10(false)
-export const DieD100 = createD10(true)
