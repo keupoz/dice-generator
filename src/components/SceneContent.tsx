@@ -1,9 +1,7 @@
 import type { ThreeEvent } from '@react-three/fiber'
-import { useComputedColorScheme, useMantineTheme } from '@mantine/core'
-import { Grid, PerspectiveCamera } from '@react-three/drei'
+import { PerspectiveCamera } from '@react-three/drei'
 import { Box, Flex } from '@react-three/flex'
 import { memo } from 'react'
-import { BackSide } from 'three'
 import { setExportObject, useAppState } from '~/appState'
 import { CAMERA_POSITION } from '~/consts'
 import { useHighlight } from '~/hooks/useHighlight'
@@ -22,14 +20,10 @@ import { DieD12 } from './dice/DieD12'
 import { DieD12R } from './dice/DieD12R'
 import { DieD20 } from './dice/DieD20'
 import { CameraControls } from './scene/CameraControls'
+import { Grid } from './scene/Grid'
 
 export const SceneContent = memo(() => {
-  const showGrid = useAppState(state => state.showGrid)
   const smoothCamera = useAppState(state => state.smoothCamera)
-
-  const colorScheme = useComputedColorScheme()
-  const { colors } = useMantineTheme()
-  const dividerColor = colorScheme === 'dark' ? colors.dark[4] : colors.gray[2]
 
   const { highlight, updateHighlight, hideHighlight } = useHighlight()
 
@@ -54,19 +48,7 @@ export const SceneContent = memo(() => {
         draggingSmoothTime={smoothCamera ? 0.0625 : 0}
       />
 
-      <Grid
-        visible={showGrid}
-        args={[10, 10]}
-        cellSize={1}
-        cellThickness={1}
-        cellColor={dividerColor}
-        sectionSize={10}
-        sectionThickness={1.5}
-        sectionColor={dividerColor}
-        fadeDistance={256}
-        infiniteGrid
-        side={BackSide}
-      />
+      <Grid />
 
       <primitive object={highlight} />
 
