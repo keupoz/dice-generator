@@ -5,17 +5,15 @@ import { memo } from 'react'
 import { setExportObject, useAppState } from '~/appState'
 import { CAMERA_POSITION } from '~/consts'
 import { DICE_GROUPED } from '~/dice/allDice'
-import { useHighlight } from '~/hooks/useHighlight'
 import { focusObject, resetFocus, setCameraControls } from '~/utils/focusObject'
 import { getFirstItem } from '~/utils/getFirstItem'
 import { Die } from './dice/Die'
 import { CameraControls } from './scene/CameraControls'
 import { Grid } from './scene/Grid'
+import { Highlighter } from './scene/Highlighter'
 
 export const SceneContent = memo(() => {
   const smoothCamera = useAppState(state => state.smoothCamera)
-
-  const { highlight, updateHighlight, hideHighlight } = useHighlight()
 
   function focus(e: ThreeEvent<MouseEvent>) {
     e.stopPropagation()
@@ -40,28 +38,26 @@ export const SceneContent = memo(() => {
 
       <Grid />
 
-      <primitive object={highlight} />
-
-      <Flex
-        ref={setExportObject}
-        alignItems="center"
-        justifyContent="center"
-        dir="column-reverse"
-        plane="xz"
-        onPointerMove={updateHighlight}
-        onPointerLeave={hideHighlight}
-        onDoubleClick={focus}
-        onPointerMissed={resetFocus}
-      >
-        {DICE_GROUPED.map((group, i) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <Box key={i} flexDirection="row">
-            {group.map(info => (
-              <Die key={info.config.name} info={info} />
-            ))}
-          </Box>
-        ))}
-      </Flex>
+      <Highlighter>
+        <Flex
+          ref={setExportObject}
+          alignItems="center"
+          justifyContent="center"
+          dir="column-reverse"
+          plane="xz"
+          onDoubleClick={focus}
+          onPointerMissed={resetFocus}
+        >
+          {DICE_GROUPED.map((group, i) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <Box key={i} flexDirection="row">
+              {group.map(info => (
+                <Die key={info.config.name} info={info} />
+              ))}
+            </Box>
+          ))}
+        </Flex>
+      </Highlighter>
     </>
   )
 })

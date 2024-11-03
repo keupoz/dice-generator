@@ -1,11 +1,9 @@
-import type { ThreeEvent } from '@react-three/fiber'
-import type { Object3D } from 'three'
-import { useThree } from '@react-three/fiber'
-import { useEffect, useRef } from 'react'
-import { EdgesGeometry, LineSegments, Mesh } from 'three'
-import { useConst } from './useConst'
+import { type ThreeEvent, useThree } from '@react-three/fiber'
+import { type PropsWithChildren, useEffect, useRef } from 'react'
+import { EdgesGeometry, LineSegments, Mesh, type Object3D } from 'three'
+import { useConst } from '~/hooks/useConst'
 
-export function useHighlight() {
+export function Highlighter({ children }: PropsWithChildren) {
   const scene = useThree(ctx => ctx.scene)
   const invalidate = useThree(ctx => ctx.invalidate)
   const lastObjectRef = useRef<Object3D | null>(null)
@@ -57,5 +55,12 @@ export function useHighlight() {
     invalidate()
   }
 
-  return { highlight, updateHighlight, hideHighlight }
+  return (
+    <group
+      onPointerMove={updateHighlight}
+      onPointerLeave={hideHighlight}
+    >
+      {children}
+    </group>
+  )
 }
