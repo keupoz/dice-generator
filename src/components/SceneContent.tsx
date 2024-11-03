@@ -2,19 +2,17 @@ import type { ThreeEvent } from '@react-three/fiber'
 import { PerspectiveCamera } from '@react-three/drei'
 import { Box, Flex } from '@react-three/flex'
 import { memo } from 'react'
-import { setExportObject, useAppState } from '~/appState'
+import { setExportObject } from '~/appState'
 import { CAMERA_POSITION } from '~/consts'
 import { DICE_GROUPED } from '~/dice/allDice'
-import { focusObject, resetFocus, setCameraControls } from '~/utils/focusObject'
+import { focusObject, resetFocus } from '~/utils/focusObject'
 import { getFirstItem } from '~/utils/getFirstItem'
 import { Die } from './dice/Die'
-import { CameraControls } from './scene/CameraControls'
 import { Grid } from './scene/Grid'
 import { Highlighter } from './scene/Highlighter'
+import { SceneControls } from './scene/SceneControls'
 
 export const SceneContent = memo(() => {
-  const smoothCamera = useAppState(state => state.smoothCamera)
-
   function focus(e: ThreeEvent<MouseEvent>) {
     e.stopPropagation()
 
@@ -24,17 +22,12 @@ export const SceneContent = memo(() => {
   return (
     <>
       <PerspectiveCamera makeDefault position={CAMERA_POSITION} />
+      <SceneControls />
 
       <directionalLight position-z={32} position-y={32} />
       <directionalLight position-z={-32} position-y={32} />
 
       <ambientLight intensity={1} />
-
-      <CameraControls
-        ref={setCameraControls}
-        makeDefault
-        draggingSmoothTime={smoothCamera ? 0.0625 : 0}
-      />
 
       <Grid />
 
