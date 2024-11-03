@@ -7,7 +7,7 @@ import { useAppState } from '~/appState'
 import { DieFace } from '~/components/dice/DieFace/DieFace'
 import { AlignBottom } from '~/components/three/AlignBottom'
 import { CSG } from '~/components/three/csg/CSG'
-import { BASE_MATERIAL } from '~/materials'
+import { useMaterial } from '~/contexts/MaterialContext'
 import { cad2geometry } from '~/utils/cad2three'
 import { getInstanceFaceInfo } from '~/utils/faces/getInstanceFaceInfo'
 import { getFirstItem } from '~/utils/getFirstItem'
@@ -22,6 +22,8 @@ export function AbstractDie({ info }: AbstractDieProps) {
   const fontScale = useStore(info.store, state => state.fontScale)
   const extraOptions = useStore(info.store, state => state.extraOptions)
 
+  const { baseMaterial } = useMaterial()
+
   const baseGeom = useMemo(() => {
     return info.config.base({ size, ...extraOptions })
   }, [extraOptions, info.config, size])
@@ -31,8 +33,8 @@ export function AbstractDie({ info }: AbstractDieProps) {
   }, [extraOptions, info.config, size])
 
   const baseBrush = useMemo(() => {
-    return new Brush(cad2geometry(baseGeom), BASE_MATERIAL)
-  }, [baseGeom])
+    return new Brush(cad2geometry(baseGeom), baseMaterial)
+  }, [baseGeom, baseMaterial])
 
   const enableAlign = useAppState(state => state.enableAlign)
   const enableRender = useAppState(state => state.enableRender)

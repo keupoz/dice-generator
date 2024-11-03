@@ -2,7 +2,7 @@ import type { Font } from 'fontkit'
 import { memo, useMemo } from 'react'
 import { useAppState } from '~/appState'
 import { useUpdateCSG } from '~/components/three/csg/CSGContext'
-import { FONT_MATERIAL } from '~/materials'
+import { useMaterial } from '~/contexts/MaterialContext'
 import { getGlyphGeometry } from '~/utils/fonts/getGlyphGeometry'
 import { getArrayItem } from '~/utils/getArrayItem'
 
@@ -16,6 +16,8 @@ export const Text3D = memo<Text3DProps>(({ text, font, features }) => {
   useUpdateCSG()
 
   const segments = useAppState(state => state.fontSegments)
+
+  const { fontMaterial } = useMaterial()
 
   const layout = useMemo(() => {
     const trimmedText = text.trim()
@@ -50,7 +52,7 @@ export const Text3D = memo<Text3DProps>(({ text, font, features }) => {
             // eslint-disable-next-line react/no-array-index-key
             key={i}
             geometry={geometry}
-            material={FONT_MATERIAL}
+            material={fontMaterial}
             position-x={brushOffset}
           />
         )

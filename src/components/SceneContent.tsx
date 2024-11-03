@@ -2,12 +2,11 @@ import type { ThreeEvent } from '@react-three/fiber'
 import { useComputedColorScheme, useMantineTheme } from '@mantine/core'
 import { Grid, PerspectiveCamera } from '@react-three/drei'
 import { Box, Flex } from '@react-three/flex'
-import { memo, useLayoutEffect } from 'react'
+import { memo } from 'react'
 import { BackSide } from 'three'
 import { setExportObject, useAppState } from '~/appState'
 import { CAMERA_POSITION } from '~/consts'
 import { useHighlight } from '~/hooks/useHighlight'
-import { BASE_MATERIAL, FONT_MATERIAL } from '~/materials'
 import { focusObject, resetFocus, setCameraControls } from '~/utils/focusObject'
 import { getFirstItem } from '~/utils/getFirstItem'
 import { DieD2 } from './dice/DieD2'
@@ -27,25 +26,12 @@ import { CameraControls } from './scene/CameraControls'
 export const SceneContent = memo(() => {
   const showGrid = useAppState(state => state.showGrid)
   const smoothCamera = useAppState(state => state.smoothCamera)
-  const baseOpacity = useAppState(state => state.baseOpacity)
-  const enableWireframe = useAppState(state => state.enableWireframe)
 
   const colorScheme = useComputedColorScheme()
   const { colors } = useMantineTheme()
   const dividerColor = colorScheme === 'dark' ? colors.dark[4] : colors.gray[2]
 
   const { highlight, updateHighlight, hideHighlight } = useHighlight()
-
-  useLayoutEffect(() => {
-    BASE_MATERIAL.opacity = baseOpacity
-    BASE_MATERIAL.transparent = baseOpacity < 1
-    BASE_MATERIAL.needsUpdate = true
-  }, [baseOpacity])
-
-  useLayoutEffect(() => {
-    BASE_MATERIAL.wireframe = enableWireframe
-    FONT_MATERIAL.wireframe = enableWireframe
-  }, [baseOpacity, enableWireframe])
 
   function focus(e: ThreeEvent<MouseEvent>) {
     e.stopPropagation()

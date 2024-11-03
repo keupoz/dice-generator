@@ -2,7 +2,7 @@ import { memo, useMemo } from 'react'
 import { Vector3 } from 'three'
 import { useAppState } from '~/appState'
 import { useUpdateCSG } from '~/components/three/csg/CSGContext'
-import { FONT_MATERIAL } from '~/materials'
+import { useMaterial } from '~/contexts/MaterialContext'
 import { getBoundingBox } from '~/utils/alignObject'
 import { getSVGGeometry } from '~/utils/fonts/getSVGGeometry'
 import { useUpdateFaceLayout } from './FaceLayoutContext'
@@ -19,6 +19,8 @@ export const SVG3D = memo<SVG3DProps>(({ id }) => {
   const segments = useAppState(state => state.fontSegments)
   const fontScale = useAppState(state => state.fontScale)
   const svgScale = useAppState(state => state.svgScale)
+
+  const { fontMaterial } = useMaterial()
 
   const svg = useMemo(() => {
     return svgs.find(svg => svg.id === id) ?? null
@@ -45,7 +47,7 @@ export const SVG3D = memo<SVG3DProps>(({ id }) => {
 
   return (
     <group scale-x={scale} scale-y={-scale}>
-      <brush geometry={geometry} material={FONT_MATERIAL} />
+      <brush geometry={geometry} material={fontMaterial} />
     </group>
   )
 })
