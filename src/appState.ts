@@ -1,6 +1,5 @@
 import type { Font } from 'fontkit'
 import type { Object3D, Path } from 'three'
-import { AVAILABLE_EVALUATORS } from './components/three/csg/availableEvaluators'
 import { AVAILABLE_OPERATIONS } from './components/three/csg/availableOperations'
 import { createPersistStore } from './utils/createPersistStore'
 import { getFirstItem } from './utils/getFirstItem'
@@ -58,7 +57,7 @@ export const [appState, useAppState] = createPersistStore<AppState>('app-state',
   enableAlign: true,
   enableRender: false,
   renderOperation: getFirstItem(Object.keys(AVAILABLE_OPERATIONS)),
-  renderEngine: getFirstItem(Object.keys(AVAILABLE_EVALUATORS)),
+  renderEngine: 'Manifold',
 }), state => ({
   showGrid: state.showGrid,
   smoothCamera: state.smoothCamera,

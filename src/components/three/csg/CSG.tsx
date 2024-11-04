@@ -3,8 +3,8 @@ import type { Group } from 'three'
 import { useLayoutEffect, useRef } from 'react'
 import { Mesh } from 'three'
 import { useAppState } from '~/appState'
+import { useEvaluator } from '~/contexts/EvaluatorContext'
 import { useForceUpdate } from '~/hooks/useForceUpdate'
-import { getEvaluator } from './availableEvaluators'
 import { getOperation } from './availableOperations'
 import { CSGContext } from './CSGContext'
 import './extendR3F'
@@ -19,6 +19,8 @@ export function CSG({ disabled, children }: PropsWithChildren<CSGProps>) {
   const outputRef = useRef<Mesh>(null)
 
   const forceUpdate = useForceUpdate()
+
+  const { getEvaluator } = useEvaluator()
 
   const renderOperation = useAppState(store => store.renderOperation)
   const renderEngine = useAppState(store => store.renderEngine)

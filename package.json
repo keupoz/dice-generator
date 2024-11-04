@@ -25,6 +25,7 @@
     "camera-controls": "^2.9.0",
     "file-saver": "^2.0.5",
     "fontkit": "^2.0.4",
+    "manifold-3d": "^2.5.1",
     "pretty-bytes": "^6.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

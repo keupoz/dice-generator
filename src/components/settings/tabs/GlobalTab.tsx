@@ -1,14 +1,16 @@
 import { Button, Divider, SimpleGrid } from '@mantine/core'
 import { appState, getExportObject } from '~/appState'
-import { AVAILABLE_EVALUATORS } from '~/components/three/csg/availableEvaluators'
 import { AVAILABLE_OPERATIONS } from '~/components/three/csg/availableOperations'
 import { StoreSelect } from '~/components/ui/StoreSelect'
 import { StoreSlider } from '~/components/ui/StoreSlider'
 import { StoreSwitch } from '~/components/ui/StoreSwitch'
+import { useEvaluator } from '~/contexts/EvaluatorContext'
 import { exportObject } from '~/utils/exportObject'
 import { SettingsTabContent } from '../SettingsTabContent'
 
 export function GlobalTab() {
+  const { availableEvaluators } = useEvaluator()
+
   function handleExport() {
     exportObject(getExportObject())
   }
@@ -68,7 +70,7 @@ export function GlobalTab() {
           store={appState}
           storeProp="renderEngine"
           label="Render engine"
-          data={Object.keys(AVAILABLE_EVALUATORS)}
+          data={availableEvaluators}
         />
       </SimpleGrid>
 
