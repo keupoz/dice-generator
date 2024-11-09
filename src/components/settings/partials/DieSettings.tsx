@@ -6,7 +6,7 @@ import { StoreSlider } from '~/components/ui/StoreSlider'
 import { StoreSwitch } from '~/components/ui/StoreSwitch'
 import { SUFFIX_MM } from '~/consts'
 import type { DieInfo } from '~/dice/utils/types'
-import { exportObject } from '~/utils/exportObject'
+import { exportObject } from '~/utils/files/exporters/exportObject'
 import { focusObject } from '~/utils/focusObject'
 import { DieFaceSettings } from './DieFaceSettings'
 

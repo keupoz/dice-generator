@@ -5,7 +5,7 @@ import { StoreSelect } from '~/components/ui/StoreSelect'
 import { StoreSlider } from '~/components/ui/StoreSlider'
 import { StoreSwitch } from '~/components/ui/StoreSwitch'
 import { useEvaluator } from '~/contexts/EvaluatorContext'
-import { exportObject } from '~/utils/exportObject'
+import { exportObject } from '~/utils/files/exporters/exportObject'
 import { SettingsTabContent } from '../SettingsTabContent'
 
 export function GlobalTab() {

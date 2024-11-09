@@ -4,11 +4,10 @@ import type { FontInfo } from '~/appState'
 
 let lastId = 0
 
-export async function readFontFile(bufferReadable: Pick<File, 'arrayBuffer'>) {
-  const rawFont = await bufferReadable.arrayBuffer()
+export function readFontFile(arrayBuffer: ArrayBuffer) {
   let fonts
 
-  fonts = create(Buffer.from(rawFont))
+  fonts = create(Buffer.from(arrayBuffer))
 
   if ('fonts' in fonts) {
     fonts = fonts.fonts

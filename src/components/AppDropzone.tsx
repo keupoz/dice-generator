@@ -4,8 +4,8 @@ import { Group, Stack, Text, Title } from '@mantine/core'
 import { DropzoneFullScreen } from '@mantine/dropzone'
 import { notifications } from '@mantine/notifications'
 import { type FontInfo, setAppState, type SVGInfo } from '~/appState'
-import { readFontFile } from '~/utils/readFont'
-import { readSVG } from '~/utils/readSVG'
+import { readFontFile } from '~/utils/files/readers/readFont'
+import { readSVG } from '~/utils/files/readers/readSVG'
 
 const SVG_MIME_TYPE = 'image/svg+xml'
 const SVG_EXTENSION = '.svg'
@@ -46,7 +46,7 @@ export function AppDropzone() {
       if (file.type === SVG_MIME_TYPE || file.name.endsWith(SVG_EXTENSION)) {
         svgPromises.push(readSVG(file))
       } else if (FONT_MIME_TYPES.includes(file.type) || FONT_EXTENSIONS.some(ext => file.name.endsWith(ext))) {
-        fontPromises.push(readFontFile(file))
+        fontPromises.push(file.arrayBuffer().then(readFontFile))
       }
     }
 

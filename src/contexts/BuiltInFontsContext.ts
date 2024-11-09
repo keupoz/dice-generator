@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { FontInfo } from '~/appState'
 import { createContext } from '~/utils/createContext'
-import { readFontFile } from '~/utils/readFont'
+import { readFontFile } from '~/utils/files/readers/readFont'
 
 const LOCAL_FONTS = import.meta.glob<string>('~/assets/fonts/*', {
   query: '?url',
@@ -41,7 +41,8 @@ export const { useBuiltInFonts, BuiltInFontsProvider } = createContext('BuiltInF
 
     const promises = FONTS.map(async (url) => {
       const r = await fetch(url, { signal: abortController.signal })
-      const fonts = await readFontFile(r)
+      const arrayBuffer = await r.arrayBuffer()
+      const fonts = readFontFile(arrayBuffer)
 
       return fonts
     })
