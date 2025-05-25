@@ -1,14 +1,16 @@
-import { type ThreeEvent, useThree } from '@react-three/fiber'
-import { type PropsWithChildren, useEffect, useRef } from 'react'
-import { EdgesGeometry, LineSegments, Mesh, type Object3D } from 'three'
-import { useConst } from '~/hooks/useConst'
+import type { ThreeEvent } from '@react-three/fiber'
+import type { PropsWithChildren } from 'react'
+import type { Object3D } from 'three'
+import { useThree } from '@react-three/fiber'
+import { useEffect, useRef, useState } from 'react'
+import { EdgesGeometry, LineSegments, Mesh } from 'three'
 
 export function Highlighter({ children }: PropsWithChildren) {
   const scene = useThree(ctx => ctx.scene)
   const invalidate = useThree(ctx => ctx.invalidate)
   const lastObjectRef = useRef<Object3D | null>(null)
 
-  const highlight = useConst(() => {
+  const [highlight] = useState(() => {
     const lineSegments = new LineSegments()
 
     lineSegments.matrixAutoUpdate = false

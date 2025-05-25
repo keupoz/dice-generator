@@ -1,9 +1,9 @@
+import type { FaceInfo } from '~/dice/utils/types'
 import { SimpleGrid } from '@mantine/core'
 import { StoreSlider } from '~/components/ui/StoreSlider'
 import { StoreSVGSelect } from '~/components/ui/StoreSVGSelect'
 import { StoreSwitch } from '~/components/ui/StoreSwitch'
 import { SUFFIX_DEG, SUFFIX_EM } from '~/consts'
-import type { FaceInfo } from '~/dice/utils/types'
 
 export interface DieFaceSettingsProps {
   info: FaceInfo

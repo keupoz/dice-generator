@@ -1,5 +1,6 @@
 import type { Geom3 } from '@jscad/modeling/src/geometries/types'
-import type { Font, FontVariationSettings } from 'fontkit'
+import type { FaceInfo } from '~/dice/utils/types'
+import type { FixedFont, FontVariationSettings } from '~/fontkit'
 import { Fragment, memo, useMemo } from 'react'
 import { degToRad } from 'three/src/math/MathUtils.js'
 import { useStore } from 'zustand'
@@ -7,7 +8,6 @@ import { useAppState } from '~/appState'
 import { useUpdateCSG } from '~/components/three/csg/CSGContext'
 import { useCombinedFonts } from '~/contexts/CombinedFontsContext'
 import { useCurrentFontsStore } from '~/contexts/CurrentFontsStoreContext'
-import type { FaceInfo } from '~/dice/utils/types'
 import { FaceLayout } from './FaceLayout'
 import { FaceText } from './FaceText'
 import { useInfos } from './useInfos'
@@ -18,7 +18,7 @@ export interface DieFaceProps {
   fontScale: number
 }
 
-function getFont(font: Font, settings: FontVariationSettings) {
+function getFont(font: FixedFont, settings: FontVariationSettings) {
   if (Object.keys(settings).length === 0) {
     return font
   }

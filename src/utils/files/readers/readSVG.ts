@@ -1,5 +1,5 @@
-import { SVGLoader } from 'three/addons/loaders/SVGLoader.js'
 import type { SVGInfo } from '~/appState'
+import { SVGLoader } from 'three/addons/loaders/SVGLoader.js'
 
 let lastId = 0
 

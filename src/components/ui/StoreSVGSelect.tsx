@@ -1,5 +1,7 @@
-import { type StoreComponentProps, useStoreProp } from '~/hooks/useStoreProp'
-import { SVGSelect, type SVGSelectProps } from './SVGSelect'
+import type { SVGSelectProps } from './SVGSelect'
+import type { StoreComponentProps } from '~/hooks/useStoreProp'
+import { useStoreProp } from '~/hooks/useStoreProp'
+import { SVGSelect } from './SVGSelect'
 
 export type StoreSVGSelectProps<T> = StoreComponentProps<SVGSelectProps, T, string | number>
 

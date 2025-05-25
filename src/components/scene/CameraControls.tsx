@@ -1,8 +1,10 @@
-import type { ReactThreeFiber } from '@react-three/fiber'
+import type { ThreeElement } from '@react-three/fiber'
+import type { Ref } from 'react'
+import type { EventDispatcher } from 'three'
 import { useFrame, useThree } from '@react-three/fiber'
 import CameraControlsImpl from 'camera-controls'
-import { forwardRef, useEffect, useMemo } from 'react'
-import { Box3, type EventDispatcher, Matrix4, Quaternion, Raycaster, Sphere, Spherical, Vector2, Vector3, Vector4 } from 'three'
+import { useEffect, useMemo } from 'react'
+import { Box3, Matrix4, Quaternion, Raycaster, Sphere, Spherical, Vector2, Vector3, Vector4 } from 'three'
 
 CameraControlsImpl.install({
   THREE: {
@@ -18,17 +20,12 @@ CameraControlsImpl.install({
   },
 })
 
-export type CameraControlsProps = Omit<
-  ReactThreeFiber.Overwrite<
-    ReactThreeFiber.Node<CameraControlsImpl, typeof CameraControlsImpl>,
-    {
-      makeDefault?: boolean
-    }
-  >,
-  'ref' | keyof EventDispatcher
->
+export interface CameraControlsProps extends Omit<ThreeElement<typeof CameraControlsImpl>, 'args' | keyof EventDispatcher> {
+  ref?: Ref<CameraControlsImpl>
+  makeDefault?: boolean
+}
 
-export const CameraControls = forwardRef<CameraControlsImpl, CameraControlsProps>(({ makeDefault, ...props }, ref) => {
+export function CameraControls({ ref, makeDefault, ...props }: CameraControlsProps) {
   const camera = useThree(state => state.camera)
   const domElement = useThree(state => state.gl.domElement)
   const controls = useMemo(() => new CameraControlsImpl(camera), [camera])
@@ -79,4 +76,4 @@ export const CameraControls = forwardRef<CameraControlsImpl, CameraControlsProps
   }, [controls, get, makeDefault, set])
 
   return <primitive ref={ref} object={controls} {...props} />
-})
+}

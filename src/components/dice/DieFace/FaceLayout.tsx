@@ -62,9 +62,9 @@ export function FaceLayout({ isUnderscore, markGap, children }: PropsWithChildre
 
   return (
     <group ref={rootRef}>
-      <FaceLayoutContext.Provider value={forceUpdate}>
+      <FaceLayoutContext value={forceUpdate}>
         {children}
-      </FaceLayoutContext.Provider>
+      </FaceLayoutContext>
     </group>
   )
 }

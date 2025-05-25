@@ -1,12 +1,12 @@
-import type { Font } from 'fontkit'
 import type { Object3D, Path } from 'three'
+import type { FixedFont } from './fontkit'
 import { AVAILABLE_OPERATIONS } from './components/three/csg/availableOperations'
 import { createPersistStore } from './utils/createPersistStore'
 import { getFirstItem } from './utils/getFirstItem'
 
 export interface FontInfo {
   id: string
-  font: Font
+  font: FixedFont
 }
 
 export interface SVGInfo {

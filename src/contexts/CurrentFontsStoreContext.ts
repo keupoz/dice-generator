@@ -1,5 +1,5 @@
-import type { Font, FontVariationSettings } from 'fontkit'
 import type { FontInfo } from '~/appState'
+import type { FixedFont, FontVariationSettings } from '~/fontkit'
 import { collectFeatures } from '~/utils/collectFontFeatures'
 import { createStoreContext } from '~/utils/createStoreContext'
 import { getFirstItem } from '~/utils/getFirstItem'
@@ -16,7 +16,7 @@ export interface CurrentFontsState {
   markFeatures: Record<string, boolean>
 }
 
-function collectVariationSettings(font: Font) {
+function collectVariationSettings(font: FixedFont) {
   const result: FontVariationSettings = {}
 
   for (const [key, value] of Object.entries(font.variationAxes)) {

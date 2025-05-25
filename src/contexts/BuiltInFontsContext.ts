@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
 import type { FontInfo } from '~/appState'
+import { useEffect, useState } from 'react'
 import { createContext } from '~/utils/createContext'
 import { readFontFile } from '~/utils/files/readers/readFont'
 

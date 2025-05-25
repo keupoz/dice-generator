@@ -1,5 +1,6 @@
 import type { PickByValue } from 'utility-types'
-import { type StoreApi, useStore } from 'zustand'
+import type { StoreApi } from 'zustand'
+import { useStore } from 'zustand'
 
 export type StoreComponentProps<OriginalComponentProps, State, ValueType> = Omit<OriginalComponentProps, 'value' | 'onChange'> & {
   store: StoreApi<State>

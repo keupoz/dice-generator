@@ -1,5 +1,6 @@
 import type { ComboboxData, ComboboxItem } from '@mantine/core'
-import { type FontInfo, useAppState } from '~/appState'
+import type { FontInfo } from '~/appState'
+import { useAppState } from '~/appState'
 import { createContext } from '~/utils/createContext'
 import { useBuiltInFonts } from './BuiltInFontsContext'
 

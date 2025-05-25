@@ -1,6 +1,7 @@
+import type { FC, PropsWithChildren } from 'react'
 import type { Prettify } from './types'
 import { LoadingOverlay } from '@mantine/core'
-import { createContext as createReactContext, type FC, type PropsWithChildren, useContext as useReactContext } from 'react'
+import { createContext as createReactContext, use } from 'react'
 
 export type CreateContextResult<T, Name extends string> = Prettify<{
   [HookName in `use${Name}`]: () => T;
@@ -12,7 +13,7 @@ export function createContext<T, Name extends string>(name: Name, useValue: () =
   const Context = createReactContext<T | null>(null)
 
   function useContext() {
-    const value = useReactContext(Context)
+    const value = use(Context)
 
     if (value === null) {
       throw new Error(`${name}: context is not initialized`)
@@ -29,9 +30,9 @@ export function createContext<T, Name extends string>(name: Name, useValue: () =
     }
 
     return (
-      <Context.Provider value={value}>
+      <Context value={value}>
         {children}
-      </Context.Provider>
+      </Context>
     )
   }
 

@@ -1,5 +1,6 @@
+import type { ThreeEvent } from '@react-three/fiber'
 import { PerspectiveCamera } from '@react-three/drei'
-import { Canvas, type ThreeEvent } from '@react-three/fiber'
+import { Canvas } from '@react-three/fiber'
 import { Box, Flex } from '@react-three/flex'
 import { setExportObject } from '~/appState'
 import { CAMERA_POSITION } from '~/consts'
@@ -33,6 +34,7 @@ export function Scene() {
         <Grid />
 
         <Highlighter>
+          {/* @ts-expect-error Outdated types of the lib */}
           <Flex
             ref={setExportObject}
             alignItems="center"
@@ -43,6 +45,7 @@ export function Scene() {
             onPointerMissed={resetFocus}
           >
             {DICE_GROUPED.map((group, i) => (
+              // @ts-expect-error Outdated types of the lib
               // eslint-disable-next-line react/no-array-index-key
               <Box key={i} flexDirection="row">
                 {group.map(info => (

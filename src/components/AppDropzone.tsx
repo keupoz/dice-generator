@@ -1,9 +1,10 @@
+import type { FontInfo, SVGInfo } from '~/appState'
 import { faFile } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Group, Stack, Text, Title } from '@mantine/core'
 import { DropzoneFullScreen } from '@mantine/dropzone'
 import { notifications } from '@mantine/notifications'
-import { type FontInfo, setAppState, type SVGInfo } from '~/appState'
+import { setAppState } from '~/appState'
 import { readFontFile } from '~/utils/files/readers/readFont'
 import { readSVG } from '~/utils/files/readers/readSVG'
 

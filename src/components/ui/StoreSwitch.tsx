@@ -1,6 +1,8 @@
+import type { SwitchProps } from '@mantine/core'
 import type { ChangeEvent } from 'react'
-import { Switch, type SwitchProps } from '@mantine/core'
-import { type StoreComponentProps, useStoreProp } from '~/hooks/useStoreProp'
+import type { StoreComponentProps } from '~/hooks/useStoreProp'
+import { Switch } from '@mantine/core'
+import { useStoreProp } from '~/hooks/useStoreProp'
 
 export type StoreSwitchProps<T> = StoreComponentProps<SwitchProps, T, boolean>
 

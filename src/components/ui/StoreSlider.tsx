@@ -1,5 +1,7 @@
-import { type StoreComponentProps, useStoreProp } from '~/hooks/useStoreProp'
-import { Slider, type SliderProps } from './Slider'
+import type { SliderProps } from './Slider'
+import type { StoreComponentProps } from '~/hooks/useStoreProp'
+import { useStoreProp } from '~/hooks/useStoreProp'
+import { Slider } from './Slider'
 
 export type StoreSliderProps<T> = StoreComponentProps<SliderProps, T, number>
 

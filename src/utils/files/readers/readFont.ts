@@ -1,6 +1,7 @@
+import type { FontInfo } from '~/appState'
+import type { FixedFont } from '~/fontkit'
 import { Buffer } from 'node:buffer'
 import { create } from 'fontkit'
-import type { FontInfo } from '~/appState'
 
 let lastId = 0
 
@@ -17,6 +18,6 @@ export function readFontFile(arrayBuffer: ArrayBuffer) {
 
   return fonts.map<FontInfo>(font => ({
     id: (lastId++).toString(),
-    font,
+    font: font as FixedFont,
   }))
 }

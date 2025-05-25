@@ -1,7 +1,8 @@
+import type { FontInfo } from '~/appState'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ActionIcon, Card, Divider, Group, Text } from '@mantine/core'
-import { type FontInfo, setAppState } from '~/appState'
+import { setAppState } from '~/appState'
 
 export interface FontCardProps {
   info: FontInfo

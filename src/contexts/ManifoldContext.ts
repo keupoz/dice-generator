@@ -1,4 +1,5 @@
-import initManifold, { type ManifoldToplevel } from 'manifold-3d'
+import type { ManifoldToplevel } from 'manifold-3d'
+import initManifold from 'manifold-3d'
 import MANIFOLD_URL from 'manifold-3d/manifold.wasm?url'
 import { useEffect, useState } from 'react'
 import { createContext } from '~/utils/createContext'

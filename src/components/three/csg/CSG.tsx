@@ -52,9 +52,9 @@ export function CSG({ disabled, children }: PropsWithChildren<CSGProps>) {
   return (
     <>
       <group ref={rootRef} visible={disabled}>
-        <CSGContext.Provider value={forceUpdate}>
+        <CSGContext value={forceUpdate}>
           {children}
-        </CSGContext.Provider>
+        </CSGContext>
       </group>
 
       <mesh ref={outputRef} raycast={() => null} />

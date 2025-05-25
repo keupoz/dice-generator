@@ -1,5 +1,7 @@
-import { Select, type SelectProps } from '@mantine/core'
-import { type StoreComponentProps, useStoreProp } from '~/hooks/useStoreProp'
+import type { SelectProps } from '@mantine/core'
+import type { StoreComponentProps } from '~/hooks/useStoreProp'
+import { Select } from '@mantine/core'
+import { useStoreProp } from '~/hooks/useStoreProp'
 
 export type StoreSelectProps<T> = StoreComponentProps<SelectProps, T, string>
 

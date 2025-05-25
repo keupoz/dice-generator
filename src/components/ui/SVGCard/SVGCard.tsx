@@ -1,10 +1,11 @@
 import type { ChangeEvent } from 'react'
+import type { SVGInfo } from '~/appState'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ActionIcon, Box, Card, Divider, Group, Stack, Switch, Text, Tooltip } from '@mantine/core'
 import prettyBytes from 'pretty-bytes'
 import { memo } from 'react'
-import { setAppState, type SVGInfo } from '~/appState'
+import { setAppState } from '~/appState'
 import classes from './SVGCard.module.scss'
 
 export interface SVGCardProps {
@@ -37,9 +38,9 @@ export const SVGCard = memo<SVGCardProps>(({ info }) => {
   return (
     <Card withBorder p={0}>
       <Group gap="xs" p="xs">
-        {/* eslint-disable-next-line react-dom/no-dangerously-set-innerhtml */}
         <Box
           className={classes.preview}
+          // eslint-disable-next-line react-dom/no-dangerously-set-innerhtml
           dangerouslySetInnerHTML={{
             __html: info.raw,
           }}

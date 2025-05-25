@@ -1,3 +1,4 @@
+import type { DieInfo } from '~/dice/utils/types'
 import { Box } from '@react-three/flex'
 import { useMemo } from 'react'
 import { Brush } from 'three-bvh-csg'
@@ -6,7 +7,6 @@ import { useAppState } from '~/appState'
 import { AlignBottom } from '~/components/three/AlignBottom'
 import { CSG } from '~/components/three/csg/CSG'
 import { useMaterial } from '~/contexts/MaterialContext'
-import type { DieInfo } from '~/dice/utils/types'
 import { cad2geometry } from '~/utils/cad2three'
 import { getInstanceFaceInfo } from '~/utils/faces/getInstanceFaceInfo'
 import { getFirstItem } from '~/utils/getFirstItem'
@@ -57,11 +57,14 @@ export function Die({ info }: DieProps) {
   }, [baseGeom, enableAlign, facesGeom, info.config.alignFaceIndex, info.config.faces, info.config.invertAlignMatrix])
 
   return (
+    // @ts-expect-error Outdated types of the lib
     <Box
       centerAnchor
       padding={15}
       visible={visible}
-      ref={value => (info.object = value)}
+      ref={(value) => {
+        info.object = value
+      }}
     >
       <AlignBottom
         disabled={!enableAlign}

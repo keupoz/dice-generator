@@ -1,7 +1,7 @@
-import type { Font, FontVariationSettings } from 'fontkit'
+import type { FontInfo } from '~/appState'
+import type { FixedFont, FontVariationSettings } from '~/fontkit'
 import { Select } from '@mantine/core'
 import { useCallback, useMemo } from 'react'
-import type { FontInfo } from '~/appState'
 import { useCombinedFonts } from '~/contexts/CombinedFontsContext'
 import { collectFeatures } from '~/utils/collectFontFeatures'
 import { Slider } from '../Slider'
@@ -17,7 +17,7 @@ export interface FontSelectProps {
   onFeatures: (value: Record<string, boolean>) => void
 }
 
-function collectVariationSettings(font: Font) {
+function collectVariationSettings(font: FixedFont) {
   const result: FontVariationSettings = {}
 
   for (const [key, value] of Object.entries(font.variationAxes)) {
