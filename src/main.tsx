@@ -1,6 +1,6 @@
 import { MantineProvider } from '@mantine/core'
 import { Notifications } from '@mantine/notifications'
-import React from 'react'
+import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 import { App } from './components/App'
 import { AppDropzone } from './components/AppDropzone'
@@ -12,7 +12,7 @@ import { ManifoldProvider } from './contexts/ManifoldContext'
 import { theme } from './theme'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  <StrictMode>
     <MantineProvider defaultColorScheme="auto" theme={theme}>
       <ManifoldProvider>
         <EvaluatorProvider>
@@ -29,5 +29,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 
       <Notifications />
     </MantineProvider>
-  </React.StrictMode>,
+  </StrictMode>,
 )
