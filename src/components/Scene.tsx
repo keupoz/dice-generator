@@ -4,8 +4,8 @@ import { Canvas } from '@react-three/fiber'
 import { Box, Flex } from '@react-three/flex'
 import { setExportObject } from '~/appState'
 import { CAMERA_POSITION } from '~/consts'
-import { MaterialProvider } from '~/contexts/MaterialContext'
 import { DICE_GROUPED } from '~/dice/allDice'
+import { MaterialsProvider } from '~/providers/MaterialsProvider'
 import { focusObject, resetFocus } from '~/utils/focusObject'
 import { getFirstItem } from '~/utils/getFirstItem'
 import { Die } from './dice/Die'
@@ -22,7 +22,7 @@ export function Scene() {
 
   return (
     <Canvas frameloop="demand">
-      <MaterialProvider>
+      <MaterialsProvider>
         <PerspectiveCamera makeDefault position={CAMERA_POSITION} />
         <SceneControls />
 
@@ -55,7 +55,7 @@ export function Scene() {
             ))}
           </Flex>
         </Highlighter>
-      </MaterialProvider>
+      </MaterialsProvider>
     </Canvas>
   )
 }

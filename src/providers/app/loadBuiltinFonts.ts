@@ -1,6 +1,3 @@
-import type { FontInfo } from '~/appState'
-import { useEffect, useState } from 'react'
-import { createContext } from '~/utils/createContext'
 import { readFontFile } from '~/utils/files/readers/readFont'
 
 const LOCAL_FONTS = import.meta.glob<string>('~/assets/fonts/*', {
@@ -31,32 +28,16 @@ const FONTS = [
   ...Object.values(LOCAL_FONTS),
 ]
 
-const UNMOUNT_REASON = 'UNMOUNT_REASON'
+export async function loadBuiltinFonts(signal: AbortSignal) {
+  const promises = FONTS.map(async (url) => {
+    const r = await fetch(url, { signal })
+    const arrayBuffer = await r.arrayBuffer()
+    const fonts = readFontFile(arrayBuffer)
 
-export const { useBuiltInFonts, BuiltInFontsProvider } = createContext('BuiltInFonts', () => {
-  const [fonts, setFonts] = useState<FontInfo[] | null>(null)
+    return fonts
+  })
 
-  useEffect(() => {
-    const abortController = new AbortController()
+  const collections = await Promise.all(promises)
 
-    const promises = FONTS.map(async (url) => {
-      const r = await fetch(url, { signal: abortController.signal })
-      const arrayBuffer = await r.arrayBuffer()
-      const fonts = readFontFile(arrayBuffer)
-
-      return fonts
-    })
-
-    Promise.all(promises).then((fonts) => {
-      setFonts(fonts.flat())
-    }).catch((error) => {
-      if (error !== UNMOUNT_REASON) {
-        throw error
-      }
-    })
-
-    return () => abortController.abort(UNMOUNT_REASON)
-  }, [])
-
-  return fonts
-})
+  return collections.flat()
+}

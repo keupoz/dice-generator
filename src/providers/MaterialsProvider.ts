@@ -2,9 +2,9 @@ import { useThree } from '@react-three/fiber'
 import { useEffect, useState } from 'react'
 import { MeshLambertMaterial, MeshNormalMaterial } from 'three'
 import { useAppState } from '~/appState'
-import { createContext } from '~/utils/createContext'
+import { createProvider } from '~/utils/react/createProvider'
 
-export const { useMaterial, MaterialProvider } = createContext('Material', () => {
+export const [MaterialsProvider, useMaterials] = createProvider(() => {
   const [baseMaterial] = useState(() => new MeshLambertMaterial({ transparent: true }))
   const [fontMaterial] = useState(() => new MeshNormalMaterial())
   const [result] = useState(() => ({ baseMaterial, fontMaterial }))

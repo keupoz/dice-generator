@@ -1,16 +1,13 @@
+import type { ManifoldToplevel } from 'manifold-3d'
 import type { Mesh, Object3D } from 'three'
 import type { CSGOperation } from 'three-bvh-csg'
-import { createContext } from '~/utils/createContext'
 import { createManifoldEvaluator } from '~/utils/evaluators/createManifoldEvaluator'
 import { evaluateWithBVH } from '~/utils/evaluators/evaluateWithBVH'
 import { evaluateWithCad } from '~/utils/evaluators/evaluateWithCad'
-import { useManifold } from './ManifoldContext'
 
 type Evaluator = (object: Object3D, operation: CSGOperation) => Mesh | null
 
-export const { useEvaluator, EvaluatorProvider } = createContext('Evaluator', () => {
-  const { Manifold, Mesh } = useManifold()
-
+export function initEvaluators({ Manifold, Mesh }: ManifoldToplevel) {
   const availableEvaluators: Record<string, Evaluator> = {
     Manifold: createManifoldEvaluator(Manifold, Mesh),
     MeshBVH: evaluateWithBVH,
@@ -29,4 +26,4 @@ export const { useEvaluator, EvaluatorProvider } = createContext('Evaluator', ()
       return result
     },
   }
-})
+}

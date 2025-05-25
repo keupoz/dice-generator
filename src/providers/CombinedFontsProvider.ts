@@ -1,8 +1,8 @@
 import type { ComboboxData, ComboboxItem } from '@mantine/core'
 import type { FontInfo } from '~/appState'
 import { useAppState } from '~/appState'
-import { createContext } from '~/utils/createContext'
-import { useBuiltInFonts } from './BuiltInFontsContext'
+import { createProvider } from '~/utils/react/createProvider'
+import { useApp } from './app/AppProvider'
 
 export interface CombinedFonts {
   data: ComboboxData
@@ -13,8 +13,8 @@ function collectFontItems(fonts: FontInfo[]) {
   return fonts.map<ComboboxItem>(info => ({ value: info.id.toString(), label: info.font.fullName }))
 }
 
-export const { useCombinedFonts, CombinedFontsProvider } = createContext('CombinedFonts', () => {
-  const builtInFonts = useBuiltInFonts()
+export const [CombinedFontsProvider, useCombinedFonts] = createProvider(() => {
+  const { builtInFonts } = useApp()
   const userFonts = useAppState(state => state.userFonts)
 
   const builtiInItems = collectFontItems(builtInFonts)

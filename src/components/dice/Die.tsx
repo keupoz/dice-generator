@@ -6,7 +6,7 @@ import { useStore } from 'zustand'
 import { useAppState } from '~/appState'
 import { AlignBottom } from '~/components/three/AlignBottom'
 import { CSG } from '~/components/three/csg/CSG'
-import { useMaterial } from '~/contexts/MaterialContext'
+import { useMaterials } from '~/providers/MaterialsProvider'
 import { cad2geometry } from '~/utils/cad2three'
 import { getInstanceFaceInfo } from '~/utils/faces/getInstanceFaceInfo'
 import { getFirstItem } from '~/utils/getFirstItem'
@@ -22,7 +22,7 @@ export function Die({ info }: DieProps) {
   const fontScale = useStore(info.store, state => state.fontScale)
   const extraOptions = useStore(info.store, state => state.extraOptions)
 
-  const { baseMaterial } = useMaterial()
+  const { baseMaterial } = useMaterials()
 
   const baseGeom = useMemo(() => {
     return info.config.base({ size, ...extraOptions })

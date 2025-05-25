@@ -4,12 +4,12 @@ import { AVAILABLE_OPERATIONS } from '~/components/three/csg/availableOperations
 import { StoreSelect } from '~/components/ui/StoreSelect'
 import { StoreSlider } from '~/components/ui/StoreSlider'
 import { StoreSwitch } from '~/components/ui/StoreSwitch'
-import { useEvaluator } from '~/contexts/EvaluatorContext'
+import { useApp } from '~/providers/app/AppProvider'
 import { exportObject } from '~/utils/files/exporters/exportObject'
 import { SettingsTabContent } from '../SettingsTabContent'
 
 export function GlobalTab() {
-  const { availableEvaluators } = useEvaluator()
+  const { availableEvaluators } = useApp()
 
   function handleExport() {
     exportObject(getExportObject())

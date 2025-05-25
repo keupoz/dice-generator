@@ -6,8 +6,8 @@ import { degToRad } from 'three/src/math/MathUtils.js'
 import { useStore } from 'zustand'
 import { useAppState } from '~/appState'
 import { useUpdateCSG } from '~/components/three/csg/CSGContext'
-import { useCombinedFonts } from '~/contexts/CombinedFontsContext'
-import { useCurrentFontsStore } from '~/contexts/CurrentFontsStoreContext'
+import { useApp } from '~/providers/app/AppProvider'
+import { useCombinedFonts } from '~/providers/CombinedFontsProvider'
 import { FaceLayout } from './FaceLayout'
 import { FaceText } from './FaceText'
 import { useInfos } from './useInfos'
@@ -29,7 +29,7 @@ function getFont(font: FixedFont, settings: FontVariationSettings) {
 export const DieFace = memo<DieFaceProps>(({ info, geom, fontScale }) => {
   useUpdateCSG()
 
-  const currentFontsStore = useCurrentFontsStore()
+  const { currentFontsStore } = useApp()
 
   const userRotation = useStore(info.store, state => state.rotation)
   const offsetX = useStore(info.store, state => state.offsetX)

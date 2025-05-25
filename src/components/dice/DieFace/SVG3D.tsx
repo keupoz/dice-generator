@@ -2,7 +2,7 @@ import { memo, useMemo } from 'react'
 import { Vector3 } from 'three'
 import { useAppState } from '~/appState'
 import { useUpdateCSG } from '~/components/three/csg/CSGContext'
-import { useMaterial } from '~/contexts/MaterialContext'
+import { useMaterials } from '~/providers/MaterialsProvider'
 import { getBoundingBox } from '~/utils/alignObject'
 import { getSVGGeometry } from '~/utils/fonts/getSVGGeometry'
 import { useUpdateFaceLayout } from './FaceLayoutContext'
@@ -20,7 +20,7 @@ export const SVG3D = memo<SVG3DProps>(({ id }) => {
   const fontScale = useAppState(state => state.fontScale)
   const svgScale = useAppState(state => state.svgScale)
 
-  const { fontMaterial } = useMaterial()
+  const { fontMaterial } = useMaterials()
 
   const svg = useMemo(() => {
     return svgs.find(svg => svg.id === id) ?? null

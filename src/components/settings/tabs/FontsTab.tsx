@@ -4,11 +4,11 @@ import { appState } from '~/appState'
 import { FontSelect } from '~/components/ui/FontSelect'
 import { StoreSlider } from '~/components/ui/StoreSlider'
 import { SUFFIX_MM } from '~/consts'
-import { useCurrentFontsStore } from '~/contexts/CurrentFontsStoreContext'
+import { useApp } from '~/providers/app/AppProvider'
 import { SettingsTabContent } from '../SettingsTabContent'
 
 export function FontsTab() {
-  const currentFontsStore = useCurrentFontsStore()
+  const { currentFontsStore } = useApp()
 
   const textFontId = useStore(currentFontsStore, state => state.textFontId)
   const markFontId = useStore(currentFontsStore, state => state.markFontId)

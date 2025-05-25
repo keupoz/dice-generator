@@ -2,7 +2,7 @@ import type { Font } from 'fontkit'
 import { memo, useMemo } from 'react'
 import { useAppState } from '~/appState'
 import { useUpdateCSG } from '~/components/three/csg/CSGContext'
-import { useMaterial } from '~/contexts/MaterialContext'
+import { useMaterials } from '~/providers/MaterialsProvider'
 import { getGlyphGeometry } from '~/utils/fonts/getGlyphGeometry'
 import { getArrayItem } from '~/utils/getArrayItem'
 
@@ -17,7 +17,7 @@ export const Text3D = memo<Text3DProps>(({ text, font, features }) => {
 
   const segments = useAppState(state => state.fontSegments)
 
-  const { fontMaterial } = useMaterial()
+  const { fontMaterial } = useMaterials()
 
   const layout = useMemo(() => {
     const trimmedText = text.trim()

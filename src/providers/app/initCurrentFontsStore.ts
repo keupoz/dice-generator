@@ -1,9 +1,8 @@
 import type { FontInfo } from '~/appState'
 import type { FixedFont, FontVariationSettings } from '~/fontkit'
+import { createStore } from 'zustand'
 import { collectFeatures } from '~/utils/collectFontFeatures'
-import { createStoreContext } from '~/utils/createStoreContext'
 import { getFirstItem } from '~/utils/getFirstItem'
-import { useBuiltInFonts } from './BuiltInFontsContext'
 
 export interface CurrentFontsState {
   textFontId: FontInfo['id']
@@ -26,13 +25,12 @@ function collectVariationSettings(font: FixedFont) {
   return result
 }
 
-export const { useCurrentFontsStore, CurrentFontsStoreProvider } = createStoreContext('CurrentFonts', () => {
-  const fonts = useBuiltInFonts()
-  const info = getFirstItem(fonts)
+export function initCurrentFontsStore(builtinFonts: FontInfo[]) {
+  const info = getFirstItem(builtinFonts)
   const settings = collectVariationSettings(info.font)
   const features = collectFeatures(info.font)
 
-  const initialState: CurrentFontsState = {
+  return createStore<CurrentFontsState>(() => ({
     textFontId: info.id,
     markFontId: info.id,
 
@@ -41,7 +39,5 @@ export const { useCurrentFontsStore, CurrentFontsStoreProvider } = createStoreCo
 
     textFeatures: features,
     markFeatures: features,
-  }
-
-  return initialState
-})
+  }))
+}
