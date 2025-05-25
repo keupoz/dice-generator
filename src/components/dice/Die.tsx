@@ -7,9 +7,9 @@ import { useAppState } from '~/appState'
 import { AlignBottom } from '~/components/three/AlignBottom'
 import { CSG } from '~/components/three/csg/CSG'
 import { useMaterials } from '~/providers/MaterialsProvider'
-import { cad2geometry } from '~/utils/cad2three'
 import { getInstanceFaceInfo } from '~/utils/faces/getInstanceFaceInfo'
 import { getFirstItem } from '~/utils/getFirstItem'
+import { cad2geometry } from '~/utils/jscad/jscad2three'
 import { DieFace } from './DieFace/DieFace'
 
 export interface DieProps {

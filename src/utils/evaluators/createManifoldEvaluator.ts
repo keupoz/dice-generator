@@ -1,49 +1,57 @@
-import type { ManifoldToplevel } from 'manifold-3d'
-import type { Object3D } from 'three'
+import type { Material, Object3D } from 'three'
 import type { CSGOperation } from 'three-bvh-csg'
+import type { SafeManifold } from '../manifold/wrapManifoldModule'
 import { Mesh as ThreeMesh } from 'three'
 import { ADDITION } from 'three-bvh-csg'
 import { manifold2three } from '~/utils/manifold/manifold2three'
 import { three2manifold } from '~/utils/manifold/three2manifold'
 import { processBrushes } from './processBrushes'
 
-export function createManifoldEvaluator(Manifold: ManifoldToplevel['Manifold'], Mesh: ManifoldToplevel['Mesh']) {
+export function createManifoldEvaluator(safeManifold: SafeManifold) {
   return function evaluateWithManifold(object: Object3D, operation: CSGOperation) {
-    return processBrushes(object, (brushes) => {
-      const baseBrush = brushes[0]
+    const result = safeManifold(({ Manifold, Mesh }) => {
+      return processBrushes(object, (brushes) => {
+        const baseBrush = brushes[0]
 
-      if (!baseBrush) {
-        return null
-      }
+        if (!baseBrush) return null
 
-      let result = Manifold.ofMesh(three2manifold(Mesh, baseBrush))
+        const materials: Material[] = []
 
-      for (let i = 1; i < brushes.length; i++) {
-        const brush = brushes[i]
-
-        if (!brush) {
-          continue
+        function collectMaterial(mesh: ThreeMesh) {
+          if (Array.isArray(mesh.material)) {
+            materials.push(...mesh.material)
+          } else {
+            materials.push(mesh.material)
+          }
         }
 
-        const oldResult = result
-        const manifold = Manifold.ofMesh(three2manifold(Mesh, brush))
+        let result = Manifold.ofMesh(three2manifold(Mesh, baseBrush))
+        collectMaterial(baseBrush)
 
-        if (operation === ADDITION) {
-          result = Manifold.union(result, manifold)
-        } else {
-          result = Manifold.difference(result, manifold)
+        for (let i = 1; i < brushes.length; i++) {
+          const brush = brushes[i]
+
+          if (!brush) continue
+
+          const manifold = Manifold.ofMesh(three2manifold(Mesh, brush))
+          collectMaterial(brush)
+
+          if (operation === ADDITION) {
+            result = Manifold.union(result, manifold)
+          } else {
+            result = Manifold.difference(result, manifold)
+          }
         }
 
-        oldResult.delete()
-        manifold.delete()
-      }
+        const geometry = manifold2three(result.getMesh())
+        const mesh = new ThreeMesh(geometry, materials)
 
-      const geometry = manifold2three(result.getMesh())
-      const mesh = new ThreeMesh(geometry, baseBrush.material)
-
-      result.delete()
-
-      return mesh
+        return mesh
+      })
     })
+
+    result.cleanup()
+
+    return result.value
   }
 }

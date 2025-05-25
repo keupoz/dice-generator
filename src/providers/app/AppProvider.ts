@@ -9,19 +9,19 @@ async function callAsync<T>(fn: () => T) {
 }
 
 export const [AppProvider, useApp] = createLoaderProvider(async (signal) => {
-  const [builtInFonts, ManifoldModule] = await Promise.all([
+  const [builtInFonts, safeManifold] = await Promise.all([
     loadBuiltinFonts(signal),
     loadManifold(),
   ])
 
   const [evaluators, currentFontsStore] = await Promise.all([
-    callAsync(() => initEvaluators(ManifoldModule)),
+    callAsync(() => initEvaluators(safeManifold)),
     callAsync(() => initCurrentFontsStore(builtInFonts)),
   ])
 
   return {
     builtInFonts,
-    ManifoldModule,
+    safeManifold,
     ...evaluators,
     currentFontsStore,
   }

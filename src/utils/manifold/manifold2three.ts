@@ -1,5 +1,5 @@
 import type { Mesh } from 'manifold-3d'
-import { BufferAttribute, BufferGeometry } from 'three'
+import { BufferAttribute, BufferGeometry, InterleavedBuffer, InterleavedBufferAttribute } from 'three'
 
 /**
  * Convert Manifold Mesh to Three.js BufferGeometry
@@ -7,9 +7,12 @@ import { BufferAttribute, BufferGeometry } from 'three'
  */
 export function manifold2three(mesh: Mesh) {
   let geometry = new BufferGeometry()
+  const vertProperties = new InterleavedBuffer(mesh.vertProperties, mesh.numProp)
 
   // Assign buffers
-  geometry.setAttribute('position', new BufferAttribute(mesh.vertProperties, 3))
+  geometry.setAttribute('position', new InterleavedBufferAttribute(vertProperties, 3, 0))
+  geometry.setAttribute('normal', new InterleavedBufferAttribute(vertProperties, 3, 3))
+  geometry.setAttribute('uv', new InterleavedBufferAttribute(vertProperties, 2, 6))
   geometry.setIndex(new BufferAttribute(mesh.triVerts, 1))
 
   // Create a group (material) for each ID. Note that there may be multiple
@@ -21,6 +24,7 @@ export function manifold2three(mesh: Mesh) {
   // consecutive operations.
   let id = mesh.runOriginalID[0]
   let start = mesh.runIndex[0]
+  let materialIndex = 0
 
   for (let run = 0; run < mesh.numRun; run++) {
     const nextID = mesh.runOriginalID[run + 1]
@@ -29,11 +33,12 @@ export function manifold2three(mesh: Mesh) {
       const end = mesh.runIndex[run + 1]
 
       if (start !== undefined && end !== undefined && id !== undefined) {
-        geometry.addGroup(start, end - start, id)
+        geometry.addGroup(start, end - start, materialIndex)
       }
 
       id = nextID
       start = end
+      materialIndex++
     }
   }
 

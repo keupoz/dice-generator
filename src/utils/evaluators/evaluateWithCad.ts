@@ -3,8 +3,8 @@ import type { CSGOperation } from 'three-bvh-csg'
 import { subtract, union } from '@jscad/modeling/src/operations/booleans'
 import { Mesh } from 'three'
 import { ADDITION } from 'three-bvh-csg'
-import { cad2geometry } from '~/utils/cad2three'
-import { mesh2cad } from '~/utils/three2cad'
+import { cad2geometry } from '~/utils/jscad/jscad2three'
+import { mesh2cad } from '~/utils/jscad/three2jscad'
 import { processBrushes } from './processBrushes'
 
 export function evaluateWithCad(object: Object3D, operation: CSGOperation) {
