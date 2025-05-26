@@ -22,7 +22,7 @@ export default createDie({
   sizeLabel: 'Sphere diameter',
   defaultSize: 16,
   extraOptions: {
-    segments: { value: 24, min: 24, max: 360, step: 1, label: 'Segments' },
+    segments: { value: 24, min: 24, max: 60, step: 1, label: 'Segments' },
   },
   base({ size, segments }) {
     const basePrism = scale([size, size, size], TRIANGLE_PRISM)
