@@ -1,65 +1,163 @@
-import type { BufferAttribute, BufferGeometry, InterleavedBufferAttribute, Object3D } from 'three'
+import type { BufferAttribute, BufferGeometry, InterleavedBufferAttribute, Object3D, Vector3Like } from 'three'
 import { Mesh, SkinnedMesh, Vector3 } from 'three'
 
-export interface STLExporterOptions {
-  binary?: boolean
+export abstract class STLWriter<TOutput = unknown> {
+  protected output: TOutput
+
+  constructor(output: TOutput) {
+    this.output = output
+  }
+
+  public getOutput() {
+    return this.output
+  }
+
+  public abstract pushFaceStart(normal: Vector3Like): void
+  public abstract pushVertex(vertex: Vector3Like): void
+  public abstract pushFaceEnd(): void
+  public abstract pushSolidEnd(): void
 }
 
-interface CollectedObject {
-  object3d: Object3D
-  geometry: BufferGeometry
+export class BinarySTLWriter extends STLWriter<DataView> {
+  protected offset = 80 // Skip header
+
+  constructor(triangles: number) {
+    const bufferLength = triangles * 2 + triangles * 3 * 4 * 4 + 80 + 4
+    const arrayBuffer = new ArrayBuffer(bufferLength)
+
+    super(new DataView(arrayBuffer))
+
+    this.output.setUint32(this.offset, triangles, true)
+    this.offset += 4
+  }
+
+  public override pushFaceStart(normal: Vector3Like): void {
+    this.output.setFloat32(this.offset, normal.x, true)
+    this.offset += 4
+    this.output.setFloat32(this.offset, normal.y, true)
+    this.offset += 4
+    this.output.setFloat32(this.offset, normal.z, true)
+    this.offset += 4
+  }
+
+  public override pushVertex(vertex: Vector3Like): void {
+    this.output.setFloat32(this.offset, vertex.x, true)
+    this.offset += 4
+    this.output.setFloat32(this.offset, vertex.y, true)
+    this.offset += 4
+    this.output.setFloat32(this.offset, vertex.z, true)
+    this.offset += 4
+  }
+
+  public override pushFaceEnd(): void {
+    this.output.setUint16(this.offset, 0, true)
+    this.offset += 2
+  }
+
+  public override pushSolidEnd(): void {
+    // empty
+  }
 }
 
-// Copied from Three.js, because Three.js types are not working
-// and three-stdlib doesn't export anything
-export class STLExporter {
-  public parse(scene: Object3D, options: STLExporterOptions = {}) {
-    const binary = options.binary ?? false
+export class AsciiSTLWriter extends STLWriter<string> {
+  constructor() {
+    super('solid exported\n')
+  }
 
-    const objects: CollectedObject[] = []
+  public override pushFaceStart(normal: Vector3Like): void {
+    this.output += `\tfacet normal ${normal.x} ${normal.y} ${normal.z}\n`
+    this.output += '\t\touter loop\n'
+  }
+
+  public override pushVertex(vertex: Vector3Like): void {
+    this.output += `\t\t\tvertex ${vertex.x} ${vertex.y} ${vertex.z}\n`
+  }
+
+  public override pushFaceEnd(): void {
+    this.output += '\t\tendloop\n'
+    this.output += '\tendfacet\n'
+  }
+
+  public override pushSolidEnd(): void {
+    this.output += 'endsolid exported\n'
+  }
+}
+
+export type STLWriterConstructor<TOutput> = new (triangles: number) => STLWriter<TOutput>
+
+export class STLExporter<TOutput> {
+  private readonly vA = new Vector3()
+  private readonly vB = new Vector3()
+  private readonly vC = new Vector3()
+
+  private readonly cb = new Vector3()
+  private readonly ab = new Vector3()
+  private readonly normal = new Vector3()
+
+  private readonly WriterConstructor: STLWriterConstructor<TOutput>
+
+  constructor(writerConstructor: STLWriterConstructor<TOutput>) {
+    this.WriterConstructor = writerConstructor
+  }
+
+  private constructWriter(triangles: number) {
+    return new this.WriterConstructor(triangles)
+  }
+
+  private writeFace(writer: STLWriter, a: number, b: number, c: number, positionAttribute: BufferAttribute | InterleavedBufferAttribute, object: Object3D) {
+    this.vA.fromBufferAttribute(positionAttribute, a)
+    this.vB.fromBufferAttribute(positionAttribute, b)
+    this.vC.fromBufferAttribute(positionAttribute, c)
+
+    if (object instanceof SkinnedMesh) {
+      object.applyBoneTransform(a, this.vA)
+      object.applyBoneTransform(b, this.vB)
+      object.applyBoneTransform(c, this.vC)
+    }
+
+    this.vA.applyMatrix4(object.matrixWorld)
+    this.vB.applyMatrix4(object.matrixWorld)
+    this.vC.applyMatrix4(object.matrixWorld)
+
+    this.calculateNormal()
+
+    writer.pushFaceStart(this.normal)
+
+    writer.pushVertex(this.vA)
+    writer.pushVertex(this.vB)
+    writer.pushVertex(this.vC)
+
+    writer.pushFaceEnd()
+  }
+
+  private calculateNormal() {
+    this.cb.subVectors(this.vC, this.vB)
+    this.ab.subVectors(this.vA, this.vB)
+    this.cb.cross(this.ab).normalize()
+
+    this.normal.copy(this.cb).normalize()
+  }
+
+  public parse(scene: Object3D) {
+    const meshes: Mesh[] = []
     let triangles = 0
 
     scene.traverseVisible((object) => {
       if (object instanceof Mesh) {
-        const geometry = object.geometry
+        const geometry = object.geometry as BufferGeometry
+        const attribute = geometry.index ?? geometry.getAttribute('position')
 
-        const index = geometry.index
-        const positionAttribute = geometry.getAttribute('position')
+        triangles += attribute.count / 3
 
-        triangles
-          += index === null ? positionAttribute.count / 3 : index.count / 3
-
-        objects.push({
-          object3d: object,
-          geometry,
-        })
+        meshes.push(object)
       }
     })
 
-    let output: DataView | string
-    let offset = 80 // skip header
+    const writer = this.constructWriter(triangles)
 
-    if (binary) {
-      const bufferLength = triangles * 2 + triangles * 3 * 4 * 4 + 80 + 4
-      const arrayBuffer = new ArrayBuffer(bufferLength)
-      output = new DataView(arrayBuffer)
-      output.setUint32(offset, triangles, true)
-      offset += 4
-    } else {
-      output = ''
-      output += 'solid exported\n'
-    }
-
-    const vA = new Vector3()
-    const vB = new Vector3()
-    const vC = new Vector3()
-    const cb = new Vector3()
-    const ab = new Vector3()
-    const normal = new Vector3()
-
-    for (const object of objects) {
-      const index = object.geometry.index
-      const positionAttribute = object.geometry.getAttribute('position')
+    for (const mesh of meshes) {
+      const index = mesh.geometry.index
+      const positionAttribute = mesh.geometry.getAttribute('position')
 
       if (index !== null) {
         // indexed geometry
@@ -69,7 +167,7 @@ export class STLExporter {
           const b = index.getX(j + 1)
           const c = index.getX(j + 2)
 
-          writeFace(a, b, c, positionAttribute, object.object3d)
+          this.writeFace(writer, a, b, c, positionAttribute, mesh)
         }
       } else {
         // non-indexed geometry
@@ -79,84 +177,13 @@ export class STLExporter {
           const b = j + 1
           const c = j + 2
 
-          writeFace(a, b, c, positionAttribute, object.object3d)
+          this.writeFace(writer, a, b, c, positionAttribute, mesh)
         }
       }
     }
 
-    if (binary === false) {
-      output += 'endsolid exported\n'
-    }
+    writer.pushSolidEnd()
 
-    return output
-
-    function writeFace(
-      a: number,
-      b: number,
-      c: number,
-      positionAttribute: BufferAttribute | InterleavedBufferAttribute,
-      object: Object3D,
-    ) {
-      vA.fromBufferAttribute(positionAttribute, a)
-      vB.fromBufferAttribute(positionAttribute, b)
-      vC.fromBufferAttribute(positionAttribute, c)
-
-      if (object instanceof SkinnedMesh) {
-        object.applyBoneTransform(a, vA)
-        object.applyBoneTransform(b, vB)
-        object.applyBoneTransform(c, vC)
-      }
-
-      vA.applyMatrix4(object.matrixWorld)
-      vB.applyMatrix4(object.matrixWorld)
-      vC.applyMatrix4(object.matrixWorld)
-
-      writeNormal(vA, vB, vC)
-
-      writeVertex(vA)
-      writeVertex(vB)
-      writeVertex(vC)
-
-      if (output instanceof DataView) {
-        output.setUint16(offset, 0, true)
-        offset += 2
-      } else {
-        output += '\t\tendloop\n'
-        output += '\tendfacet\n'
-      }
-    }
-
-    function writeNormal(vA: Vector3, vB: Vector3, vC: Vector3) {
-      cb.subVectors(vC, vB)
-      ab.subVectors(vA, vB)
-      cb.cross(ab).normalize()
-
-      normal.copy(cb).normalize()
-
-      if (output instanceof DataView) {
-        output.setFloat32(offset, normal.x, true)
-        offset += 4
-        output.setFloat32(offset, normal.y, true)
-        offset += 4
-        output.setFloat32(offset, normal.z, true)
-        offset += 4
-      } else {
-        output += `\tfacet normal ${normal.x} ${normal.y} ${normal.z}\n"`
-        output += '\t\touter loop\n'
-      }
-    }
-
-    function writeVertex(vertex: Vector3) {
-      if (output instanceof DataView) {
-        output.setFloat32(offset, vertex.x, true)
-        offset += 4
-        output.setFloat32(offset, vertex.y, true)
-        offset += 4
-        output.setFloat32(offset, vertex.z, true)
-        offset += 4
-      } else {
-        output += `\t\t\tvertex ${vertex.x} ${vertex.y} ${vertex.z}\n`
-      }
-    }
+    return writer.getOutput()
   }
 }
