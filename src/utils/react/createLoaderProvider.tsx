@@ -1,6 +1,8 @@
 import type { PropsWithChildren } from 'react'
+import type { Executor } from '../abortable'
 import { Alert, Center, Loader } from '@mantine/core'
 import { useEffect, useState } from 'react'
+import { abortable } from '../abortable'
 import { createSafeContext } from './createSafeContext'
 
 type LoaderState<T> = {
@@ -15,7 +17,7 @@ type LoaderState<T> = {
 
 const UNMOUNT_REASON = Symbol('Rejected by component unmount')
 
-export function createLoaderProvider<T>(loader: (signal: AbortSignal) => Promise<T>) {
+export function createLoaderProvider<T>(loader: Executor<T>) {
   const [Context, useContext] = createSafeContext<T>()
 
   function Provider({ children }: PropsWithChildren) {
@@ -24,7 +26,7 @@ export function createLoaderProvider<T>(loader: (signal: AbortSignal) => Promise
     useEffect(() => {
       const abortController = new AbortController()
 
-      loader(abortController.signal)
+      abortable(abortController.signal, loader)
         .then(data => setState({ status: 'success', data }))
         .catch((error) => {
           if (error !== UNMOUNT_REASON) setState({ status: 'error', error })
