@@ -12,7 +12,7 @@ import { ThemeSwitcher } from './ThemeSwitcher'
 const renderEngines: ComboboxData = Object.entries(RenderEngine).map(([label, value]) => ({ label, value }))
 const renderOperations: ComboboxData = Object.entries(RenderOperation).map(([label, value]) => ({ label, value }))
 
-export function GlobalTab() {
+export function GeneralTab() {
   return (
     <>
       <ThemeSwitcher />

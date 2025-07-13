@@ -3,7 +3,7 @@ import { Stack, Tabs, TabsList, TabsPanel, TabsTab } from '@mantine/core'
 import { DiceTab } from './tabs/dice/DiceTab'
 import { FilesTab } from './tabs/files/FilesTab'
 import { FontsTab } from './tabs/fonts/FontsTab'
-import { GlobalTab } from './tabs/global/GlobalTab'
+import { GeneralTab } from './tabs/general/GeneralTab'
 
 interface Tab {
   value: string
@@ -12,7 +12,7 @@ interface Tab {
 }
 
 const TABS: Tab[] = [
-  { value: 'global', label: 'Global', content: <GlobalTab /> },
+  { value: 'general', label: 'General', content: <GeneralTab /> },
   { value: 'fonts', label: 'Fonts', content: <FontsTab /> },
   { value: 'dice', label: 'Dice', content: <DiceTab /> },
   { value: 'files', label: 'Files', content: <FilesTab /> },
