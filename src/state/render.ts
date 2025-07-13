@@ -15,5 +15,5 @@ export enum RenderEngine {
 
 export const $enableAlign = persistent('dice:enable-align', true, boolean())
 export const $enableRender = atom(false)
-export const $renderOperation = persistent('dice:render-operation', RenderOperation.Subtract, enum_(RenderOperation))
 export const $renderEngine = persistent('dice:render-engine', RenderEngine.Manifold, enum_(RenderEngine))
+export const $renderOperation = persistent('dice:render-operation', RenderOperation.Subtract, enum_(RenderOperation))
