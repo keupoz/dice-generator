@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from 'react'
-import { Burger, Group, AppShell as MantineAppShell, Text } from '@mantine/core'
+import { AppShellHeader, Burger, Group, AppShell as MantineAppShell, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { $pending } from '~/atoms/effect'
 import { AtomLoader } from './AtomLoader'
@@ -12,7 +12,7 @@ export function AppShell({ children }: PropsWithChildren) {
       header={{ height: 56 }}
       aside={{ width: 300, breakpoint: 'sm', collapsed: { mobile: !opened } }}
     >
-      <MantineAppShell.Header px="md">
+      <AppShellHeader px="md">
         <Group h="100%" justify="space-between">
           <Group>
             <Text span fw={700} size="xl">Dice Generator</Text>
@@ -21,7 +21,7 @@ export function AppShell({ children }: PropsWithChildren) {
 
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
         </Group>
-      </MantineAppShell.Header>
+      </AppShellHeader>
 
       {children}
     </MantineAppShell>
