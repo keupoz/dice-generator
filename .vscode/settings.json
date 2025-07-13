@@ -1,7 +1,6 @@
 {
   // Disable the default formatter, use eslint instead
   "prettier.enable": false,
-  "editor.defaultFormatter": null,
   "editor.formatOnSave": false,
 
   // Auto fix

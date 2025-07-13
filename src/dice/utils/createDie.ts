@@ -1,15 +1,96 @@
-import type { DieConfig, DieInfo, DieInputConfig } from './types'
-import { createDieStore } from './createDieStore'
-import { createFaceInfo } from './createFaceInfo'
+import type { Object3D } from 'three'
+import type { DieInputOptions, DieOptions } from './types'
+import mat4 from '@jscad/modeling/src/maths/mat4'
+import { align, transform } from '@jscad/modeling/src/operations/transforms'
+import { mapValues } from 'radashi'
+import { Group, Matrix4 } from 'three'
+import { atom } from '~/atoms/atom'
+import { computed } from '~/atoms/computed'
+import { cad2mesh } from '~/lib/converters/jscad2three'
+import { evaluate } from '~/lib/evaluators/evaluate'
+import { $extrusionDepth } from '~/state/faces'
+import { BASE_MATERIAL, FONT_MATERIAL } from '~/state/materials'
+import { $enableAlign, $enableRender, $renderEngine, $renderOperation, RenderOperation } from '~/state/render'
+import { strictFirst } from '~/utils/iterable/strictFirst'
+import { createDieFace } from './createDieFace'
+import { createDieFaceInstance } from './createDieFaceInstance'
 
-export function createDie<T extends Record<string, DieInputConfig>>(config: DieConfig<T>): DieInfo {
-  const store = createDieStore(config)
-  const faces = config.faces.map(createFaceInfo)
+export type DieResult = ReturnType<typeof createDie>
+
+export function createDie<TInputs extends Record<string, DieInputOptions>>(options: DieOptions<TInputs>) {
+  const $inputs = atom(mapValues(options.inputs, item => item.defaultValue))
+  const $baseGeom = computed(get => options.buildBase(get($inputs)))
+
+  const { buildFacesBase } = options
+  const $facesBaseGeom = buildFacesBase ? computed(get => buildFacesBase(get($inputs))) : $baseGeom
+
+  const $visible = atom(true)
+  const $fontScale = atom(options.defaultFontScale ?? 1)
+
+  const faces = options.faces.map(createDieFace.bind(null, $facesBaseGeom, $fontScale))
+
+  const faceGeomAtoms = faces.map(face => face.instanceAtoms).flat()
+  const $finalObject = computed((get): Object3D | undefined => {
+    if (!get($visible)) return
+
+    const faceGeoms = faceGeomAtoms.map(atom => get(atom))
+    const flatFilteredFaceGeoms = faceGeoms.filter(geom => geom !== undefined).flat()
+    const baseGeom = get($baseGeom)
+
+    if (get($enableRender)) return evaluate(get($renderEngine), baseGeom, flatFilteredFaceGeoms, get($renderOperation))
+
+    const baseMesh = cad2mesh(baseGeom, BASE_MATERIAL)
+    const faceMeshes = flatFilteredFaceGeoms.map(faceGeom => cad2mesh(faceGeom, FONT_MATERIAL))
+
+    const result = new Group()
+    result.add(baseMesh, ...faceMeshes)
+
+    return result
+  })
+
+  const $alignMatrix = computed((get) => {
+    let result = mat4.fromXRotation(mat4.create(), -Math.PI / 2)
+
+    if (get($enableAlign)) {
+      const facesBaseGeom = get($facesBaseGeom)
+      const alignFaceOptions = options.faces[options.alignFaceIndex ?? -1]
+
+      if (alignFaceOptions) {
+        const instanceOptions = strictFirst(alignFaceOptions.instances)
+        const instance = createDieFaceInstance(facesBaseGeom, instanceOptions, options.invertAlignMatrix)
+
+        result = mat4.multiply(mat4.create(), result, instance.rotationMatrix)
+      }
+
+      const offsetY = get($renderOperation) === RenderOperation.Union ? get($extrusionDepth) : 0
+      const transformedGeom = transform(result, facesBaseGeom)
+      const alignment = align({ modes: ['none', 'min', 'none'], relativeTo: [null, offsetY, null], grouped: true }, transformedGeom).transforms
+      result = mat4.multiply(mat4.create(), alignment, result)
+    }
+
+    return new Matrix4().fromArray(result)
+  })
+
+  const $output = computed((get) => {
+    const object = get($finalObject)
+    const alignMatrix = get($alignMatrix)
+
+    if (!object) return object
+
+    const result = new Group()
+    result.add(object)
+    result.applyMatrix4(alignMatrix)
+
+    return result
+  })
 
   return {
-    object: null,
-    config: config as unknown as DieInfo['config'],
-    store,
+    name: options.name,
+    inputs: options.inputs,
+    $visible,
+    $fontScale,
+    $inputs,
+    $output,
     faces,
   }
 }

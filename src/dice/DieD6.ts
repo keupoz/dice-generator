@@ -1,11 +1,13 @@
 import { cube } from '@jscad/modeling/src/primitives'
 import { createDie } from './utils/createDie'
+import { sizeInput } from './utils/sizeInput'
 
 export default createDie({
   name: 'd6',
-  defaultSize: 16,
-  extraOptions: {},
-  base({ size }) {
+  inputs: {
+    size: sizeInput(16, 'Size'),
+  },
+  buildBase({ size }) {
     return cube({ size })
   },
   faces: [

@@ -1,23 +1,33 @@
-import { MantineProvider } from '@mantine/core'
+import { AppShellAside, AppShellMain, MantineProvider, ScrollArea } from '@mantine/core'
 import { Notifications } from '@mantine/notifications'
 import { StrictMode } from 'react'
-import ReactDOM from 'react-dom/client'
-import { App } from './components/App'
-import { AppDropzone } from './components/AppDropzone'
-import { AppProvider } from './providers/app/AppProvider'
-import { CombinedFontsProvider } from './providers/CombinedFontsProvider'
+import { createRoot } from 'react-dom/client'
+import { AppInitializer } from './components/AppInitializer'
+import { AppShell } from './components/AppShell'
+import { AppDropzone } from './components/dropzone/AppDropzone'
+import { Scene } from './components/scene/Scene'
+import { Settings } from './components/settings/Settings'
 import { theme } from './theme'
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <MantineProvider defaultColorScheme="auto" theme={theme}>
-      <AppProvider>
-        <CombinedFontsProvider>
-          <App />
-          <AppDropzone />
-          <Notifications />
-        </CombinedFontsProvider>
-      </AppProvider>
+    <MantineProvider theme={theme} defaultColorScheme="auto">
+      <AppShell>
+        <AppInitializer>
+          <AppShellAside>
+            <ScrollArea>
+              <Settings />
+            </ScrollArea>
+          </AppShellAside>
+
+          <AppShellMain h="100dvh">
+            <Scene />
+          </AppShellMain>
+        </AppInitializer>
+      </AppShell>
+
+      <Notifications />
+      <AppDropzone />
     </MantineProvider>
   </StrictMode>,
 )

@@ -1,16 +1,17 @@
 import { icosahedron } from './shapes/icosahedron'
 import { createDie } from './utils/createDie'
+import { sizeInput } from './utils/sizeInput'
 
 export default createDie({
   name: 'd20',
-  sizeLabel: 'Diameter',
-  defaultSize: 16,
   defaultFontScale: 0.5,
   alignFaceIndex: 0,
   invertAlignMatrix: true,
-  extraOptions: {},
-  base({ size }) {
-    return icosahedron(size / 2)
+  inputs: {
+    diameter: sizeInput(16, 'Diameter'),
+  },
+  buildBase({ diameter }) {
+    return icosahedron(diameter / 2)
   },
   faces: [
     // Face 1

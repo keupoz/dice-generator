@@ -1,8 +1,9 @@
-import type { DieFaceConfig } from './utils/types'
+import type { DieFaceOptions } from './utils/types'
 import { octahedron } from './shapes/octahedron'
 import { createDie } from './utils/createDie'
+import { sizeInput } from './utils/sizeInput'
 
-function createFaceConfig(index: number): DieFaceConfig {
+function createFaceConfig(index: number): DieFaceOptions {
   return {
     instances: [
       {
@@ -17,14 +18,14 @@ function createFaceConfig(index: number): DieFaceConfig {
 
 export default createDie({
   name: 'd8',
-  sizeLabel: 'Diameter',
-  defaultSize: 16,
   defaultFontScale: 0.6,
   alignFaceIndex: 0,
   invertAlignMatrix: true,
-  extraOptions: {},
-  base({ size }) {
-    return octahedron(size / 2)
+  inputs: {
+    diameter: sizeInput(16, 'Diameter'),
+  },
+  buildBase({ diameter }) {
+    return octahedron(diameter / 2)
   },
   faces: [
     createFaceConfig(0),

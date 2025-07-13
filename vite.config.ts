@@ -1,27 +1,16 @@
-import path from 'node:path'
 import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from 'vite'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
-// https://vitejs.dev/config/
+// https://vite.dev/config/
 export default defineConfig({
   base: './',
   plugins: [
+    tsconfigPaths(),
     react(),
     nodePolyfills({
       include: ['buffer'],
     }),
   ],
-  resolve: {
-    alias: {
-      '~': path.resolve(__dirname, './src'),
-    },
-  },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        api: 'modern-compiler',
-      },
-    },
-  },
 })

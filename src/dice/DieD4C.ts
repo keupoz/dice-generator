@@ -3,17 +3,17 @@ import { rotateY, translateY } from '@jscad/modeling/src/operations/transforms'
 import { cube, cuboid, ellipsoid } from '@jscad/modeling/src/primitives'
 import { SUFFIX_MM } from '~/consts'
 import { createDie } from './utils/createDie'
+import { sizeInput } from './utils/sizeInput'
 
 export default createDie({
   name: 'd4c',
-  sizeLabel: 'Body width',
-  defaultSize: 14,
-  extraOptions: {
-    length: { value: 21, min: 1, max: 40, step: 1, label: 'Body length', suffix: SUFFIX_MM },
-    pointLength: { value: 7, min: 1, max: 20, step: 1, label: 'Point length', suffix: SUFFIX_MM },
+  inputs: {
+    width: sizeInput(14, 'Body width'),
+    length: { defaultValue: 21, min: 1, max: 40, step: 1, label: 'Body length', suffix: SUFFIX_MM },
+    pointLength: { defaultValue: 7, min: 1, max: 20, step: 1, label: 'Point length', suffix: SUFFIX_MM },
   },
-  base({ size, length, pointLength }) {
-    const radius = (size / 2) * Math.SQRT2
+  buildBase({ width, length, pointLength }) {
+    const radius = (width / 2) * Math.SQRT2
 
     let pointEllipsoid, base
 
@@ -23,14 +23,14 @@ export default createDie({
     })
     pointEllipsoid = rotateY(Math.PI / 4, pointEllipsoid)
 
-    base = cuboid({ size: [size, length, size] })
+    base = cuboid({ size: [width, length, width] })
     base = union(base, translateY(-length / 2, pointEllipsoid))
     base = union(base, translateY(length / 2, pointEllipsoid))
 
     return base
   },
-  facesBase({ size }) {
-    return cube({ size })
+  buildFacesBase({ width }) {
+    return cube({ size: width })
   },
   faces: [
     // Face 1

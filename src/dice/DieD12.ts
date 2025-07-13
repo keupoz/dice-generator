@@ -1,16 +1,17 @@
 import { dodecahedron } from './shapes/dodecahedron'
 import { createDie } from './utils/createDie'
+import { sizeInput } from './utils/sizeInput'
 
 export default createDie({
   name: 'd12',
-  sizeLabel: 'Diameter',
-  defaultSize: 16,
   defaultFontScale: 0.6,
   alignFaceIndex: 0,
   invertAlignMatrix: true,
-  extraOptions: {},
-  base({ size }) {
-    return dodecahedron(size / 2)
+  inputs: {
+    diameter: sizeInput(16, 'Diameter'),
+  },
+  buildBase({ diameter }) {
+    return dodecahedron(diameter / 2)
   },
   faces: [
     // Face 1

@@ -1,13 +1,25 @@
-import { createTheme, Select, Switch, TabsList } from '@mantine/core'
-import SelectClassNames from './styles/Select.module.scss'
-import SwitchClassNames from './styles/Switch.module.scss'
+import { createTheme, Popover, ScrollArea, Select, Switch } from '@mantine/core'
+import SelectClassNames from './Select.module.scss'
+import SwitchClassNames from './Switch.module.scss'
 import '@mantine/core/styles.css'
 import '@mantine/notifications/styles.css'
 import '@mantine/dropzone/styles.css'
-import './styles/main.scss'
+import './main.scss'
 
 export const theme = createTheme({
   components: {
+    Popover: Popover.extend({
+      defaultProps: {
+        shadow: 'sm',
+      },
+    }),
+
+    ScrollArea: ScrollArea.extend({
+      defaultProps: {
+        scrollbarSize: 8,
+      },
+    }),
+
     Select: Select.extend({
       classNames: SelectClassNames,
       defaultProps: {
@@ -19,12 +31,7 @@ export const theme = createTheme({
       classNames: SwitchClassNames,
       defaultProps: {
         labelPosition: 'left',
-      },
-    }),
-
-    TabsList: TabsList.extend({
-      defaultProps: {
-        grow: true,
+        my: 2,
       },
     }),
   },

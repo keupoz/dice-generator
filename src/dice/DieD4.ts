@@ -1,13 +1,15 @@
 import { polyhedron } from '@jscad/modeling/src/primitives'
 import { createDie } from './utils/createDie'
+import { sizeInput } from './utils/sizeInput'
 
 // TODO Use size value for side length or something else
 export default createDie({
   name: 'd4',
-  defaultSize: 16,
   defaultFontScale: 0.5,
-  extraOptions: {},
-  base({ size }) {
+  inputs: {
+    size: sizeInput(16, 'Size'),
+  },
+  buildBase({ size }) {
     const r = (size * Math.sqrt(3)) / 3 // base radius
     const s = size
     const h = (size * Math.sqrt(6)) / 3 // pyramid height

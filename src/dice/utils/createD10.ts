@@ -1,21 +1,21 @@
-import type { DieFaceConfig } from './types'
+import type { DieFaceOptions } from './types'
 import { SUFFIX_MM } from '~/consts'
 import { trapezohedron } from '../shapes/trapezohedron'
 import { createDie } from './createDie'
+import { sizeInput } from './sizeInput'
 
 export function createD10(isD100: boolean) {
   return createDie({
-    name: isD100 ? 'd00' : 'd10',
-    sizeLabel: 'Height',
-    defaultSize: 16,
+    name: isD100 ? 'd100' : 'd10',
     defaultFontScale: isD100 ? 0.35 : 0.5,
     alignFaceIndex: 0,
     invertAlignMatrix: true,
-    extraOptions: {
-      radius: { value: 8, min: 1, max: 40, step: 1, label: 'Radius', suffix: SUFFIX_MM },
+    inputs: {
+      height: sizeInput(16, 'Height'),
+      radius: { defaultValue: 8, min: 1, max: 40, step: 1, label: 'Radius', suffix: SUFFIX_MM },
     },
-    base({ size, radius }) {
-      return trapezohedron(10, size / 2, radius)
+    buildBase({ height, radius }) {
+      return trapezohedron(10, height / 2, radius)
     },
     faces: [
       createFaceConfig(isD100, 0, 0),
@@ -33,7 +33,7 @@ export function createD10(isD100: boolean) {
 }
 
 function createFaceConfig(isD100: boolean, index: number, i: number) {
-  const config: DieFaceConfig = {
+  const options: DieFaceOptions = {
     instances: [
       {
         faceIndex: index,
@@ -45,14 +45,14 @@ function createFaceConfig(isD100: boolean, index: number, i: number) {
   }
 
   if (i === 9) {
-    config.text = '0'
+    options.text = '0'
   }
 
   if (isD100) {
-    config.text ??= `${i + 1}`
-    config.text += '0'
-    config.localRotation = Math.PI / 2
+    options.text ??= `${i + 1}`
+    options.text += '0'
+    options.initialRotation = Math.PI / 2
   }
 
-  return config
+  return options
 }

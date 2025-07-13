@@ -1,8 +1,10 @@
 import { intersect } from '@jscad/modeling/src/operations/booleans'
 import { rotateX, scale, translateZ } from '@jscad/modeling/src/operations/transforms'
 import { cube, sphere } from '@jscad/modeling/src/primitives'
-import { DEG_60 } from '~/consts'
 import { createDie } from './utils/createDie'
+import { sizeInput } from './utils/sizeInput'
+
+const DEG_60 = Math.PI / 3
 
 const TRIANGLE_PRISM = (() => {
   let cutter = cube({ size: 1 })
@@ -19,19 +21,18 @@ const TRIANGLE_PRISM = (() => {
 
 export default createDie({
   name: 'd3',
-  sizeLabel: 'Sphere diameter',
-  defaultSize: 16,
-  extraOptions: {
-    segments: { value: 24, min: 24, max: 60, step: 1, label: 'Segments' },
+  inputs: {
+    diameter: sizeInput(16, 'Sphere diameter'),
+    segments: { defaultValue: 24, min: 24, max: 60, step: 1, label: 'Segments' },
   },
-  base({ size, segments }) {
-    const basePrism = scale([size, size, size], TRIANGLE_PRISM)
-    const baseSphere = sphere({ radius: size / 2, segments })
+  buildBase({ diameter, segments }) {
+    const basePrism = scale([diameter, diameter, diameter], TRIANGLE_PRISM)
+    const baseSphere = sphere({ radius: diameter / 2, segments })
 
     return intersect(basePrism, baseSphere)
   },
-  facesBase({ size }) {
-    return scale([size, size, size], TRIANGLE_PRISM)
+  buildFacesBase({ diameter }) {
+    return scale([diameter, diameter, diameter], TRIANGLE_PRISM)
   },
   faces: [
     // Face 1

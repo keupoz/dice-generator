@@ -1,16 +1,17 @@
 import { rhombicDodecahedron } from './shapes/rhombicDodecahedron'
 import { createDie } from './utils/createDie'
+import { sizeInput } from './utils/sizeInput'
 
 export default createDie({
   name: 'd12r',
-  sizeLabel: 'Diameter',
-  defaultSize: 16,
   defaultFontScale: 0.6,
   alignFaceIndex: 0,
   invertAlignMatrix: true,
-  extraOptions: {},
-  base({ size }) {
-    return rhombicDodecahedron(size / 2)
+  inputs: {
+    diameter: sizeInput(16, 'Diameter'),
+  },
+  buildBase({ diameter }) {
+    return rhombicDodecahedron(diameter / 2)
   },
   faces: [
     // Face 1

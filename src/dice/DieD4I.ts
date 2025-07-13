@@ -3,8 +3,9 @@ import { union } from '@jscad/modeling/src/operations/booleans'
 import { rotateY, translateY } from '@jscad/modeling/src/operations/transforms'
 import { cube, cuboid, cylinder } from '@jscad/modeling/src/primitives'
 import { SUFFIX_MM } from '~/consts'
-import { getArrayItem } from '~/utils/getArrayItem'
+import { strictAt } from '~/utils/array/strictAt'
 import { createDie } from './utils/createDie'
+import { sizeInput } from './utils/sizeInput'
 
 function getCylindersOffset(size: number, length: number) {
   return size / 4 + length / 2
@@ -12,12 +13,12 @@ function getCylindersOffset(size: number, length: number) {
 
 export default createDie({
   name: 'd4i',
-  defaultSize: 16,
-  extraOptions: {
-    lengthExtension: { value: 2, min: 0, max: 20, step: 1, label: 'Length extension', suffix: SUFFIX_MM },
-    segments: { value: 24, min: 4, max: 360, step: 2, label: 'Curve segments' },
+  inputs: {
+    size: sizeInput(16, 'Size'),
+    lengthExtension: { defaultValue: 2, min: 0, max: 20, step: 1, label: 'Length extension', suffix: SUFFIX_MM },
+    segments: { defaultValue: 24, min: 4, max: 360, step: 2, label: 'Curve segments' },
   },
-  base({ size, lengthExtension, segments }) {
+  buildBase({ size, lengthExtension, segments }) {
     const cylindersOffset = getCylindersOffset(size, lengthExtension)
     const radius = size / 2
 
@@ -36,7 +37,7 @@ export default createDie({
 
     return union(cylinder1, spliceCuboid, cylinder2)
   },
-  facesBase({ size, lengthExtension: length }) {
+  buildFacesBase({ size, lengthExtension: length }) {
     const cylindersOffset = getCylindersOffset(size, length)
     const baseCylinder = cube({ size })
 
@@ -49,10 +50,10 @@ export default createDie({
     const polygons2 = geom3.toPolygons(cylinder2)
 
     return geom3.fromPoints([
-      getArrayItem(polygons1, 4).vertices,
-      getArrayItem(polygons1, 5).vertices,
-      getArrayItem(polygons2, 4).vertices,
-      getArrayItem(polygons2, 5).vertices,
+      strictAt(polygons1, 4).vertices,
+      strictAt(polygons1, 5).vertices,
+      strictAt(polygons2, 4).vertices,
+      strictAt(polygons2, 5).vertices,
     ])
   },
   faces: [

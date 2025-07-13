@@ -1,29 +1,37 @@
-import { Stack, Tabs } from '@mantine/core'
-import { memo } from 'react'
-import { DiceTab } from './tabs/DiceTab'
-import { FilesTab } from './tabs/FilesTab'
-import { FontsTab } from './tabs/FontsTab'
-import { GlobalTab } from './tabs/GlobalTab'
-import { ThemeSwitcher } from './ThemeSwitcher'
+import type { ReactNode } from 'react'
+import { Stack, Tabs, TabsList, TabsPanel, TabsTab } from '@mantine/core'
+import { DiceTab } from './tabs/dice/DiceTab'
+import { FilesTab } from './tabs/files/FilesTab'
+import { FontsTab } from './tabs/fonts/FontsTab'
+import { GlobalTab } from './tabs/global/GlobalTab'
 
-export const Settings = memo(() => {
+interface Tab {
+  value: string
+  label: ReactNode
+  content: ReactNode
+}
+
+const TABS: Tab[] = [
+  { value: 'global', label: 'Global', content: <GlobalTab /> },
+  { value: 'fonts', label: 'Fonts', content: <FontsTab /> },
+  { value: 'dice', label: 'Dice', content: <DiceTab /> },
+  { value: 'files', label: 'Files', content: <FilesTab /> },
+]
+
+export function Settings() {
   return (
-    <Stack gap="sm" p="sm">
-      <ThemeSwitcher />
+    <Tabs defaultValue={TABS[0]?.value}>
+      <TabsList grow>
+        {TABS.map(tab => <TabsTab key={tab.value} value={tab.value}>{tab.label}</TabsTab>)}
+      </TabsList>
 
-      <Tabs defaultValue="global">
-        <Tabs.List>
-          <Tabs.Tab value="global">Global</Tabs.Tab>
-          <Tabs.Tab value="fonts">Fonts</Tabs.Tab>
-          <Tabs.Tab value="files">Files</Tabs.Tab>
-          <Tabs.Tab value="dice">Dice</Tabs.Tab>
-        </Tabs.List>
-
-        <GlobalTab />
-        <FontsTab />
-        <FilesTab />
-        <DiceTab />
-      </Tabs>
-    </Stack>
+      {TABS.map(tab => (
+        <TabsPanel key={tab.value} value={tab.value}>
+          <Stack gap="sm" p="sm">
+            {tab.content}
+          </Stack>
+        </TabsPanel>
+      ))}
+    </Tabs>
   )
-})
+}

@@ -1,20 +1,20 @@
 import { cuboid, cylinder } from '@jscad/modeling/src/primitives'
 import { SUFFIX_MM } from '~/consts'
 import { createDie } from './utils/createDie'
+import { sizeInput } from './utils/sizeInput'
 
 export default createDie({
   name: 'd2',
-  sizeLabel: 'Diameter',
-  defaultSize: 16,
-  extraOptions: {
-    height: { value: 3, min: 1, max: 40, step: 1, label: 'Height', suffix: SUFFIX_MM },
-    segments: { value: 24, min: 4, max: 360, step: 1, label: 'Segments' },
+  inputs: {
+    diameter: sizeInput(16, 'Diameter'),
+    height: { defaultValue: 3, min: 1, max: 40, step: 1, label: 'Height', suffix: SUFFIX_MM },
+    segments: { defaultValue: 24, min: 4, max: 360, step: 1, label: 'Segments' },
   },
-  base({ size, height, segments }) {
-    return cylinder({ radius: size / 2, height, segments })
+  buildBase({ diameter, height, segments }) {
+    return cylinder({ radius: diameter / 2, height, segments })
   },
-  facesBase({ size, height }) {
-    return cuboid({ size: [size, size, height] })
+  buildFacesBase({ diameter, height }) {
+    return cuboid({ size: [diameter, diameter, height] })
   },
   faces: [
     // Face 1

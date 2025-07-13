@@ -1,18 +1,19 @@
 import { polyhedron } from '@jscad/modeling/src/primitives'
 import { SUFFIX_MM } from '~/consts'
 import { createDie } from './utils/createDie'
+import { sizeInput } from './utils/sizeInput'
 
 const t = 2 / 3
 
 export default createDie({
   name: 'd4p',
-  defaultSize: 14,
   alignFaceIndex: 0,
-  extraOptions: {
-    length1: { value: 20, min: 1, max: 40, step: 1, label: 'Body length', suffix: SUFFIX_MM },
-    length2: { value: 6, min: 1, max: 40, step: 1, label: 'Point length', suffix: SUFFIX_MM },
+  inputs: {
+    size: sizeInput(14, 'Size'),
+    length1: { defaultValue: 20, min: 1, max: 40, step: 1, label: 'Body length', suffix: SUFFIX_MM },
+    length2: { defaultValue: 6, min: 1, max: 40, step: 1, label: 'Point length', suffix: SUFFIX_MM },
   },
-  base({ size, length1, length2 }) {
+  buildBase({ size, length1, length2 }) {
     const center = size / 2
     const y = (length1 - length2) / 2
 

@@ -1,10 +1,16 @@
-export function createCache<Key extends WeakKey, Value>() {
-  const cacheMap = new WeakMap<Key, Value>()
+export function createCache<TKey extends WeakKey, TValue>() {
+  const cacheMap = new WeakMap<TKey, TValue>()
 
-  function cache(key: Key, defaultValue: Value) {
+  function cache(key: TKey, initValue: () => TValue) {
     const cached = cacheMap.get(key)
-    if (!cached) cacheMap.set(key, defaultValue)
-    return cached ?? defaultValue
+
+    if (cached === undefined) {
+      const value = initValue()
+      cacheMap.set(key, value)
+      return value
+    }
+
+    return cached
   }
 
   return cache

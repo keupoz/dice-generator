@@ -1,10 +1,7 @@
 import type { Geom3 } from '@jscad/modeling/src/geometries/types'
-import type { Object3D } from 'three'
-import type { StoreApi } from 'zustand'
-import type { InstanceFaceConfig } from '~/utils/faces/getInstanceFaceInfo'
 
-export interface DieInputConfig {
-  value: number
+export interface DieInputOptions {
+  defaultValue: number
   min: number
   max: number
   step: number
@@ -12,76 +9,44 @@ export interface DieInputConfig {
   suffix?: string
 }
 
-export type DieInputValues<T extends Record<string, DieInputConfig>> = {
-  [K in keyof T]: T[K]['value'];
+export type DieInputValues<TInputs extends Record<string, DieInputOptions>> = {
+  [TKey in keyof TInputs]: number
 }
 
-export type GeomBuilderOptions<T extends Record<string, DieInputConfig>> = {
-  size: number
-} & DieInputValues<T>
+export type GeomBuilder<TInputValues extends Record<string, number>> = (inputs: TInputValues) => Geom3
 
-export type GeomBuilder<T extends Record<string, DieInputConfig>> = (
-  options: GeomBuilderOptions<T>
-) => Geom3
+export interface IndexTarget {
+  type: 'edge' | 'vertex'
+  index: number
+}
 
-export interface DieFaceConfig {
+export interface CenterTarget {
+  type: 'center'
+}
+
+export type DieFaceTarget = IndexTarget | CenterTarget
+
+export interface DieFaceInstanceOptions {
+  faceIndex: number
+  polygonCenter?: boolean
+  from: DieFaceTarget
+  to: DieFaceTarget
+  t?: number
+}
+
+export interface DieFaceOptions {
   text?: string
-  localRotation?: number
-  instances: InstanceFaceConfig[]
+  initialRotation?: number
+  instances: DieFaceInstanceOptions[]
 }
 
-export interface DieConfig<T extends Record<string, DieInputConfig>> {
+export interface DieOptions<TInputs extends Record<string, DieInputOptions>> {
   name: string
-  sizeLabel?: string
-  defaultSize: number
   defaultFontScale?: number
-  extraOptions: T
-  base: GeomBuilder<T>
-  facesBase?: GeomBuilder<T>
+  inputs: TInputs
+  buildBase: GeomBuilder<DieInputValues<TInputs>>
+  buildFacesBase?: GeomBuilder<DieInputValues<TInputs>>
   alignFaceIndex?: number
   invertAlignMatrix?: boolean
-  faces: DieFaceConfig[]
-}
-
-export interface DieOptions<T extends Record<string, DieInputConfig>> {
-  visible: boolean
-  size: number
-  fontScale: number
-  extraOptions: T
-}
-
-export interface DiceOptionsStore {
-  dice: Record<string, DieOptions<Record<string, DieInputConfig>>>
-}
-
-export interface DieOptionsStore<T extends Record<string, DieInputConfig>> {
-  visible: boolean
-  size: number
-  fontScale: number
-  extraOptions: DieInputValues<T>
-
-  setExtraOptions: <K extends keyof T>(name: K, value: T[K]['value']) => void
-}
-
-export interface DieFaceStore {
-  text: string | number
-  mark: string | number
-  isUnderscore: boolean
-  markGap: number
-  rotation: number
-  offsetX: number
-  offsetY: number
-}
-
-export interface FaceInfo {
-  name: string
-  config: DieFaceConfig
-  store: StoreApi<DieFaceStore>
-}
-
-export interface DieInfo {
-  object: Object3D | null
-  config: DieConfig<Record<string, DieInputConfig>>
-  store: StoreApi<DieOptionsStore<Record<string, DieInputConfig>>>
-  faces: FaceInfo[]
+  faces: DieFaceOptions[]
 }
