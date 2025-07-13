@@ -80,7 +80,7 @@ function createCurrentFontAtom() {
     $currentFont,
     $features,
     set(name: string) {
-      const font = $builtinFonts.get()[name] ?? $userFonts.get()[name]
+      const font = $userFonts.get()[name] ?? $builtinFonts.get()[name]
       $baseFont.set(font)
     },
     reset() {
