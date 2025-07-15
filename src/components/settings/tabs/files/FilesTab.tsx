@@ -1,19 +1,31 @@
 import { Divider, Text, Title } from '@mantine/core'
 import { useAtom } from '~/atoms/useAtom'
 import { FontCard } from '~/components/FontCard'
+import { PresetCard } from '~/components/PresetCard'
 import { SVGCard } from '~/components/svg-card/SVGCard'
 import { $userFonts } from '~/state/fonts'
+import { $presets } from '~/state/presets'
 import { $svgs } from '~/state/svgs'
 
 export function FilesTab() {
+  const presetsObject = useAtom($presets)
   const fontsObject = useAtom($userFonts)
   const svgsObject = useAtom($svgs)
 
+  const presets = Object.values(presetsObject)
   const fonts = Object.values(fontsObject)
   const svgs = Object.values(svgsObject)
 
   return (
     <>
+      <Title order={3}>Presets</Title>
+
+      {presets.length
+        ? presets.map(preset => <PresetCard key={preset.name} preset={preset} />)
+        : <Text c="dimmed" ta="center">No presets loaded</Text>}
+
+      <Divider />
+
       <Title order={3}>Fonts</Title>
 
       {fonts.length

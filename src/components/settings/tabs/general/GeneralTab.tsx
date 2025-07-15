@@ -1,5 +1,7 @@
 import type { ComboboxData } from '@mantine/core'
-import { Button, Divider, SimpleGrid } from '@mantine/core'
+import type { FormEvent, RefObject } from 'react'
+import { Button, Divider, SimpleGrid, TextInput } from '@mantine/core'
+import { modals } from '@mantine/modals'
 import { AtomSelect } from '~/components/inputs/AtomSelect'
 import { AtomSlider } from '~/components/inputs/AtomSlider'
 import { AtomSwitch } from '~/components/inputs/AtomSwitch'
@@ -7,12 +9,41 @@ import { $diceOutput } from '~/dice/allDice'
 import { $enableAlign, $enableRender, $renderEngine, $renderOperation, RenderEngine, RenderOperation } from '~/state/render'
 import { $baseOpacity, $enableWireframe, $showGrid, $smoothCamera } from '~/state/viewport'
 import { exportSTL } from '~/utils/exporters/exportSTL'
+import { exportPreset } from '~/utils/presets/exportPreset'
 import { ThemeSwitcher } from './ThemeSwitcher'
 
 const renderEngines: ComboboxData = Object.entries(RenderEngine).map(([label, value]) => ({ label, value }))
 const renderOperations: ComboboxData = Object.entries(RenderOperation).map(([label, value]) => ({ label, value }))
 
 export function GeneralTab() {
+  function openExportPresetModal() {
+    const inputRef: RefObject<HTMLInputElement | null> = { current: null }
+
+    const modalId = modals.openConfirmModal({
+      title: 'Export dice preset',
+      children: (
+        <form onSubmit={confirm}>
+          <TextInput ref={inputRef} required label="Enter preset name" />
+        </form>
+      ),
+      labels: { confirm: 'Confirm', cancel: 'Cancel' },
+      closeOnConfirm: false,
+      onConfirm: confirm,
+    })
+
+    function confirm(e?: FormEvent<HTMLFormElement>) {
+      e?.preventDefault()
+
+      const value = inputRef.current?.value
+      if (!value) {
+        inputRef.current?.focus()
+        return
+      }
+      exportPreset(value)
+      modals.close(modalId)
+    }
+  }
+
   return (
     <>
       <ThemeSwitcher />
@@ -32,7 +63,10 @@ export function GeneralTab() {
         <AtomSelect atom={$renderOperation} label="Render operation" data={renderOperations} />
       </SimpleGrid>
 
-      <Button onClick={() => exportSTL($diceOutput)}>Export STL</Button>
+      <SimpleGrid cols={2} spacing="xs">
+        <Button onClick={() => exportSTL($diceOutput)}>Export STL</Button>
+        <Button onClick={openExportPresetModal}>Export preset</Button>
+      </SimpleGrid>
     </>
   )
 }
