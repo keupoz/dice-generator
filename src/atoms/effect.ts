@@ -1,36 +1,41 @@
 import type { AtomGetter, Cleanup, ReadableAtom } from './types'
-import { atom } from './atom'
-
-export const $pending = atom(false)
 
 export type EffectRun = (get: AtomGetter) => Cleanup | void
 
-export function effect(fx: EffectRun, autoBatch = true): Cleanup {
-  let unbinds: Cleanup[] = []
-  let timer: number | undefined
-  let runCleanup = fx(getter) ?? undefined
+export function effect(fx: EffectRun): Cleanup {
+  const collectedAtoms = new Set<ReadableAtom<unknown>>()
+
+  let unbinds: Cleanup[] | undefined
+  let effectCleanup: Cleanup | undefined
+
+  runEffect()
 
   function cleanup() {
-    runCleanup?.()
-    unbinds.forEach(unbind => unbind())
-    unbinds = []
+    unbinds?.forEach(unbind => unbind())
+    effectCleanup?.()
+
+    unbinds = undefined
+    effectCleanup = undefined
+  }
+
+  function runEffect() {
+    try {
+      effectCleanup = fx(getter) ?? undefined
+    } finally {
+      // Subscribe to new dependencies
+      unbinds = [...collectedAtoms].map(atom => atom.listen(run))
+      collectedAtoms.clear()
+    }
   }
 
   function run() {
     cleanup()
-    runCleanup = fx(getter) ?? undefined
-    $pending.set(false)
-  }
-
-  function batch() {
-    $pending.set(true)
-    clearTimeout(timer)
-    if (unbinds.length === 1 || !autoBatch) return run()
-    timer = setTimeout(run, 1, undefined)
+    runEffect()
   }
 
   function getter<UValue>($atom: ReadableAtom<UValue>) {
-    unbinds.push($atom.listen(batch))
+    // Collect dependency
+    collectedAtoms.add($atom)
     return $atom.get()
   }
 

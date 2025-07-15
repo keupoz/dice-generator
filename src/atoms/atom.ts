@@ -1,7 +1,8 @@
 import type { AtomListener, WritableAtom } from './types'
+import { enqueue } from './scheduler'
 
 export function atom<TValue>(value: TValue) {
-  const listeners = new Set<AtomListener<TValue>>()
+  const listeners = new Set<AtomListener>()
 
   const $atom: WritableAtom<TValue> = {
     get() {
@@ -9,25 +10,17 @@ export function atom<TValue>(value: TValue) {
     },
     set(newValue) {
       if (newValue === value) return
-
-      const oldValue = value
       value = newValue
-
-      const clonedListeners = [...listeners]
-      clonedListeners.forEach(listener => listener(newValue, oldValue))
+      listeners.forEach(listener => enqueue(listener))
     },
     listen(listener) {
       listeners.add(listener)
       return () => void listeners.delete(listener)
     },
-    subscribe(listener) {
-      listener(value)
-      return $atom.listen(listener)
-    },
     once(listener) {
-      const unsubcscribe = $atom.listen((newValue, oldValue) => {
+      const unsubcscribe = $atom.listen(() => {
         unsubcscribe()
-        listener(newValue, oldValue)
+        listener()
       })
 
       return unsubcscribe

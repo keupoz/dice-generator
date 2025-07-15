@@ -29,8 +29,8 @@ export function exportSTL($object: ReadableAtom<Object3D | undefined>, name?: st
   if (enableAlign && enableRender) {
     exportObject($object.get(), name)
   } else {
-    $object.once((object) => {
-      exportObject(object, name)
+    $object.once(() => {
+      exportObject($object.get(), name)
 
       $enableAlign.set(enableAlign)
       $enableRender.set(enableRender)
