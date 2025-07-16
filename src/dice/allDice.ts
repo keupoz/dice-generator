@@ -43,7 +43,11 @@ export const $diceOutput = computed((get) => {
     })
 
     const result = new Group()
-    result.add(...dieGroups.filter(dieGroup => dieGroup !== null))
+    const filteredDieGroups = dieGroups.filter(dieGroup => dieGroup !== null)
+
+    if (filteredDieGroups.length) {
+      result.add(...filteredDieGroups)
+    }
 
     result.position.x = maxSize.x
     result.position.z = maxSize.z * i
