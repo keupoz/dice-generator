@@ -1,9 +1,9 @@
 import type { Path } from 'three'
 import { extrudeLinear } from '@jscad/modeling/src/operations/extrusions'
 import { polygon } from '@jscad/modeling/src/primitives'
-import { simplifyPaths2 } from './simplifyPaths'
+import { simplifyPaths } from './simplifyPaths'
 
 export function createExtrudeGeometry(paths: Path[], segments: number) {
-  const points = simplifyPaths2(paths, segments)
+  const points = simplifyPaths(paths, segments)
   return extrudeLinear({ height: 2 }, polygon({ points }))
 }
