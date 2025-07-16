@@ -1,6 +1,7 @@
 import type { Object3D } from 'three'
 import { setFocus } from '@keupoz/r3f-utils'
 import CameraControls from 'camera-controls'
+import { $smoothCamera } from './viewport'
 
 let controls: CameraControls | undefined
 
@@ -12,5 +13,5 @@ export function setControls(value: unknown) {
 
 export function focusObject(object: Object3D | undefined) {
   if (!controls || !object) return
-  setFocus(controls, object)
+  setFocus(controls, object, $smoothCamera.get())
 }
