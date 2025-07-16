@@ -5,7 +5,7 @@ import ClipperShape from '@doodle3d/clipper-js'
 
 const POINT_PRECISION_MUL = 100000
 
-export function simplifyPaths(paths: Path[], segments: number) {
+export function fixPaths(paths: Path[], segments: number) {
   return createClipperShape(paths, segments)
     .simplify('pftNonZero')
     .separateShapes()
