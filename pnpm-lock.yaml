@@ -24,8 +24,8 @@ importers:
         specifier: ^2.12.5
         version: 2.12.5
       '@keupoz/r3f-utils':
-        specifier: ^2.0.0
-        version: 2.0.0(@react-three/drei@10.5.0(@react-three/fiber@9.2.0(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.178.0))(@types/react@19.1.8)(@types/three@0.178.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.178.0))(@react-three/fiber@9.2.0(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.178.0))(camera-controls@2.10.1(three@0.178.0))(react@19.1.0)(three@0.178.0)
+        specifier: ^2.0.1
+        version: 2.0.1(@react-three/drei@10.5.0(@react-three/fiber@9.2.0(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.178.0))(@types/react@19.1.8)(@types/three@0.178.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.178.0))(@react-three/fiber@9.2.0(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.178.0))(camera-controls@2.10.1(three@0.178.0))(react@19.1.0)(three@0.178.0)
       '@mantine/core':
         specifier: ^8.1.3
         version: 8.1.3(@mantine/hooks@8.1.3(react@19.1.0))(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -558,8 +558,8 @@ packages:
   '@jscad/modeling@2.12.5':
     resolution: {integrity: sha512-7deHWmE+CKBx2RyxDxl9Pie0bDOHHtcsh4V0gKViu27abYXKGl8+myoddwIvxLczwnw31ZZXDdUdm0Ef51YwQg==}
 
-  '@keupoz/r3f-utils@2.0.0':
-    resolution: {integrity: sha512-yBvXrkC++poLtioJVKP1CHbJRT5yJY5DZdhDxJHGdYzCPXZVtRhe5hgaM9IkRKCkJU4bcf/IGcPFx4uLeNMkWg==}
+  '@keupoz/r3f-utils@2.0.1':
+    resolution: {integrity: sha512-zSsIz1RHaBc1pRPYeK58lqg9DknEEzXQFTOybX4KKdtTgbvO2czV4EeE0CXtH7FlEAf3Yw3sAlnSz7OVicxuzA==}
     peerDependencies:
       '@react-three/drei': ^10.0.6
       '@react-three/fiber': ^9.1.2
@@ -3640,7 +3640,7 @@ snapshots:
 
   '@jscad/modeling@2.12.5': {}
 
-  '@keupoz/r3f-utils@2.0.0(@react-three/drei@10.5.0(@react-three/fiber@9.2.0(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.178.0))(@types/react@19.1.8)(@types/three@0.178.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.178.0))(@react-three/fiber@9.2.0(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.178.0))(camera-controls@2.10.1(three@0.178.0))(react@19.1.0)(three@0.178.0)':
+  '@keupoz/r3f-utils@2.0.1(@react-three/drei@10.5.0(@react-three/fiber@9.2.0(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.178.0))(@types/react@19.1.8)(@types/three@0.178.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.178.0))(@react-three/fiber@9.2.0(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.178.0))(camera-controls@2.10.1(three@0.178.0))(react@19.1.0)(three@0.178.0)':
     dependencies:
       '@react-three/drei': 10.5.0(@react-three/fiber@9.2.0(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.178.0))(@types/react@19.1.8)(@types/three@0.178.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.178.0)
       '@react-three/fiber': 9.2.0(@types/react@19.1.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.178.0)

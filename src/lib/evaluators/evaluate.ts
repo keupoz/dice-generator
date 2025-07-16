@@ -13,6 +13,8 @@ const EVALUATORS = {
   threebvh: evaluateWithBVH,
 } satisfies Record<RenderEngine, RenderEvaluator>
 
-export function evaluate(renderEngine: RenderEngine, baseGeom: Geom3, faceGeoms: Geom3[], operation: RenderOperation) {
-  return EVALUATORS[renderEngine](baseGeom, faceGeoms, operation)
+export function evaluate(renderEngine: RenderEngine, baseGeom: Geom3, faceGeoms: Geom3[], operation: RenderOperation, name: string) {
+  const mesh = EVALUATORS[renderEngine](baseGeom, faceGeoms, operation)
+  if (mesh)mesh.name = name
+  return mesh
 }

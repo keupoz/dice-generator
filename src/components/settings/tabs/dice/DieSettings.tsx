@@ -1,17 +1,19 @@
-import type { DieResult } from '~/dice/utils/createDie'
-import { Button, Divider, SimpleGrid } from '@mantine/core'
+import { Button, Divider, SimpleGrid, Text } from '@mantine/core'
+import { useAtom } from '~/atoms/useAtom'
 import { AtomSlider } from '~/components/inputs/AtomSlider'
 import { AtomSwitch } from '~/components/inputs/AtomSwitch'
 import { focusObject } from '~/state/controls'
+import { $currentDie } from '~/state/settings'
 import { exportSTL } from '~/utils/exporters/exportSTL'
-import { DieFacesSettings } from './DieFacesSettings'
+import { DieFaceSelect } from './DieFaceSelect'
+import { DieFaceSettings } from './DieFaceSettings'
 import { DieInputs } from './DieInputs'
 
-export interface DieSettingsProps {
-  die: DieResult
-}
+export function DieSettings() {
+  const die = useAtom($currentDie)
 
-export function DieSettings({ die }: DieSettingsProps) {
+  if (!die) return <Text c="dimmed" ta="center">No die selected</Text>
+
   return (
     <>
       <SimpleGrid cols={2} spacing="xs">
@@ -28,7 +30,8 @@ export function DieSettings({ die }: DieSettingsProps) {
 
       <Divider />
 
-      <DieFacesSettings faces={die.faces} />
+      <DieFaceSelect faces={die.faces} />
+      <DieFaceSettings />
     </>
   )
 }

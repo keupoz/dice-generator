@@ -25,11 +25,12 @@ export function cad2geometry(geom: Geom3): BufferGeometry {
   })
 }
 
-export function cad2mesh<TMaterial extends Material | Material[]>(geom: Geom3, material?: TMaterial) {
+export function cad2mesh<TMaterial extends Material | Material[]>(geom: Geom3, material?: TMaterial, name?: string) {
   const geometry = cad2geometry(geom)
   const mesh = new Mesh(geometry, material)
 
   mesh.applyMatrix4(new Matrix4().fromArray(geom.transforms))
+  if (name) mesh.name = name
 
   return mesh
 }

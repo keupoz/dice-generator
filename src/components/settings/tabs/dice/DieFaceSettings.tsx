@@ -1,15 +1,16 @@
-import type { DieFaceResult } from '~/dice/utils/createDieFace'
-import { SimpleGrid } from '@mantine/core'
+import { SimpleGrid, Text } from '@mantine/core'
+import { useAtom } from '~/atoms/useAtom'
 import { AtomSlider } from '~/components/inputs/AtomSlider'
 import { AtomSVGSelect } from '~/components/inputs/AtomSVGSelect'
 import { AtomSwitch } from '~/components/inputs/AtomSwitch'
 import { SUFFIX_DEG, SUFFIX_EM } from '~/consts'
+import { $currentDieFace } from '~/state/settings'
 
-export interface DieFaceSettingsProps {
-  face: DieFaceResult
-}
+export function DieFaceSettings() {
+  const face = useAtom($currentDieFace)
 
-export function DieFaceSettings({ face }: DieFaceSettingsProps) {
+  if (!face) return <Text c="dimmed" ta="center">No face selected</Text>
+
   return (
     <>
       <SimpleGrid cols={2} spacing="xs">

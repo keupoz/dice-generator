@@ -29,18 +29,29 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
 
   const faces = options.faces.map(createDieFace.bind(null, $facesBaseGeom, $fontScale))
 
-  const faceGeomAtoms = faces.map(face => face.instanceAtoms).flat()
+  const $faceGeoms = computed((get) => {
+    return faces.map(face => face.instanceAtoms.map(atom => get(atom)))
+  })
+
   const $finalObject = computed((get): Object3D | undefined => {
     if (!get($visible)) return
 
-    const faceGeoms = faceGeomAtoms.map(atom => get(atom))
-    const flatFilteredFaceGeoms = faceGeoms.filter(geom => geom !== undefined).flat()
     const baseGeom = get($baseGeom)
 
-    if (get($enableRender)) return evaluate(get($renderEngine), baseGeom, flatFilteredFaceGeoms, get($renderOperation))
+    if (get($enableRender)) {
+      const faceGeoms = get($faceGeoms).flat(2)
+      const flatFilteredFaceGeoms = faceGeoms.filter(geom => geom !== undefined)
+      return evaluate(get($renderEngine), baseGeom, flatFilteredFaceGeoms, get($renderOperation), `die:${options.name}:evaluated`)
+    }
 
-    const baseMesh = cad2mesh(baseGeom, BASE_MATERIAL)
-    const faceMeshes = flatFilteredFaceGeoms.map(faceGeom => cad2mesh(faceGeom, FONT_MATERIAL))
+    const baseMesh = cad2mesh(baseGeom, BASE_MATERIAL, `die:${options.name}:base`)
+    const faceMeshes = get($faceGeoms).map((face, faceIndex) => {
+      return face.map((geoms) => {
+        if (!geoms) return []
+        geoms = [geoms].flat()
+        return geoms.map((geom, geomIndex) => cad2mesh(geom, FONT_MATERIAL, `die:${options.name}:face:${faceIndex}:${geomIndex}`))
+      })
+    }).flat(2)
 
     const result = new Group()
     result.add(baseMesh, ...faceMeshes)
