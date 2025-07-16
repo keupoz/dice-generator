@@ -17,10 +17,8 @@ export function fixPaths(paths: Path[], segments: number) {
 }
 
 function createClipperShape(paths: Path[], segments: number) {
-  const clipperPaths: Point[][] = []
-
-  for (const path of paths) {
-    const clipperPath = path
+  const clipperPaths = paths.map((path) => {
+    return path
       .closePath()
       .getPoints(segments)
       // Scale path so Clipper doesn't remove necessary points
@@ -29,9 +27,7 @@ function createClipperShape(paths: Path[], segments: number) {
         X: point.x * POINT_PRECISION_MUL,
         Y: point.y * POINT_PRECISION_MUL,
       }))
-
-    clipperPaths.push(clipperPath)
-  }
+  })
 
   return new ClipperShape(clipperPaths, true, false, false, false)
 }
