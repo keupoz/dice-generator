@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@doodle3d/clipper-js':
-        specifier: ^1.0.11
-        version: 1.0.11
       '@fortawesome/fontawesome-svg-core':
         specifier: ^6.7.2
         version: 6.7.2
@@ -216,12 +213,6 @@ packages:
 
   '@dimforge/rapier3d-compat@0.12.0':
     resolution: {integrity: sha512-uekIGetywIgopfD97oDL5PfeezkFpNhwlzlaEYNOA0N6ghdsOvh/HYjSMek5Q2O1PYvRSDFcqFVJl4r4ZBwOow==}
-
-  '@doodle3d/clipper-js@1.0.11':
-    resolution: {integrity: sha512-KSVF9iOl9jGu02EGUnVS2ric4iQRSIypg3/CTM30+MuWsqkUhILIG2EPxvPASENi6483QmNIwGSogZuTE7CFQA==}
-
-  '@doodle3d/clipper-lib@6.4.2-b':
-    resolution: {integrity: sha512-glELSijsD9b+/0d9iOdasBwqH3s+xPxD59tJ7aXkBx7klugygGOMXn7PB05AdhVyA1OYMj7GUCegaQa7nvLtmQ==}
 
   '@dprint/formatter@0.3.0':
     resolution: {integrity: sha512-N9fxCxbaBOrDkteSOzaCqwWjso5iAe+WJPsHC021JfHNj2ThInPNEF13ORDKta3llq5D1TlclODCvOvipH7bWQ==}
@@ -3306,12 +3297,6 @@ snapshots:
       sisteransi: 1.0.5
 
   '@dimforge/rapier3d-compat@0.12.0': {}
-
-  '@doodle3d/clipper-js@1.0.11':
-    dependencies:
-      '@doodle3d/clipper-lib': 6.4.2-b
-
-  '@doodle3d/clipper-lib@6.4.2-b': {}
 
   '@dprint/formatter@0.3.0': {}
 
