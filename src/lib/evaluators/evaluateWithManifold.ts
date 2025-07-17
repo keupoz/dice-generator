@@ -16,7 +16,7 @@ const OPERATIONS = {
 } satisfies Record<RenderOperation, ManifoldOperation>
 
 export const evaluateWithManifold: RenderEvaluator = (baseGeom, faceGeoms, operation) => {
-  const result = getSafeManifold()?.(({ Manifold, Mesh }) => {
+  return getSafeManifold()?.(({ Manifold, Mesh }) => {
     let result = Manifold.ofMesh(cad2manifold(Mesh, baseGeom))
 
     for (const faceGeom of faceGeoms) {
@@ -29,7 +29,4 @@ export const evaluateWithManifold: RenderEvaluator = (baseGeom, faceGeoms, opera
 
     return mesh
   })
-
-  result?.cleanup()
-  return result?.value
 }

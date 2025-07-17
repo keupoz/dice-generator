@@ -63,12 +63,7 @@ function proxify<T extends DeletableConstructor>(Module: ManifoldToplevel, memor
   })
 }
 
-export interface SafeManifoldResult<T> {
-  value: T
-  cleanup: () => void
-}
-
-export type SafeManifold = <T>(operation: (Module: ManifoldToplevel) => T) => SafeManifoldResult<T>
+export type SafeManifold = <T>(operation: (Module: ManifoldToplevel) => T) => T
 
 export function wrapManifoldModule(Module: ManifoldToplevel): SafeManifold {
   return function safeManifold(operation) {
@@ -79,10 +74,8 @@ export function wrapManifoldModule(Module: ManifoldToplevel): SafeManifold {
       CrossSection: proxify(Module, memoryRegistry, Module.CrossSection),
     })
 
-    function cleanup() {
-      clearMemory(memoryRegistry)
-    }
+    clearMemory(memoryRegistry)
 
-    return { value, cleanup }
+    return value
   }
 }
