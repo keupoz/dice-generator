@@ -2,25 +2,26 @@ import type { SimplePolygon, Vec2 } from 'manifold-3d'
 import type { Path } from 'three'
 import { ShapeUtils } from 'three'
 import { manifold2cad } from '../converters/manifold2cad'
-import { getSafeManifold } from '../manifold/instance'
+import { getManifold } from '../manifold'
 
 export function createExtrudeGeometry(paths: Path[], segments: number) {
-  const safeManifold = getSafeManifold()
+  const { CrossSection } = getManifold()
+  const segmentedPaths = paths.map(path => path.getPoints(segments))
 
-  if (!safeManifold) throw new Error('Manifold is not initialized')
-
-  return safeManifold(({ CrossSection }) => {
-    const segmentedPaths = paths.map(path => path.getPoints(segments))
-
-    if (ShapeUtils.isClockWise(segmentedPaths.flat())) {
-      for (const path of segmentedPaths) {
-        path.reverse()
-      }
+  if (ShapeUtils.isClockWise(segmentedPaths.flat())) {
+    for (const path of segmentedPaths) {
+      path.reverse()
     }
+  }
 
-    const polygons = segmentedPaths.map<SimplePolygon>(path => path.map<Vec2>(({ x, y }) => ([x, y])))
-    const mesh = new CrossSection(polygons).extrude(2, 3).getMesh()
+  const polygons = segmentedPaths.map<SimplePolygon>(path => path.map<Vec2>(({ x, y }) => ([x, y])))
 
-    return manifold2cad(mesh)
-  })
+  const crossSection = new CrossSection(polygons)
+  const manifold = crossSection.extrude(2, 3)
+  const mesh = manifold.getMesh()
+
+  crossSection.delete()
+  manifold.delete()
+
+  return manifold2cad(mesh)
 }

@@ -6,7 +6,7 @@ import { Mesh as ThreeMesh } from 'three'
 import { BASE_MATERIAL, FONT_MATERIAL } from '~/state/materials'
 import { cad2manifold } from '../converters/jscad2manifold'
 import { manifold2three } from '../converters/manifold2three'
-import { getSafeManifold } from '../manifold/instance'
+import { getManifold } from '../manifold'
 
 type ManifoldOperation = (M: typeof Manifold, base: Manifold, face: Manifold) => Manifold
 
@@ -16,17 +16,23 @@ const OPERATIONS = {
 } satisfies Record<RenderOperation, ManifoldOperation>
 
 export const evaluateWithManifold: RenderEvaluator = (baseGeom, faceGeoms, operation) => {
-  return getSafeManifold()?.(({ Manifold, Mesh }) => {
-    let result = Manifold.ofMesh(cad2manifold(Mesh, baseGeom))
+  const { Manifold, Mesh } = getManifold()
+  let result = Manifold.ofMesh(cad2manifold(Mesh, baseGeom))
 
-    for (const faceGeom of faceGeoms) {
-      const faceManifold = Manifold.ofMesh(cad2manifold(Mesh, faceGeom))
-      result = OPERATIONS[operation](Manifold, result, faceManifold)
-    }
+  for (const faceGeom of faceGeoms) {
+    const faceManifold = Manifold.ofMesh(cad2manifold(Mesh, faceGeom))
+    const newResult = OPERATIONS[operation](Manifold, result, faceManifold)
 
-    const geometry = manifold2three(result.getMesh())
-    const mesh = new ThreeMesh(geometry, [BASE_MATERIAL, ...range(0, faceGeoms.length - 1, FONT_MATERIAL)])
+    result.delete()
+    faceManifold.delete()
 
-    return mesh
-  })
+    result = newResult
+  }
+
+  const geometry = manifold2three(result.getMesh())
+  const threeMesh = new ThreeMesh(geometry, [BASE_MATERIAL, ...range(0, faceGeoms.length - 1, FONT_MATERIAL)])
+
+  result.delete()
+
+  return threeMesh
 }

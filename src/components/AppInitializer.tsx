@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from 'react'
 import { Alert, Center, Loader } from '@mantine/core'
 import { useEffect, useState } from 'react'
-import { initManifold } from '~/lib/manifold/instance'
+import { initManifold } from '~/lib/manifold'
 import { fetchFonts } from '~/state/fonts'
 
 const LOCAL_FONTS = import.meta.glob<string>('/src/assets/fonts/*', {
@@ -33,8 +33,7 @@ const FONTS = [
 ]
 
 const promises = Promise.all([
-  fetchFonts(FONTS, 'Roboto'),
-  initManifold(),
+  initManifold().then(() => fetchFonts(FONTS, 'Roboto')),
 ])
 
 type State = {

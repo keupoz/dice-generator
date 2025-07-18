@@ -3,9 +3,10 @@ import type { DieInputOptions, DieOptions } from './types'
 import mat4 from '@jscad/modeling/src/maths/mat4'
 import { align, transform } from '@jscad/modeling/src/operations/transforms'
 import { mapValues } from 'radashi'
-import { Group, Matrix4 } from 'three'
+import { BufferGeometry, Group, Matrix4, Mesh } from 'three'
 import { atom } from '~/atoms/atom'
 import { computed } from '~/atoms/computed'
+import { effect } from '~/atoms/effect'
 import { cad2mesh } from '~/lib/converters/jscad2three'
 import { evaluate } from '~/lib/evaluators/evaluate'
 import { $extrusionDepth } from '~/state/faces'
@@ -57,6 +58,17 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
     result.add(baseMesh, ...faceMeshes)
 
     return result
+  })
+
+  effect((get) => {
+    const finalObject = get($finalObject)
+    return () => {
+      finalObject?.traverse((object) => {
+        if (object instanceof Mesh && object.geometry instanceof BufferGeometry) {
+          object.geometry.dispose()
+        }
+      })
+    }
   })
 
   const $alignMatrix = computed((get) => {
