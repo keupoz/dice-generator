@@ -1,6 +1,6 @@
 import type { Object3D } from 'three'
 import type { DieInputOptions, DieOptions } from './types'
-import { invalidate } from '@react-three/fiber'
+import { measureDimensions } from '@jscad/modeling/src/measurements'
 import { mapValues } from 'radashi'
 import { BufferGeometry, Group, Matrix4, Mesh } from 'three'
 import { atom } from '~/atoms/atom'
@@ -33,6 +33,10 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
     return faces.map(face => face.instanceAtoms.map(atom => get(atom)))
   })
 
+  const $dimensions = computed((get) => {
+    return measureDimensions(get($baseGeom))
+  })
+
   const $alignMatrix = computed((get) => {
     if (!get($enableAlign)) return undefined
 
@@ -44,7 +48,7 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
     return new Matrix4().fromArray(result)
   })
 
-  const $output = computed((get): Object3D | undefined => {
+  const $finalObject = computed((get): Object3D | undefined => {
     if (!get($visible)) return
 
     const baseGeom = get($baseGeom)
@@ -70,17 +74,27 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
     return result
   })
 
-  effect((get) => {
-    const output = get($output)
+  const $output = computed((get) => {
+    const object = get($finalObject)
 
-    if (output) {
-      const alignMatrix = get($alignMatrix) ?? new Matrix4()
-      alignMatrix.decompose(output.position, output.quaternion, output.scale)
-      invalidate()
-    }
+    if (!object) return
+
+    const alignMatrix = get($alignMatrix)
+
+    if (!alignMatrix) return object
+
+    const result = new Group()
+    result.add(object)
+    result.applyMatrix4(alignMatrix)
+
+    return result
+  })
+
+  effect((get) => {
+    const object = get($finalObject)
 
     return () => {
-      output?.traverse((object) => {
+      object?.traverse((object) => {
         if (object instanceof Mesh && object.geometry instanceof BufferGeometry) {
           object.geometry.dispose()
         }
@@ -94,6 +108,7 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
     $visible,
     $fontScale,
     $inputs,
+    $dimensions,
     $output,
     faces,
   }

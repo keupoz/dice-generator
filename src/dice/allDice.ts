@@ -1,8 +1,8 @@
+import type { Object3D } from 'three'
 import type { DieResult } from './utils/createDie'
 import { cluster, mapKeys } from 'radashi'
-import { Box3, Group, Vector3 } from 'three'
+import { Group } from 'three'
 import { computed } from '~/atoms/computed'
-import { effect } from '~/atoms/effect'
 import { $extrusionDepth } from '~/state/faces'
 import { $enableRender, $renderOperation, RenderOperation } from '~/state/render'
 import { alphabetical } from '~/utils/array/alphabetical'
@@ -16,61 +16,78 @@ export const DICE_SORTED = toSortedArray(DICE)
 export const DICE_GROUPED = cluster(DICE_SORTED, 3)
 export const DIE_NAMES = DICE_SORTED.map(die => die.name)
 
-export const $diceOutput = computed((get) => {
-  let maxSize = new Vector3()
+interface DieRow {
+  maxDepth: number
+  dice: DieResult[]
+}
 
-  for (const group of DICE_GROUPED) {
-    for (const die of group) {
-      const object = get(die.$output)
-      if (!object) continue
+const $diceGrid = computed((get) => {
+  let maxWidth = 0
 
-      const box = new Box3().setFromObject(object)
-      const size = box.getSize(new Vector3())
-
-      maxSize = maxSize.max(size)
-    }
-  }
-
-  const allGroups = DICE_GROUPED.map((group, i) => {
-    const dieGroups = group.map((die, j) => {
-      const object = get(die.$output)
-      if (!object) return null
-
-      const result = new Group()
-      result.add(object)
-
-      result.position.x = maxSize.x * 1.5 * j
-      result.position.z = maxSize.z
-
-      return result
-    })
-
-    const result = new Group()
-    const filteredDieGroups = dieGroups.filter(dieGroup => dieGroup !== null)
-
-    if (filteredDieGroups.length) {
-      result.add(...filteredDieGroups)
+  const rows = DICE_GROUPED.map((dice) => {
+    const row: DieRow = {
+      maxDepth: 0,
+      dice,
     }
 
-    result.position.x = maxSize.x
-    result.position.z = maxSize.z * i
+    for (const die of dice) {
+      const dimensions = get(die.$dimensions)
+      maxWidth = Math.max(maxWidth, dimensions[0])
+      row.maxDepth = Math.max(row.maxDepth, dimensions[1])
+    }
 
-    return result
+    return row
   })
 
-  const result = new Group()
-  result.add(...allGroups)
+  return { maxWidth, rows }
+})
+
+const $arrangedDice = computed((get) => {
+  const { maxWidth, rows } = get($diceGrid)
+  const result: Object3D[] = []
+
+  let offsetX = 0
+  let offsetY = 0
+
+  for (const row of rows) {
+    offsetX = 0
+    offsetY += row.maxDepth / 2
+
+    for (const die of row.dice) {
+      const object = get(die.$output)
+      offsetX += maxWidth / 2
+
+      if (object) {
+        const group = new Group()
+        group.add(object)
+        group.position.x = offsetX
+        group.position.z = offsetY
+        result.push(group)
+      }
+
+      offsetX += (maxWidth / 2) + 8
+    }
+
+    offsetY += (row.maxDepth / 2) + 8
+  }
 
   return result
 })
 
-effect((get) => {
-  const object = get($diceOutput)
+export const $diceOutput = computed((get) => {
+  const objects = get($arrangedDice)
+  const result = new Group()
 
   if (get($enableRender) && get($renderOperation) === RenderOperation.Union) {
     const offsetY = get($extrusionDepth)
-    object.position.y = offsetY
+    result.position.y = offsetY
   } else {
-    object.position.y = 0
+    result.position.y = 0
   }
+
+  if (objects.length) {
+    result.add(...objects)
+  }
+
+  return result
 })
