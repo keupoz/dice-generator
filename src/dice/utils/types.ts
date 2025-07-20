@@ -46,7 +46,5 @@ export interface DieOptions<TInputs extends Record<string, DieInputOptions>> {
   inputs: TInputs
   buildBase: GeomBuilder<DieInputValues<TInputs>>
   buildFacesBase?: GeomBuilder<DieInputValues<TInputs>>
-  alignFaceIndex?: number
-  invertAlignMatrix?: boolean
   faces: DieFaceOptions[]
 }

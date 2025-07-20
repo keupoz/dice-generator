@@ -19,8 +19,6 @@ function createFaceConfig(index: number): DieFaceOptions {
 export default createDie({
   name: 'd8',
   defaultFontScale: 0.6,
-  alignFaceIndex: 0,
-  invertAlignMatrix: true,
   inputs: {
     diameter: sizeInput(16, 'Diameter'),
   },

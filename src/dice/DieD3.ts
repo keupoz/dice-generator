@@ -71,13 +71,13 @@ export default createDie({
     {
       instances: [
         {
-          faceIndex: 0,
-          from: { type: 'edge', index: 2 },
+          faceIndex: 2,
+          from: { type: 'edge', index: 0 },
           to: { type: 'center' },
         },
         {
-          faceIndex: 2,
-          from: { type: 'edge', index: 0 },
+          faceIndex: 0,
+          from: { type: 'edge', index: 2 },
           to: { type: 'center' },
         },
       ],

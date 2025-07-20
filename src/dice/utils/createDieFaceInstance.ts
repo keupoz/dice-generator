@@ -18,7 +18,7 @@ export interface DieFaceInstance {
   rotationMatrix: Mat4
 }
 
-export function createDieFaceInstance(geom: Geom3, options: DieFaceInstanceOptions, invertRotation?: boolean): DieFaceInstance {
+export function createDieFaceInstance(geom: Geom3, options: DieFaceInstanceOptions): DieFaceInstance {
   const polygon = strictAt(geom3.toPolygons(geom), options.faceIndex)
   const points = poly3.toPoints(polygon)
   const [x, y, z] = plane.fromPoints(plane.create(), ...points)
@@ -40,10 +40,6 @@ export function createDieFaceInstance(geom: Geom3, options: DieFaceInstanceOptio
 
   let rotationMatrix = lookAt(to, center, normal)
   rotationMatrix = mat4.rotateX(mat4.create(), rotationMatrix, -Math.PI / 2)
-
-  if (invertRotation) {
-    rotationMatrix = mat4.invert(mat4.create(), rotationMatrix)
-  }
 
   return {
     center,

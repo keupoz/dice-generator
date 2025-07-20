@@ -1,7 +1,6 @@
 import type { Object3D } from 'three'
 import type { DieInputOptions, DieOptions } from './types'
-import mat4 from '@jscad/modeling/src/maths/mat4'
-import { align, transform } from '@jscad/modeling/src/operations/transforms'
+import { invalidate } from '@react-three/fiber'
 import { mapValues } from 'radashi'
 import { BufferGeometry, Group, Matrix4, Mesh } from 'three'
 import { atom } from '~/atoms/atom'
@@ -9,12 +8,12 @@ import { computed } from '~/atoms/computed'
 import { effect } from '~/atoms/effect'
 import { cad2mesh } from '~/lib/converters/jscad2three'
 import { evaluate } from '~/lib/evaluators/evaluate'
-import { $extrusionDepth } from '~/state/faces'
 import { BASE_MATERIAL, FONT_MATERIAL } from '~/state/materials'
-import { $enableAlign, $enableRender, $renderEngine, $renderOperation, RenderOperation } from '~/state/render'
+import { $enableAlign, $enableRender, $renderEngine, $renderOperation } from '~/state/render'
+import { strictAt } from '~/utils/array/strictAt'
 import { strictFirst } from '~/utils/iterable/strictFirst'
+import { createAlignMatrix } from './createAlignMatrix'
 import { createDieFace } from './createDieFace'
-import { createDieFaceInstance } from './createDieFaceInstance'
 
 export type DieResult = ReturnType<typeof createDie>
 
@@ -34,7 +33,18 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
     return faces.map(face => face.instanceAtoms.map(atom => get(atom)))
   })
 
-  const $finalObject = computed((get): Object3D | undefined => {
+  const $alignMatrix = computed((get) => {
+    if (!get($enableAlign)) return undefined
+
+    const facesBaseGeom = get($facesBaseGeom)
+    const alignFaceOptions = strictAt(options.faces, -1)
+    const alignFaceIndex = strictFirst(alignFaceOptions.instances).faceIndex
+    const result = createAlignMatrix(facesBaseGeom, alignFaceIndex)
+
+    return new Matrix4().fromArray(result)
+  })
+
+  const $output = computed((get): Object3D | undefined => {
     if (!get($visible)) return
 
     const baseGeom = get($baseGeom)
@@ -61,50 +71,21 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
   })
 
   effect((get) => {
-    const finalObject = get($finalObject)
+    const output = get($output)
+
+    if (output) {
+      const alignMatrix = get($alignMatrix) ?? new Matrix4()
+      alignMatrix.decompose(output.position, output.quaternion, output.scale)
+      invalidate()
+    }
+
     return () => {
-      finalObject?.traverse((object) => {
+      output?.traverse((object) => {
         if (object instanceof Mesh && object.geometry instanceof BufferGeometry) {
           object.geometry.dispose()
         }
       })
     }
-  })
-
-  const $alignMatrix = computed((get) => {
-    let result = mat4.fromXRotation(mat4.create(), -Math.PI / 2)
-
-    if (get($enableAlign)) {
-      const facesBaseGeom = get($facesBaseGeom)
-      const alignFaceOptions = options.faces[options.alignFaceIndex ?? -1]
-
-      if (alignFaceOptions) {
-        const instanceOptions = strictFirst(alignFaceOptions.instances)
-        const instance = createDieFaceInstance(facesBaseGeom, instanceOptions, options.invertAlignMatrix)
-
-        result = mat4.multiply(mat4.create(), result, instance.rotationMatrix)
-      }
-
-      const offsetY = get($renderOperation) === RenderOperation.Union ? get($extrusionDepth) : 0
-      const transformedGeom = transform(result, facesBaseGeom)
-      const alignment = align({ modes: ['none', 'min', 'none'], relativeTo: [null, offsetY, null], grouped: true }, transformedGeom).transforms
-      result = mat4.multiply(mat4.create(), alignment, result)
-    }
-
-    return new Matrix4().fromArray(result)
-  })
-
-  const $output = computed((get) => {
-    const object = get($finalObject)
-    const alignMatrix = get($alignMatrix)
-
-    if (!object) return object
-
-    const result = new Group()
-    result.add(object)
-    result.applyMatrix4(alignMatrix)
-
-    return result
   })
 
   return {

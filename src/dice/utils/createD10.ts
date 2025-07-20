@@ -8,8 +8,6 @@ export function createD10(isD100: boolean) {
   return createDie({
     name: isD100 ? 'd100' : 'd10',
     defaultFontScale: isD100 ? 0.35 : 0.5,
-    alignFaceIndex: 0,
-    invertAlignMatrix: true,
     inputs: {
       height: sizeInput(16, 'Height'),
       radius: { defaultValue: 8, min: 1, max: 40, step: 1, label: 'Radius', suffix: SUFFIX_MM },

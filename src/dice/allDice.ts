@@ -2,6 +2,9 @@ import type { DieResult } from './utils/createDie'
 import { cluster, mapKeys } from 'radashi'
 import { Box3, Group, Vector3 } from 'three'
 import { computed } from '~/atoms/computed'
+import { effect } from '~/atoms/effect'
+import { $extrusionDepth } from '~/state/faces'
+import { $enableRender, $renderOperation, RenderOperation } from '~/state/render'
 import { alphabetical } from '~/utils/array/alphabetical'
 
 function toSortedArray(object: Record<string, DieResult>) {
@@ -59,4 +62,15 @@ export const $diceOutput = computed((get) => {
   result.add(...allGroups)
 
   return result
+})
+
+effect((get) => {
+  const object = get($diceOutput)
+
+  if (get($enableRender) && get($renderOperation) === RenderOperation.Union) {
+    const offsetY = get($extrusionDepth)
+    object.position.y = offsetY
+  } else {
+    object.position.y = 0
+  }
 })

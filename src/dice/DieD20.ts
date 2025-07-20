@@ -5,8 +5,6 @@ import { sizeInput } from './utils/sizeInput'
 export default createDie({
   name: 'd20',
   defaultFontScale: 0.5,
-  alignFaceIndex: 0,
-  invertAlignMatrix: true,
   inputs: {
     diameter: sizeInput(16, 'Diameter'),
   },

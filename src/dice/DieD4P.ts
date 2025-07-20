@@ -7,7 +7,6 @@ const t = 2 / 3
 
 export default createDie({
   name: 'd4p',
-  alignFaceIndex: 0,
   inputs: {
     size: sizeInput(14, 'Size'),
     length1: { defaultValue: 20, min: 1, max: 40, step: 1, label: 'Body length', suffix: SUFFIX_MM },
