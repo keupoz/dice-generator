@@ -45,7 +45,7 @@ export function Scene() {
       <Grid />
 
       <FocusControls enableTransition={smoothCamera} resetToChildren onFocus={onFocus}>
-        <Center top>
+        <Center disableY>
           <AtomPrimitive atom={$diceOutput} />
         </Center>
       </FocusControls>
