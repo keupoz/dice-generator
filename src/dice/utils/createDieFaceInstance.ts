@@ -28,18 +28,19 @@ export function createDieFaceInstance(geom: Geom3, options: DieFaceInstanceOptio
   const from = getTargetPoint(points, options.from)
   const to = getTargetPoint(points, options.to)
 
-  let center
+  const center = vec3.create()
 
   if (options.polygonCenter) {
-    center = centerOfMassOfEdges(points)
+    centerOfMassOfEdges(center, points)
   } else {
-    center = vec3.lerp(vec3.create(), from, to, options.t ?? 0.5)
+    vec3.lerp(center, from, to, options.t ?? 0.5)
   }
 
   const length = vec3.distance(from, to)
+  const rotationMatrix = mat4.create()
 
-  let rotationMatrix = lookAt(to, center, normal)
-  rotationMatrix = mat4.rotateX(mat4.create(), rotationMatrix, -Math.PI / 2)
+  lookAt(rotationMatrix, to, center, normal)
+  mat4.rotateX(rotationMatrix, rotationMatrix, -Math.PI / 2)
 
   return {
     center,

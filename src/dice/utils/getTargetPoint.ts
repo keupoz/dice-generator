@@ -29,7 +29,7 @@ export function getTargetPoint(points: Vec3[], target: FaceTarget) {
     }
 
     case 'center': {
-      return centerOfMassOfEdges(points)
+      return centerOfMassOfEdges(vec3.create(), points)
     }
   }
 }

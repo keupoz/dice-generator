@@ -1,9 +1,8 @@
 import type { Vec3 } from '@jscad/modeling/src/maths/vec3'
-import vec3 from '@jscad/modeling/src/maths/vec3'
 import { strictAt } from '~/utils/array/strictAt'
 
 // https://stackoverflow.com/a/22474859
-export function centerOfMassOfEdges(points: Vec3[]) {
+export function centerOfMassOfEdges(out: Vec3, points: Vec3[]) {
   let sx = 0
   let sy = 0
   let sz = 0
@@ -33,5 +32,9 @@ export function centerOfMassOfEdges(points: Vec3[]) {
   const cy = sy / slen
   const cz = sz / slen
 
-  return vec3.fromValues(cx, cy, cz)
+  out[0] = cx
+  out[1] = cy
+  out[2] = cz
+
+  return out
 }

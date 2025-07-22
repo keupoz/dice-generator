@@ -1,9 +1,9 @@
+import type { Mat4 } from '@jscad/modeling/src/maths/mat4'
 import type { Vec3 } from '@jscad/modeling/src/maths/vec3'
-import mat4 from '@jscad/modeling/src/maths/mat4'
 import vec3 from '@jscad/modeling/src/maths/vec3'
 
 // https://github.com/mrdoob/three.js/blob/dev/src/math/Matrix4.js#L283
-export function lookAt(eye: Vec3, target: Vec3, up: Vec3) {
+export function lookAt(out: Mat4, eye: Vec3, target: Vec3, up: Vec3) {
   const _x = vec3.create()
   const _y = vec3.create()
   const _z = vec3.create()
@@ -31,17 +31,15 @@ export function lookAt(eye: Vec3, target: Vec3, up: Vec3) {
   vec3.normalize(_x, _x)
   vec3.cross(_y, _z, _x)
 
-  const matrix = mat4.create()
+  out[0] = _x[0]
+  out[4] = _y[0]
+  out[8] = _z[0]
+  out[1] = _x[1]
+  out[5] = _y[1]
+  out[9] = _z[1]
+  out[2] = _x[2]
+  out[6] = _y[2]
+  out[10] = _z[2]
 
-  matrix[0] = _x[0]
-  matrix[4] = _y[0]
-  matrix[8] = _z[0]
-  matrix[1] = _x[1]
-  matrix[5] = _y[1]
-  matrix[9] = _z[1]
-  matrix[2] = _x[2]
-  matrix[6] = _y[2]
-  matrix[10] = _z[2]
-
-  return matrix
+  return out
 }
