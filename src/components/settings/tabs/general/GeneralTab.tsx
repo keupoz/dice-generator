@@ -1,6 +1,8 @@
 import type { ComboboxData } from '@mantine/core'
 import type { FormEvent, RefObject } from 'react'
-import { Button, Divider, SimpleGrid, TextInput } from '@mantine/core'
+import { faFolderOpen } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Button, Divider, FileButton, SimpleGrid, TextInput } from '@mantine/core'
 import { modals } from '@mantine/modals'
 import { AtomSelect } from '~/components/inputs/AtomSelect'
 import { AtomSlider } from '~/components/inputs/AtomSlider'
@@ -9,6 +11,7 @@ import { $diceOutput } from '~/dice/allDice'
 import { $enableAlign, $enableRender, $renderEngine, $renderOperation, RenderEngine, RenderOperation } from '~/state/render'
 import { $baseOpacity, $enableWireframe, $showGrid, $smoothCamera } from '~/state/viewport'
 import { exportSTL } from '~/utils/exporters/exportSTL'
+import { handleFiles } from '~/utils/handleFiles'
 import { exportPreset } from '~/utils/presets/exportPreset'
 import { ThemeSwitcher } from './ThemeSwitcher'
 
@@ -47,6 +50,10 @@ export function GeneralTab() {
   return (
     <>
       <ThemeSwitcher />
+
+      <FileButton multiple onChange={handleFiles}>
+        {props => <Button {...props} variant="default" leftSection={<FontAwesomeIcon icon={faFolderOpen} />}>Open files</Button>}
+      </FileButton>
 
       <AtomSwitch atom={$showGrid} label="Show grid" />
       <AtomSwitch atom={$smoothCamera} label="Smooth camera" />
