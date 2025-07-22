@@ -1,4 +1,4 @@
-import { createObserver, runWithObserver } from './observer'
+import { createObserver, runWithObserver, safeRunWithObserver } from './observer'
 import { readable } from './readable'
 import { createValueRef } from './valueRef'
 
@@ -11,7 +11,7 @@ export function computed<TValue>(compute: () => TValue, cleanup?: (value: TValue
 
   function notify() {
     cleanup?.($computed.get())
-    ref.value = runWithObserver(observer, compute)
+    ref.value = safeRunWithObserver(observer, compute, ref.value)
   }
 
   return $computed

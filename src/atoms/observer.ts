@@ -33,6 +33,18 @@ export function runWithObserver<T>(observer: Observer, run: () => T) {
   }
 }
 
+export function safeRunWithObserver<T>(observer: Observer, run: () => T, fallbackValue: T) {
+  try {
+    return runWithObserver(observer, run)
+  } catch (error) {
+    if (import.meta.env.DEV) {
+      console.error('Computation failed.', error)
+    }
+
+    return fallbackValue
+  }
+}
+
 export function getCurrentObserver() {
   return currentObserver
 }

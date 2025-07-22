@@ -1,4 +1,4 @@
-import { cleanupObserver, createObserver, runWithObserver } from './observer'
+import { cleanupObserver, createObserver, runWithObserver, safeRunWithObserver } from './observer'
 
 export type EffectCleanup = () => void
 export type EffectRun = () => EffectCleanup | void
@@ -9,7 +9,7 @@ export function effect(run: EffectRun): EffectCleanup {
 
   function notify() {
     effectCleanup?.()
-    effectCleanup = runWithObserver(observer, run)
+    effectCleanup = safeRunWithObserver(observer, run, effectCleanup)
   }
 
   return () => {
