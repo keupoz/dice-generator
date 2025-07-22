@@ -1,10 +1,13 @@
-export type AtomGetter = <TValue>(atom: ReadableAtom<TValue>) => TValue
-export type AtomSetter = <TValue>(atom: WritableAtom<TValue>, value: TValue) => void
+import type { ObserverSource } from './observer'
 
-export type AtomListener = () => void
+export type AtomGetter = <U>(atom: ReadableAtom<U>) => U
+
 export type Cleanup = () => void
+export type AtomListener = () => Cleanup | void
 
 export interface ReadableAtom<TValue> {
+  observerSource: ObserverSource
+
   /**
    * Get atom value
    * @returns Atom value
@@ -17,14 +20,6 @@ export interface ReadableAtom<TValue> {
    * @returns Function to unsubscribe
    */
   listen: (listener: AtomListener) => Cleanup
-
-  /**
-   * Subscribe to one atom change.
-   * Automatically unsubcscribes after first change.
-   * @param listener Callback with new value and old value
-   * @returns Function to unsubscribe
-   */
-  once: (listener: AtomListener) => Cleanup
 }
 
 export interface WritableAtom<TValue> extends ReadableAtom<TValue> {

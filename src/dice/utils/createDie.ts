@@ -1,6 +1,6 @@
 import type { Object3D } from 'three'
 import type { DieInputOptions, DieOptions } from './types'
-import { measureDimensions } from '@jscad/modeling/src/measurements'
+import mat4 from '@jscad/modeling/src/maths/mat4'
 import { mapValues } from 'radashi'
 import { BufferGeometry, Group, Matrix4, Mesh } from 'three'
 import { atom } from '~/atoms/atom'
@@ -8,8 +8,9 @@ import { computed } from '~/atoms/computed'
 import { effect } from '~/atoms/effect'
 import { cad2mesh } from '~/lib/converters/jscad2three'
 import { evaluate } from '~/lib/evaluators/evaluate'
+import { $extrusionDepth } from '~/state/faces'
 import { BASE_MATERIAL, FONT_MATERIAL } from '~/state/materials'
-import { $enableAlign, $enableRender, $renderEngine, $renderOperation } from '~/state/render'
+import { $enableAlign, $enableRender, $renderEngine, $renderOperation, RenderOperation } from '~/state/render'
 import { strictAt } from '~/utils/array/strictAt'
 import { strictFirst } from '~/utils/iterable/strictFirst'
 import { createAlignMatrix } from './createAlignMatrix'
@@ -33,10 +34,6 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
     return faces.map(face => face.instanceAtoms.map(atom => get(atom)))
   })
 
-  const $dimensions = computed((get) => {
-    return measureDimensions(get($baseGeom))
-  })
-
   const $alignMatrix = computed((get) => {
     if (!get($enableAlign)) return undefined
 
@@ -44,6 +41,11 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
     const alignFaceOptions = strictAt(options.faces, -1)
     const alignFaceIndex = strictFirst(alignFaceOptions.instances).faceIndex
     const result = createAlignMatrix(facesBaseGeom, alignFaceIndex)
+
+    if (get($enableRender) && get($renderOperation) === RenderOperation.Union) {
+      const offsetY = get($extrusionDepth)
+      mat4.translate(result, result, [0, offsetY, 0])
+    }
 
     return new Matrix4().fromArray(result)
   })
@@ -108,7 +110,6 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
     $visible,
     $fontScale,
     $inputs,
-    $dimensions,
     $output,
     faces,
   }

@@ -2,6 +2,7 @@ import type { Object3D } from 'three'
 import type { ReadableAtom } from '~/atoms/types'
 import saveAs from 'file-saver'
 import { STLExporter } from 'three/addons/exporters/STLExporter.js'
+import { flush } from '~/atoms/scheduler'
 import { $enableAlign, $enableRender } from '~/state/render'
 import { generateFilename } from '../generateFilename'
 
@@ -26,17 +27,12 @@ export function exportSTL($object: ReadableAtom<Object3D | undefined>, name?: st
   const enableAlign = $enableAlign.get()
   const enableRender = $enableRender.get()
 
-  if (enableAlign && enableRender) {
-    exportObject($object.get(), name)
-  } else {
-    $object.once(() => {
-      exportObject($object.get(), name)
+  $enableAlign.set(true)
+  $enableRender.set(true)
 
-      $enableAlign.set(enableAlign)
-      $enableRender.set(enableRender)
-    })
+  flush()
+  exportObject($object.get(), name)
 
-    $enableAlign.set(true)
-    $enableRender.set(true)
-  }
+  $enableAlign.set(enableAlign)
+  $enableRender.set(enableRender)
 }

@@ -1,15 +1,26 @@
+import type { Observer } from './observer'
 import type { AtomGetter, ReadableAtom } from './types'
 import { atom } from './atom'
-import { effect } from './effect'
+import { runWithObserver } from './observer'
 
-export type ComputedInit<TValue> = (get: AtomGetter) => TValue
+export function computed<TValue>(compute: (get: AtomGetter) => TValue, cleanup?: (value: TValue) => void) {
+  function runCompute() {
+    return compute(atom => atom.get())
+  }
 
-export function computed<TValue>(init: ComputedInit<TValue>) {
-  const $computed = atom<TValue | undefined>(undefined)
+  const observer: Observer = {
+    sources: new Set(),
+    notify,
+  }
 
-  effect((get) => {
-    $computed.set(init(get))
-  })
+  const $computed = atom(runWithObserver(observer, runCompute))
+
+  observer.linkedSource = $computed.observerSource
+
+  function notify() {
+    cleanup?.($computed.get())
+    $computed.set(runWithObserver(observer, runCompute))
+  }
 
   return $computed as ReadableAtom<TValue>
 }

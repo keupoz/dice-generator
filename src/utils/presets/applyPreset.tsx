@@ -75,6 +75,9 @@ export async function applyPreset(preset: InferOutput<typeof PresetSchema>) {
       onConfirm: () => applyPreset(preset),
     })
   } else {
+    const svgs = preset.general.svgs.map(svg => new File([svg.content], svg.name, { lastModified: svg.lastModified }))
+    await loadSVGs(svgs)
+
     $renderEngine.set(preset.general.renderEngine)
     $renderOperation.set(preset.general.renderOperation)
 
@@ -85,9 +88,6 @@ export async function applyPreset(preset: InferOutput<typeof PresetSchema>) {
     $fontScale.set(preset.general.fontScale)
     $svgScale.set(preset.general.svgScale)
     $extrusionDepth.set(preset.general.extrusionDepth)
-
-    const svgs = preset.general.svgs.map(svg => new File([svg.content], svg.name, { lastModified: svg.lastModified }))
-    await loadSVGs(svgs)
 
     for (const diePreset of preset.dice) {
       const die = DICE[diePreset.name]

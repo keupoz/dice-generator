@@ -1,43 +1,28 @@
-import type { AtomGetter, Cleanup, ReadableAtom } from './types'
+import type { Observer } from './observer'
+import type { AtomGetter, Cleanup } from './types'
+import { cleanupObserver, runWithObserver } from './observer'
 
-export type EffectRun = (get: AtomGetter) => Cleanup | void
+export type EffectRun = (getter: AtomGetter) => Cleanup | void
 
-export function effect(fx: EffectRun): Cleanup {
-  const collectedAtoms = new Set<ReadableAtom<unknown>>()
-
-  let unbinds: Cleanup[] | undefined
-  let effectCleanup: Cleanup | undefined
-
-  runEffect()
-
-  function cleanup() {
-    unbinds?.forEach(unbind => unbind())
-    effectCleanup?.()
-
-    unbinds = undefined
-    effectCleanup = undefined
-  }
-
+export function effect(run: EffectRun): Cleanup {
   function runEffect() {
-    try {
-      effectCleanup = fx(getter) ?? undefined
-    } finally {
-      // Subscribe to new dependencies
-      unbinds = [...collectedAtoms].map(atom => atom.listen(run))
-      collectedAtoms.clear()
-    }
+    return run(atom => atom.get())
   }
 
-  function run() {
-    cleanup()
-    runEffect()
+  const observer: Observer = {
+    sources: new Set(),
+    notify,
   }
 
-  function getter<UValue>($atom: ReadableAtom<UValue>) {
-    // Collect dependency
-    collectedAtoms.add($atom)
-    return $atom.get()
+  let effectCleanup = runWithObserver(observer, runEffect)
+
+  function notify() {
+    effectCleanup?.()
+    effectCleanup = runWithObserver(observer, runEffect)
   }
 
-  return cleanup
+  return () => {
+    effectCleanup?.()
+    cleanupObserver(observer)
+  }
 }

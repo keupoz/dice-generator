@@ -1,29 +1,39 @@
-import type { AtomListener, WritableAtom } from './types'
-import { enqueue } from './scheduler'
+import type { Observer } from './observer'
+import type { WritableAtom } from './types'
+import { getCurrentObserver } from './observer'
+import { enqueueObservers } from './scheduler'
 
 export function atom<TValue>(value: TValue) {
-  const listeners = new Set<AtomListener>()
-
   const $atom: WritableAtom<TValue> = {
+    observerSource: {
+      observers: new Set(),
+    },
     get() {
+      const currentObserver = getCurrentObserver()
+      if (currentObserver) {
+        $atom.observerSource.observers.add(currentObserver)
+        currentObserver.sources.add($atom.observerSource)
+      }
       return value
     },
     set(newValue) {
       if (newValue === value) return
       value = newValue
-      listeners.forEach(listener => enqueue(listener))
+      enqueueObservers($atom.observerSource.observers)
     },
     listen(listener) {
-      listeners.add(listener)
-      return () => void listeners.delete(listener)
-    },
-    once(listener) {
-      const unsubcscribe = $atom.listen(() => {
-        unsubcscribe()
-        listener()
-      })
+      const observer: Observer = {
+        sources: new Set(),
+        notify: listener,
+      }
 
-      return unsubcscribe
+      $atom.observerSource.observers.add(observer)
+      observer.sources.add($atom.observerSource)
+
+      return () => {
+        $atom.observerSource.observers.delete(observer)
+        observer.sources.delete($atom.observerSource)
+      }
     },
   }
 
