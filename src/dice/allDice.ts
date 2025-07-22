@@ -89,7 +89,5 @@ export const $diceOutput = computed(() => {
     result.add(...objects)
   }
 
-  console.log('output')
-
   return result
 })
