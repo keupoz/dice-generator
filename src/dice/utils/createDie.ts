@@ -4,7 +4,6 @@ import { mapValues } from 'radashi'
 import { BufferGeometry, Group, Matrix4, Mesh } from 'three'
 import { atom } from '~/atoms/atom'
 import { computed } from '~/atoms/computed'
-import { effect } from '~/atoms/effect'
 import { cad2mesh } from '~/lib/converters/jscad2three'
 import { evaluate } from '~/lib/evaluators/evaluate'
 import { $extrusionDepth } from '~/state/faces'
@@ -68,6 +67,12 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
     result.add(baseMesh, ...faceMeshes)
 
     return result
+  }, (object) => {
+    object?.traverse((object) => {
+      if (object instanceof Mesh && object.geometry instanceof BufferGeometry) {
+        object.geometry.dispose()
+      }
+    })
   })
 
   const $output = computed(() => {
@@ -89,18 +94,6 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
     }
 
     return result
-  })
-
-  effect(() => {
-    const object = $finalObject.get()
-
-    return () => {
-      object?.traverse((object) => {
-        if (object instanceof Mesh && object.geometry instanceof BufferGeometry) {
-          object.geometry.dispose()
-        }
-      })
-    }
   })
 
   return {
