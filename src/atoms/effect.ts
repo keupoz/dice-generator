@@ -1,15 +1,10 @@
-import type { Observer } from './observer'
-import type { Cleanup } from './types'
-import { cleanupObserver, runWithObserver } from './observer'
+import { cleanupObserver, createObserver, runWithObserver } from './observer'
 
-export type EffectRun = () => Cleanup | void
+export type EffectCleanup = () => void
+export type EffectRun = () => EffectCleanup | void
 
-export function effect(run: EffectRun): Cleanup {
-  const observer: Observer = {
-    sources: new Set(),
-    notify,
-  }
-
+export function effect(run: EffectRun): EffectCleanup {
+  const observer = createObserver(notify)
   let effectCleanup = runWithObserver(observer, run)
 
   function notify() {

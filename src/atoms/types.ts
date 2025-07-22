@@ -1,11 +1,7 @@
 import type { ObserverSource } from './observer'
 
-export type Cleanup = () => void
+export type Unlisten = () => void
 export type AtomListener = () => void
-
-export interface ValueRef<TValue> {
-  value: TValue
-}
 
 export interface ReadableAtom<TValue> {
   observerSource: ObserverSource
@@ -21,7 +17,7 @@ export interface ReadableAtom<TValue> {
    * @param listener Callback with new value and old value
    * @returns Function to unsubscribe
    */
-  listen: (listener: AtomListener) => Cleanup
+  listen: (listener: AtomListener) => Unlisten
 }
 
 export interface WritableAtom<TValue> extends ReadableAtom<TValue> {

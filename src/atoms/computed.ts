@@ -1,15 +1,10 @@
-import type { Observer } from './observer'
-import type { ValueRef } from './types'
-import { runWithObserver } from './observer'
+import { createObserver, runWithObserver } from './observer'
 import { readable } from './readable'
+import { createValueRef } from './valueRef'
 
 export function computed<TValue>(compute: () => TValue, cleanup?: (value: TValue) => void) {
-  const observer: Observer = {
-    sources: new Set(),
-    notify,
-  }
-
-  const ref: ValueRef<TValue> = { value: runWithObserver(observer, compute) }
+  const observer = createObserver(notify)
+  const ref = createValueRef(runWithObserver(observer, compute))
   const $computed = readable(ref)
 
   observer.linkedSource = $computed.observerSource

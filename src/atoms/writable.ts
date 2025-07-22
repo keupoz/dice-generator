@@ -1,4 +1,5 @@
-import type { ValueRef, WritableAtom } from './types'
+import type { WritableAtom } from './types'
+import type { ValueRef } from './valueRef'
 import { readable } from './readable'
 import { enqueueObservers } from './scheduler'
 

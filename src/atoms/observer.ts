@@ -8,6 +8,10 @@ export interface Observer {
   notify: () => void
 }
 
+export function createObserver(notify: Observer['notify']): Observer {
+  return { sources: new Set(), notify }
+}
+
 let currentObserver: Observer | undefined
 
 export function cleanupObserver(observer: Observer) {

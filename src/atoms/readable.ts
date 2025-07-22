@@ -1,6 +1,6 @@
-import type { Observer } from './observer'
-import type { ReadableAtom, ValueRef } from './types'
-import { getCurrentObserver } from './observer'
+import type { ReadableAtom } from './types'
+import type { ValueRef } from './valueRef'
+import { createObserver, getCurrentObserver } from './observer'
 
 export function readable<TValue>(ref: ValueRef<TValue>) {
   const $readable: ReadableAtom<TValue> = {
@@ -16,10 +16,7 @@ export function readable<TValue>(ref: ValueRef<TValue>) {
       return ref.value
     },
     listen(listener) {
-      const observer: Observer = {
-        sources: new Set(),
-        notify: listener,
-      }
+      const observer = createObserver(listener)
 
       $readable.observerSource.observers.add(observer)
       observer.sources.add($readable.observerSource)
