@@ -1,6 +1,5 @@
 import type { Object3D } from 'three'
 import type { DieInputOptions, DieOptions } from './types'
-import mat4 from '@jscad/modeling/src/maths/mat4'
 import { mapValues } from 'radashi'
 import { BufferGeometry, Group, Matrix4, Mesh } from 'three'
 import { atom } from '~/atoms/atom'
@@ -41,11 +40,6 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
     const alignFaceOptions = strictAt(options.faces, -1)
     const alignFaceIndex = strictFirst(alignFaceOptions.instances).faceIndex
     const result = createAlignMatrix(facesBaseGeom, alignFaceIndex)
-
-    if ($enableRender.get() && $renderOperation.get() === RenderOperation.Union) {
-      const offsetY = $extrusionDepth.get()
-      mat4.translate(result, result, [0, offsetY, 0])
-    }
 
     return new Matrix4().fromArray(result)
   })
@@ -88,6 +82,11 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
     const result = new Group()
     result.add(object)
     result.applyMatrix4(alignMatrix)
+
+    if ($enableRender.get() && $renderOperation.get() === RenderOperation.Union) {
+      const offsetY = $extrusionDepth.get()
+      result.position.y += offsetY
+    }
 
     return result
   })
