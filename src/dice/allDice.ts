@@ -1,6 +1,5 @@
 import type { Object3D } from 'three'
 import type { DieResult } from './utils/createDie'
-import type { AtomGetter } from '~/atoms/types'
 import { cluster, mapKeys } from 'radashi'
 import { Box3, Group, Vector3 } from 'three'
 import { computed } from '~/atoms/computed'
@@ -20,7 +19,7 @@ interface DieRow {
   objects: (Object3D | undefined)[]
 }
 
-function calculateDiceGrid(get: AtomGetter) {
+function calculateDiceGrid() {
   const box = new Box3()
   const size = new Vector3()
 
@@ -33,7 +32,7 @@ function calculateDiceGrid(get: AtomGetter) {
     }
 
     for (const die of dice) {
-      const object = get(die.$output)
+      const object = die.$output.get()
       row.objects.push(object)
 
       if (object) {
@@ -81,8 +80,8 @@ function arrangeDice({ maxWidth, rows }: ReturnType<typeof calculateDiceGrid>) {
   return objects
 }
 
-export const $diceOutput = computed((get) => {
-  const grid = calculateDiceGrid(get)
+export const $diceOutput = computed(() => {
+  const grid = calculateDiceGrid()
   const objects = arrangeDice(grid)
   const result = new Group()
 

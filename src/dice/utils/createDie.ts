@@ -20,49 +20,49 @@ export type DieResult = ReturnType<typeof createDie>
 
 export function createDie<TInputs extends Record<string, DieInputOptions>>(options: DieOptions<TInputs>) {
   const $inputs = atom(mapValues(options.inputs, item => item.defaultValue))
-  const $baseGeom = computed(get => options.buildBase(get($inputs)))
+  const $baseGeom = computed(() => options.buildBase($inputs.get()))
 
   const { buildFacesBase } = options
-  const $facesBaseGeom = buildFacesBase ? computed(get => buildFacesBase(get($inputs))) : $baseGeom
+  const $facesBaseGeom = buildFacesBase ? computed(() => buildFacesBase($inputs.get())) : $baseGeom
 
   const $visible = atom(true)
   const $fontScale = atom(options.defaultFontScale ?? 1)
 
   const faces = options.faces.map(createDieFace.bind(null, $facesBaseGeom, $fontScale))
 
-  const $faceGeoms = computed((get) => {
-    return faces.map(face => face.instanceAtoms.map(atom => get(atom)))
+  const $faceGeoms = computed(() => {
+    return faces.map(face => face.instanceAtoms.map(atom => atom.get()))
   })
 
-  const $alignMatrix = computed((get) => {
-    if (!get($enableAlign)) return undefined
+  const $alignMatrix = computed(() => {
+    if (!$enableAlign.get()) return undefined
 
-    const facesBaseGeom = get($facesBaseGeom)
+    const facesBaseGeom = $facesBaseGeom.get()
     const alignFaceOptions = strictAt(options.faces, -1)
     const alignFaceIndex = strictFirst(alignFaceOptions.instances).faceIndex
     const result = createAlignMatrix(facesBaseGeom, alignFaceIndex)
 
-    if (get($enableRender) && get($renderOperation) === RenderOperation.Union) {
-      const offsetY = get($extrusionDepth)
+    if ($enableRender.get() && $renderOperation.get() === RenderOperation.Union) {
+      const offsetY = $extrusionDepth.get()
       mat4.translate(result, result, [0, offsetY, 0])
     }
 
     return new Matrix4().fromArray(result)
   })
 
-  const $finalObject = computed((get): Object3D | undefined => {
-    if (!get($visible)) return
+  const $finalObject = computed((): Object3D | undefined => {
+    if (!$visible.get()) return
 
-    const baseGeom = get($baseGeom)
+    const baseGeom = $baseGeom.get()
 
-    if (get($enableRender)) {
-      const faceGeoms = get($faceGeoms).flat(2)
+    if ($enableRender.get()) {
+      const faceGeoms = $faceGeoms.get().flat(2)
       const flatFilteredFaceGeoms = faceGeoms.filter(geom => geom !== undefined)
-      return evaluate(get($renderEngine), baseGeom, flatFilteredFaceGeoms, get($renderOperation), `die:${options.name}:evaluated`)
+      return evaluate($renderEngine.get(), baseGeom, flatFilteredFaceGeoms, $renderOperation.get(), `die:${options.name}:evaluated`)
     }
 
     const baseMesh = cad2mesh(baseGeom, BASE_MATERIAL, `die:${options.name}:base`)
-    const faceMeshes = get($faceGeoms).map((face, faceIndex) => {
+    const faceMeshes = $faceGeoms.get().map((face, faceIndex) => {
       return face.map((geoms) => {
         if (!geoms) return []
         geoms = [geoms].flat()
@@ -76,12 +76,12 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
     return result
   })
 
-  const $output = computed((get) => {
-    const object = get($finalObject)
+  const $output = computed(() => {
+    const object = $finalObject.get()
 
     if (!object) return
 
-    const alignMatrix = get($alignMatrix)
+    const alignMatrix = $alignMatrix.get()
 
     if (!alignMatrix) return object
 
@@ -92,8 +92,8 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
     return result
   })
 
-  effect((get) => {
-    const object = get($finalObject)
+  effect(() => {
+    const object = $finalObject.get()
 
     return () => {
       object?.traverse((object) => {

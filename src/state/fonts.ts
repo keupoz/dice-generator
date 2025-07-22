@@ -57,17 +57,17 @@ function createCurrentFontAtom() {
     $features.set(features)
   }
 
-  effect((get) => {
-    const fonts = get($userFonts)
+  effect(() => {
+    const fonts = $userFonts.get()
     const latestFont = Object.values(fonts).at(-1)
     if (latestFont) $baseFont.set(latestFont)
   })
 
-  effect(get => reset(get($baseFont)?.value))
+  effect(() => reset($baseFont.get()?.value))
 
-  const $currentFont = computed((get) => {
-    const baseFont = get($baseFont)
-    const variationSettings = get($variationSettings)
+  const $currentFont = computed(() => {
+    const baseFont = $baseFont.get()
+    const variationSettings = $variationSettings.get()
 
     if (Object.keys(variationSettings).length === 0) return baseFont?.value
 

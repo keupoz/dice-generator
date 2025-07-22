@@ -1,7 +1,5 @@
 import type { ObserverSource } from './observer'
 
-export type AtomGetter = <U>(atom: ReadableAtom<U>) => U
-
 export type Cleanup = () => void
 export type AtomListener = () => Cleanup | void
 

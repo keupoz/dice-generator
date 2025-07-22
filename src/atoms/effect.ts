@@ -1,24 +1,20 @@
 import type { Observer } from './observer'
-import type { AtomGetter, Cleanup } from './types'
+import type { Cleanup } from './types'
 import { cleanupObserver, runWithObserver } from './observer'
 
-export type EffectRun = (getter: AtomGetter) => Cleanup | void
+export type EffectRun = () => Cleanup | void
 
 export function effect(run: EffectRun): Cleanup {
-  function runEffect() {
-    return run(atom => atom.get())
-  }
-
   const observer: Observer = {
     sources: new Set(),
     notify,
   }
 
-  let effectCleanup = runWithObserver(observer, runEffect)
+  let effectCleanup = runWithObserver(observer, run)
 
   function notify() {
     effectCleanup?.()
-    effectCleanup = runWithObserver(observer, runEffect)
+    effectCleanup = runWithObserver(observer, run)
   }
 
   return () => {

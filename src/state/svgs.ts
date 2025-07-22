@@ -53,10 +53,10 @@ export async function loadSVGs(files: File[]) {
       paths,
       viewboxScale,
       $scaleByViewBox,
-      $geom: computed((get) => {
-        const scaleByViewBox = get($scaleByViewBox)
-        const segments = get($segments)
-        const svgScale = get($svgScale)
+      $geom: computed(() => {
+        const scaleByViewBox = $scaleByViewBox.get()
+        const segments = $segments.get()
+        const svgScale = $svgScale.get()
 
         let geom = getSVGGeometry(paths, segments)
         const [width, height] = measureDimensions(geom)

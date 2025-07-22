@@ -6,8 +6,8 @@ import { $baseOpacity, $enableWireframe } from './viewport'
 export const BASE_MATERIAL = new MeshStandardMaterial({ transparent: true })
 export const FONT_MATERIAL = new MeshNormalMaterial()
 
-effect((get) => {
-  const baseOpacity = get($baseOpacity)
+effect(() => {
+  const baseOpacity = $baseOpacity.get()
 
   BASE_MATERIAL.opacity = baseOpacity
   BASE_MATERIAL.transparent = baseOpacity < 1
@@ -15,8 +15,8 @@ effect((get) => {
   invalidate()
 })
 
-effect((get) => {
-  const enableWireframe = get($enableWireframe)
+effect(() => {
+  const enableWireframe = $enableWireframe.get()
 
   BASE_MATERIAL.wireframe = enableWireframe
   FONT_MATERIAL.wireframe = enableWireframe

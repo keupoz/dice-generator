@@ -16,19 +16,19 @@ import { createDieFaceInstance } from './createDieFaceInstance'
 export type DieFaceResult = ReturnType<typeof createDieFace>
 
 function createTextObjectAtom({ $currentFont, $features }: CurrentFontAtoms, $text: ReadableAtom<string | SVGResult>) {
-  return computed((get) => {
-    const text = get($text)
-    const segments = get($segments)
+  return computed(() => {
+    const text = $text.get()
+    const segments = $segments.get()
 
     if (typeof text === 'string') {
-      const currentFont = get($currentFont)
+      const currentFont = $currentFont.get()
 
       if (!currentFont) return
 
-      return createTextObject(currentFont, get($features), text, segments)
+      return createTextObject(currentFont, $features.get(), text, segments)
     }
 
-    return get(text.$geom)
+    return text.$geom.get()
   })
 }
 
@@ -48,9 +48,9 @@ export function createDieFace($facesBaseGeom: ReadableAtom<Geom3>, $localFontSca
   const $textGeoms = createTextObjectAtom(currentTextFont, $text)
   const $markGeoms = createTextObjectAtom(currentMarkFont, $mark)
 
-  const $faceLayout = computed((get) => {
-    let markGeoms = get($markGeoms)
-    let textGeoms = get($textGeoms) ?? markGeoms
+  const $faceLayout = computed(() => {
+    let markGeoms = $markGeoms.get()
+    let textGeoms = $textGeoms.get() ?? markGeoms
 
     if (!textGeoms) return
 
@@ -62,9 +62,9 @@ export function createDieFace($facesBaseGeom: ReadableAtom<Geom3>, $localFontSca
     const textWidth = (maxX - minX) / 2
     const textHeight = (maxY - minY) / 2
 
-    const markGap = get($markGap)
+    const markGap = $markGap.get()
 
-    if (get($isUnderscore)) {
+    if ($isUnderscore.get()) {
       const offset = textHeight + markGap
       markGeoms = align({ modes: ['center', 'max', 'center'], relativeTo: [0, -offset, 0], grouped: true }, markGeoms)
     } else {
@@ -79,21 +79,21 @@ export function createDieFace($facesBaseGeom: ReadableAtom<Geom3>, $localFontSca
   })
 
   const instanceAtoms = options.instances.map((instanceOptions) => {
-    return computed((get) => {
-      let geoms = get($faceLayout)
+    return computed(() => {
+      let geoms = $faceLayout.get()
 
       if (!geoms) return
 
-      const globalFontScale = get($fontScale)
-      const localFontScale = get($localFontScale)
+      const globalFontScale = $fontScale.get()
+      const localFontScale = $localFontScale.get()
 
-      const instance = createDieFaceInstance(get($facesBaseGeom), instanceOptions)
+      const instance = createDieFaceInstance($facesBaseGeom.get(), instanceOptions)
       const faceScale = instance.length * globalFontScale * localFontScale
-      const rotation = (options.initialRotation ?? 0) + degToRad(get($rotation))
+      const rotation = (options.initialRotation ?? 0) + degToRad($rotation.get())
 
       geoms = rotateZ(rotation, geoms)
-      geoms = translate([get($offsetX), get($offsetY)], geoms)
-      geoms = scale([faceScale, faceScale, get($extrusionDepth)], geoms)
+      geoms = translate([$offsetX.get(), $offsetY.get()], geoms)
+      geoms = scale([faceScale, faceScale, $extrusionDepth.get()], geoms)
       geoms = transform(instance.rotationMatrix, geoms)
       geoms = translate(instance.center, geoms)
 
