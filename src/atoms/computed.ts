@@ -1,7 +1,7 @@
 import type { Observer } from './observer'
-import type { ReadableAtom } from './types'
-import { atom } from './atom'
+import type { ValueRef } from './types'
 import { runWithObserver } from './observer'
+import { readable } from './readable'
 
 export function computed<TValue>(compute: () => TValue, cleanup?: (value: TValue) => void) {
   const observer: Observer = {
@@ -9,14 +9,15 @@ export function computed<TValue>(compute: () => TValue, cleanup?: (value: TValue
     notify,
   }
 
-  const $computed = atom(runWithObserver(observer, compute))
+  const ref: ValueRef<TValue> = { value: runWithObserver(observer, compute) }
+  const $computed = readable(ref)
 
   observer.linkedSource = $computed.observerSource
 
   function notify() {
     cleanup?.($computed.get())
-    $computed.set(runWithObserver(observer, compute))
+    ref.value = runWithObserver(observer, compute)
   }
 
-  return $computed as ReadableAtom<TValue>
+  return $computed
 }

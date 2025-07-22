@@ -3,6 +3,10 @@ import type { ObserverSource } from './observer'
 export type Cleanup = () => void
 export type AtomListener = () => void
 
+export interface ValueRef<TValue> {
+  value: TValue
+}
+
 export interface ReadableAtom<TValue> {
   observerSource: ObserverSource
 
