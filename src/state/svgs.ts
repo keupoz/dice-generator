@@ -56,13 +56,11 @@ export async function loadSVGs(files: File[]) {
       $geom: computed(() => {
         const scaleByViewBox = $scaleByViewBox.get()
         const segments = $segments.get()
-        const svgScale = $svgScale.get()
 
         let geom = getSVGGeometry(paths, segments)
         const [width, height] = measureDimensions(geom)
         const vbScale = scaleByViewBox ? viewboxScale : null
-        const boxScale = vbScale ?? (1 / Math.max(width, height))
-        const geomScale = boxScale * svgScale
+        const geomScale = vbScale ?? (1 / Math.max(width, height))
 
         geom = scale([geomScale, geomScale], geom)
         geom = mirrorY(geom)

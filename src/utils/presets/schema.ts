@@ -33,6 +33,7 @@ export const DieSchema = object({
   name: string(),
   visible: boolean(),
   fontScale: number(),
+  svgScale: optional(number()),
   inputs: record(string(), number()),
   faces: array(DieFaceSchema),
 })

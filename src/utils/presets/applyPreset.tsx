@@ -95,6 +95,7 @@ export async function applyPreset(preset: InferOutput<typeof PresetSchema>) {
 
       die.$visible.set(diePreset.visible)
       die.$fontScale.set(diePreset.fontScale)
+      die.$svgScale.set(diePreset.svgScale ?? preset.general.svgScale)
       die.$inputs.set(diePreset.inputs)
 
       const dieFaces = objectify(die.faces, face => face.name)

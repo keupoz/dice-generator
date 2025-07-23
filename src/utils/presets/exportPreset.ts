@@ -47,6 +47,7 @@ export function exportPreset(name: string) {
     name: die.name,
     visible: die.$visible.get(),
     fontScale: die.$fontScale.get(),
+    svgScale: die.$svgScale.get(),
     inputs: die.$inputs.get(),
     faces: die.faces.map(face => ({
       name: face.name,

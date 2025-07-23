@@ -23,6 +23,7 @@ export function DieSettings() {
 
       <AtomSwitch atom={die.$visible} label="Visible" />
       <AtomSlider atom={die.$fontScale} label="Font scale" min={0.05} max={2} step={0.05} />
+      <AtomSlider atom={die.$svgScale} label="SVG scale" min={0.05} max={2} step={0.05} />
 
       <Divider />
 

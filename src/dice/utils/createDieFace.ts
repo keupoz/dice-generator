@@ -11,6 +11,7 @@ import { computed } from '~/atoms/computed'
 import { createTextObject } from '~/lib/fonts/createTextObject'
 import { $extrusionDepth, $segments } from '~/state/faces'
 import { $fontScale, currentMarkFont, currentTextFont } from '~/state/fonts'
+import { $svgScale } from '~/state/svgs'
 import { createDieFaceInstance } from './createDieFaceInstance'
 
 export type DieFaceResult = ReturnType<typeof createDieFace>
@@ -32,7 +33,7 @@ function createTextObjectAtom({ $currentFont, $features }: CurrentFontAtoms, $te
   })
 }
 
-export function createDieFace($facesBaseGeom: ReadableAtom<Geom3>, $localFontScale: ReadableAtom<number>, options: DieFaceOptions, index: number) {
+export function createDieFace($facesBaseGeom: ReadableAtom<Geom3>, $localFontScale: ReadableAtom<number>, $localSVGScale: ReadableAtom<number>, options: DieFaceOptions, index: number) {
   const defaultText = options.text ?? `${index + 1}`
   const defaultMark = defaultText === '6' || defaultText === '9' ? '_' : ''
   const name = `Face ${defaultText}`
@@ -84,11 +85,12 @@ export function createDieFace($facesBaseGeom: ReadableAtom<Geom3>, $localFontSca
 
       if (!geoms) return
 
-      const globalFontScale = $fontScale.get()
-      const localFontScale = $localFontScale.get()
+      const glyphScale = typeof $text.get() === 'string'
+        ? $fontScale.get() * $localFontScale.get()
+        : $svgScale.get() * $localSVGScale.get()
 
       const instance = createDieFaceInstance($facesBaseGeom.get(), instanceOptions)
-      const faceScale = instance.length * globalFontScale * localFontScale
+      const faceScale = instance.length * glyphScale
       const rotation = (options.initialRotation ?? 0) + degToRad($rotation.get())
 
       geoms = rotateZ(rotation, geoms)
