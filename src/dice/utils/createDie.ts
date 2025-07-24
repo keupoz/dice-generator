@@ -34,14 +34,16 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
   })
 
   const $alignMatrix = computed(() => {
-    if (!$enableAlign.get()) return undefined
+    const result = new Matrix4()
+
+    if (!$enableAlign.get()) return result.makeRotationX(-Math.PI / 2)
 
     const facesBaseGeom = $facesBaseGeom.get()
     const alignFaceOptions = strictAt(options.faces, -1)
     const alignFaceIndex = strictFirst(alignFaceOptions.instances).faceIndex
-    const result = createAlignMatrix(facesBaseGeom, alignFaceIndex)
+    const alignMatrix = createAlignMatrix(facesBaseGeom, alignFaceIndex)
 
-    return new Matrix4().fromArray(result)
+    return result.fromArray(alignMatrix)
   })
 
   const $finalObject = computed((): Object3D | undefined => {
@@ -81,11 +83,9 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
 
     if (!object) return
 
+    const result = new Group()
     const alignMatrix = $alignMatrix.get()
 
-    if (!alignMatrix) return object
-
-    const result = new Group()
     result.add(object)
     result.applyMatrix4(alignMatrix)
 
