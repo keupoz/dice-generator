@@ -4,7 +4,6 @@ import type { Vec3 } from '@jscad/modeling/src/maths/vec3'
 import type { DieFaceInstanceOptions } from './types'
 import { poly3 } from '@jscad/modeling/src/geometries'
 import geom3 from '@jscad/modeling/src/geometries/geom3'
-import { plane } from '@jscad/modeling/src/maths'
 import mat4 from '@jscad/modeling/src/maths/mat4'
 import vec3 from '@jscad/modeling/src/maths/vec3'
 import { strictAt } from '~/utils/array/strictAt'
@@ -21,7 +20,7 @@ export interface DieFaceInstance {
 export function createDieFaceInstance(geom: Geom3, options: DieFaceInstanceOptions): DieFaceInstance {
   const polygon = strictAt(geom3.toPolygons(geom), options.faceIndex)
   const points = poly3.toPoints(polygon)
-  const [x, y, z] = plane.fromPoints(plane.create(), ...points)
+  const [x, y, z] = poly3.plane(polygon)
 
   const normal = vec3.fromValues(x, y, z)
 
