@@ -15,6 +15,6 @@ const EVALUATORS = {
 
 export function evaluate(renderEngine: RenderEngine, baseGeom: Geom3, faceGeoms: Geom3[], operation: RenderOperation, name: string) {
   const mesh = EVALUATORS[renderEngine](baseGeom, faceGeoms, operation)
-  if (mesh)mesh.name = name
+  if (mesh) mesh.name = name
   return mesh
 }
