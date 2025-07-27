@@ -6,6 +6,7 @@ import { List, ListItem, Stack, Text } from '@mantine/core'
 import { modals } from '@mantine/modals'
 import { objectify } from 'radashi'
 import { DICE } from '~/dice/allDice'
+import { $blanksGap } from '~/state/dice'
 import { $extrusionDepth, $segments } from '~/state/faces'
 import { $builtinFonts, $fontScale, $userFonts, currentMarkFont, currentTextFont } from '~/state/fonts'
 import { $renderEngine, $renderOperation } from '~/state/render'
@@ -77,6 +78,8 @@ export async function applyPreset(preset: InferOutput<typeof PresetSchema>) {
   } else {
     const svgs = preset.general.svgs.map(svg => new File([svg.content], svg.name, { lastModified: svg.lastModified }))
     await loadSVGs(svgs)
+
+    $blanksGap.set(preset.general.blanksGap)
 
     $renderEngine.set(preset.general.renderEngine)
     $renderOperation.set(preset.general.renderOperation)

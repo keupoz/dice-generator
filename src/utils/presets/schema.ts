@@ -39,6 +39,8 @@ export const DieSchema = object({
 })
 
 export const PresetGeneralSchema = object({
+  blanksGap: optional(number(), 0.25),
+
   renderEngine: enum_(RenderEngine),
   renderOperation: enum_(RenderOperation),
 

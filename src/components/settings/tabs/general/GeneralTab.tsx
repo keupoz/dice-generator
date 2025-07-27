@@ -7,7 +7,9 @@ import { modals } from '@mantine/modals'
 import { AtomSelect } from '~/components/inputs/AtomSelect'
 import { AtomSlider } from '~/components/inputs/AtomSlider'
 import { AtomSwitch } from '~/components/inputs/AtomSwitch'
+import { SUFFIX_MM } from '~/consts'
 import { $diceOutput } from '~/dice/allDice'
+import { $blanksGap, $enableBlanks, $enableDice } from '~/state/dice'
 import { $enableAlign, $enableRender, $renderEngine, $renderOperation, RenderEngine, RenderOperation } from '~/state/render'
 import { $baseOpacity, $enableWireframe, $showGrid, $smoothCamera } from '~/state/viewport'
 import { exportSTL } from '~/utils/exporters/exportSTL'
@@ -51,14 +53,24 @@ export function GeneralTab() {
     <>
       <ThemeSwitcher />
 
-      <FileButton multiple onChange={handleFiles}>
-        {props => <Button {...props} variant="default" leftSection={<FontAwesomeIcon icon={faFolderOpen} />}>Open files</Button>}
-      </FileButton>
+      <SimpleGrid cols={2} spacing="xs">
+        <FileButton multiple onChange={handleFiles}>
+          {props => <Button {...props} variant="default" leftSection={<FontAwesomeIcon icon={faFolderOpen} />}>Open files</Button>}
+        </FileButton>
+
+        <Button onClick={openExportPresetModal}>Export preset</Button>
+      </SimpleGrid>
 
       <AtomSwitch atom={$showGrid} label="Show grid" />
       <AtomSwitch atom={$smoothCamera} label="Smooth camera" />
       <AtomSwitch atom={$enableWireframe} label="Enable wireframe" />
       <AtomSlider atom={$baseOpacity} label="Base opacity" min={0.1} max={1} step={0.1} />
+
+      <Divider />
+
+      <AtomSwitch atom={$enableDice} label="Enable dice" />
+      <AtomSwitch atom={$enableBlanks} label="Enable blanks" />
+      <AtomSlider atom={$blanksGap} label="Blanks gap" min={0.05} max={2} step={0.05} suffix={SUFFIX_MM} />
 
       <Divider />
 
@@ -71,8 +83,8 @@ export function GeneralTab() {
       </SimpleGrid>
 
       <SimpleGrid cols={2} spacing="xs">
-        <Button onClick={() => exportSTL($diceOutput)}>Export STL</Button>
-        <Button onClick={openExportPresetModal}>Export preset</Button>
+        <Button onClick={() => exportSTL($diceOutput, false)}>Export dice</Button>
+        <Button onClick={() => exportSTL($diceOutput, true)}>Export blanks</Button>
       </SimpleGrid>
     </>
   )

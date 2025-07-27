@@ -3,12 +3,13 @@ import type { ReadableAtom } from '~/atoms/types'
 import saveAs from 'file-saver'
 import { STLExporter } from 'three/addons/exporters/STLExporter.js'
 import { flush } from '~/atoms/scheduler'
+import { $enableBlanks, $enableDice } from '~/state/dice'
 import { $enableAlign, $enableRender } from '~/state/render'
 import { generateFilename } from '../generateFilename'
 
 const exporter = new STLExporter()
 
-function exportObject(object: Object3D | undefined, name?: string) {
+function exportObject(object: Object3D | undefined, name: string, extraName?: string) {
   if (!object) return
 
   object = object.clone()
@@ -18,21 +19,31 @@ function exportObject(object: Object3D | undefined, name?: string) {
   object.updateWorldMatrix(true, true)
 
   const result = exporter.parse(object, { binary: true })
-  const filename = generateFilename('dice', 'stl', name)
+  const filename = generateFilename(name, 'stl', extraName)
 
   saveAs(new Blob([result]), filename)
 }
 
-export function exportSTL($object: ReadableAtom<Object3D | undefined>, name?: string) {
+export function exportSTL($object: ReadableAtom<Object3D | undefined>, exportBlanks: boolean, dieName?: string) {
+  const enableDice = $enableDice.get()
+  const enableBlanks = $enableBlanks.get()
   const enableAlign = $enableAlign.get()
   const enableRender = $enableRender.get()
 
+  const name = exportBlanks
+    ? dieName ? 'blank' : 'blanks'
+    : dieName ? 'die' : 'dice'
+
+  $enableDice.set(!exportBlanks)
+  $enableBlanks.set(exportBlanks)
   $enableAlign.set(true)
   $enableRender.set(true)
 
   flush()
-  exportObject($object.get(), name)
+  exportObject($object.get(), name, dieName)
 
+  $enableDice.set(enableDice)
+  $enableBlanks.set(enableBlanks)
   $enableAlign.set(enableAlign)
   $enableRender.set(enableRender)
 }

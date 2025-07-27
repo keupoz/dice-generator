@@ -5,6 +5,7 @@ import type { CurrentFontAtoms } from '~/state/fonts'
 import type { SVGResult } from '~/state/svgs'
 import { saveAs } from 'file-saver'
 import { DICE_SORTED } from '~/dice/allDice'
+import { $blanksGap } from '~/state/dice'
 import { $extrusionDepth, $segments } from '~/state/faces'
 import { $fontScale, currentMarkFont, currentTextFont } from '~/state/fonts'
 import { $renderEngine, $renderOperation } from '~/state/render'
@@ -64,6 +65,8 @@ export function exportPreset(name: string) {
   const preset: InferInput<typeof PresetSchema> = {
     name,
     general: {
+      blanksGap: $blanksGap.get(),
+
       renderEngine: $renderEngine.get(),
       renderOperation: $renderOperation.get(),
 

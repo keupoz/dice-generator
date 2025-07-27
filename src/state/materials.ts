@@ -1,9 +1,10 @@
 import { invalidate } from '@react-three/fiber'
-import { MeshNormalMaterial, MeshStandardMaterial } from 'three'
+import { DoubleSide, MeshNormalMaterial, MeshStandardMaterial } from 'three'
 import { effect } from '~/atoms/effect'
 import { $baseOpacity, $enableWireframe } from './viewport'
 
 export const BASE_MATERIAL = new MeshStandardMaterial({ transparent: true })
+export const BLANK_MATERIAL = new MeshStandardMaterial({ side: DoubleSide })
 export const FONT_MATERIAL = new MeshNormalMaterial()
 
 effect(() => {

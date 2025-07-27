@@ -1,17 +1,20 @@
 import type { Object3D } from 'three'
 import type { DieInputOptions, DieOptions } from './types'
+import mat4 from '@jscad/modeling/src/maths/mat4'
 import { mapValues } from 'radashi'
 import { BufferGeometry, Group, Matrix4, Mesh } from 'three'
 import { atom } from '~/atoms/atom'
 import { computed } from '~/atoms/computed'
 import { cad2mesh } from '~/lib/converters/jscad2three'
 import { evaluate } from '~/lib/evaluators/evaluate'
+import { $blanksDelta, $enableBlanks, $enableDice } from '~/state/dice'
 import { $extrusionDepth } from '~/state/faces'
-import { BASE_MATERIAL, FONT_MATERIAL } from '~/state/materials'
+import { BASE_MATERIAL, BLANK_MATERIAL, FONT_MATERIAL } from '~/state/materials'
 import { $enableAlign, $enableRender, $renderEngine, $renderOperation, RenderOperation } from '~/state/render'
 import { strictAt } from '~/utils/array/strictAt'
 import { strictFirst } from '~/utils/iterable/strictFirst'
-import { createAlignMatrix } from './createAlignMatrix'
+import { alignByGeom } from './alignByGeom'
+import { createBlank } from './createBlank'
 import { createDieFace } from './createDieFace'
 
 export type DieResult = ReturnType<typeof createDie>
@@ -33,41 +36,76 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
     return faces.map(face => face.instanceAtoms.map(atom => atom.get()))
   })
 
+  const $blankGeom = computed(() => {
+    if (!$visible.get() || !$enableBlanks.get()) return
+
+    const delta = $blanksDelta.get()
+    const baseGeom = $baseGeom.get()
+
+    return createBlank(baseGeom, delta)
+  })
+
   const $alignMatrix = computed(() => {
-    const result = new Matrix4()
+    const out = mat4.create()
 
-    if (!$enableAlign.get()) return result.makeRotationX(-Math.PI / 2)
+    if ($enableAlign.get()) {
+      const facesBaseGeom = $facesBaseGeom.get()
+      const alignFaceOptions = strictAt(options.faces, -1)
+      const alignFaceIndex = strictFirst(alignFaceOptions.instances).faceIndex
 
-    const facesBaseGeom = $facesBaseGeom.get()
-    const alignFaceOptions = strictAt(options.faces, -1)
-    const alignFaceIndex = strictFirst(alignFaceOptions.instances).faceIndex
-    const alignMatrix = createAlignMatrix(facesBaseGeom, alignFaceIndex)
+      alignByGeom(out, facesBaseGeom, alignFaceIndex)
 
-    return result.fromArray(alignMatrix)
+      if (!$enableDice.get() && $enableBlanks.get()) {
+        const translation = mat4.fromTranslation(mat4.create(), [0, -$blanksDelta.get(), 0])
+        mat4.multiply(out, translation, out)
+      }
+    } else {
+      mat4.rotateX(out, out, -Math.PI / 2)
+    }
+
+    return new Matrix4().fromArray(out)
   })
 
   const $finalObject = computed((): Object3D | undefined => {
     if (!$visible.get()) return
 
-    const baseGeom = $baseGeom.get()
+    const objects: Object3D[] = []
 
-    if ($enableRender.get()) {
-      const faceGeoms = $faceGeoms.get().flat(2)
-      const flatFilteredFaceGeoms = faceGeoms.filter(geom => geom !== undefined)
-      return evaluate($renderEngine.get(), baseGeom, flatFilteredFaceGeoms, $renderOperation.get(), `die:${options.name}:evaluated`)
+    const baseGeom = $baseGeom.get()
+    const blankGeom = $blankGeom.get()
+
+    if (blankGeom) {
+      // Blank mesh
+      objects.push(cad2mesh(blankGeom, BLANK_MATERIAL, `die:${options.name}:blank`))
     }
 
-    const baseMesh = cad2mesh(baseGeom, BASE_MATERIAL, `die:${options.name}:base`)
-    const faceMeshes = $faceGeoms.get().map((face, faceIndex) => {
-      return face.map((geoms) => {
-        if (!geoms) return []
-        geoms = [geoms].flat()
-        return geoms.map((geom, geomIndex) => cad2mesh(geom, FONT_MATERIAL, `die:${options.name}:face:${faceIndex}:${geomIndex}`))
-      })
-    }).flat(2)
+    if ($enableDice.get()) {
+      if ($enableRender.get()) {
+        const faceGeoms = $faceGeoms.get().flat(2)
+        const flatFilteredFaceGeoms = faceGeoms.filter(geom => geom !== undefined)
+        const evaluated = evaluate($renderEngine.get(), baseGeom, flatFilteredFaceGeoms, $renderOperation.get(), `die:${options.name}:evaluated`)
+
+        if (evaluated) objects.push(evaluated)
+      } else {
+      // Base mesh
+        objects.push(cad2mesh(baseGeom, BASE_MATERIAL, `die:${options.name}:base`))
+
+        // Face meshes
+        $faceGeoms.get().forEach((face, faceIndex) => {
+          face.forEach((geoms) => {
+            if (!geoms) return
+
+            // It's not guaranteed that geoms is an array
+            [geoms].flat().forEach((geom, geomIndex) => {
+              objects.push(cad2mesh(geom, FONT_MATERIAL, `die:${options.name}:face:${faceIndex}:${geomIndex}`))
+            })
+          })
+        })
+      }
+    }
 
     const result = new Group()
-    result.add(baseMesh, ...faceMeshes)
+    result.add(...objects)
 
     return result
   }, (object) => {
