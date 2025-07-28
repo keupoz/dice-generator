@@ -13,9 +13,9 @@ import { BASE_MATERIAL, BLANK_MATERIAL, FONT_MATERIAL } from '~/state/materials'
 import { $enableAlign, $enableRender, $renderEngine, $renderOperation, RenderOperation } from '~/state/render'
 import { strictAt } from '~/utils/array/strictAt'
 import { strictFirst } from '~/utils/iterable/strictFirst'
-import { alignByGeom } from './alignByGeom'
 import { createBlank } from './createBlank'
 import { createDieFace } from './createDieFace'
+import { makeAlignmentMatrix } from './makeAlignmentMatrix'
 
 export type DieResult = ReturnType<typeof createDie>
 
@@ -98,7 +98,7 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
       const alignFaceOptions = strictAt(options.faces, -1)
       const alignFaceIndex = strictFirst(alignFaceOptions.instances).faceIndex
 
-      alignByGeom(out, facesBaseGeom, alignFaceIndex)
+      makeAlignmentMatrix(out, facesBaseGeom, alignFaceIndex)
 
       if (!$enableDice.get() && $enableBlanks.get()) {
         const translation = mat4.fromTranslation(mat4.create(), [0, -$blanksDelta.get(), 0])
