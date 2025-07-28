@@ -19,6 +19,14 @@ import { createDieFace } from './createDieFace'
 
 export type DieResult = ReturnType<typeof createDie>
 
+function cleanupObject(object: Object3D | undefined) {
+  object?.traverse((object) => {
+    if (object instanceof Mesh && object.geometry instanceof BufferGeometry) {
+      object.geometry.dispose()
+    }
+  })
+}
+
 export function createDie<TInputs extends Record<string, DieInputOptions>>(options: DieOptions<TInputs>) {
   const $inputs = atom(mapValues(options.inputs, item => item.defaultValue))
   const $baseGeom = computed(() => options.buildBase($inputs.get()))
@@ -36,14 +44,51 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
     return faces.map(face => face.instanceAtoms.map(atom => atom.get()))
   })
 
-  const $blankGeom = computed(() => {
+  const $blankObject = computed<Object3D | undefined>(() => {
     if (!$visible.get() || !$enableBlanks.get()) return
 
     const delta = $blanksDelta.get()
     const baseGeom = $baseGeom.get()
+    const blankGeom = createBlank(baseGeom, delta)
 
-    return createBlank(baseGeom, delta)
-  })
+    return cad2mesh(blankGeom, BLANK_MATERIAL, `die:${options.name}:blank`)
+  }, cleanupObject)
+
+  const $dieObject = computed<Object3D | undefined>(() => {
+    if (!$visible.get() || !$enableDice.get()) return
+
+    const baseGeom = $baseGeom.get()
+
+    if ($enableRender.get()) {
+      const faceGeoms = $faceGeoms.get().flat(2)
+      const flatFilteredFaceGeoms = faceGeoms.filter(geom => geom !== undefined)
+      const evaluated = evaluate($renderEngine.get(), baseGeom, flatFilteredFaceGeoms, $renderOperation.get(), `die:${options.name}:evaluated`)
+
+      return evaluated
+    }
+
+    const objects: Object3D[] = []
+
+    // Base mesh
+    objects.push(cad2mesh(baseGeom, BASE_MATERIAL, `die:${options.name}:base`))
+
+    // Face meshes
+    $faceGeoms.get().forEach((face, faceIndex) => {
+      face.forEach((geoms) => {
+        if (!geoms) return
+
+        // It's not guaranteed that geoms is an array
+        [geoms].flat().forEach((geom, geomIndex) => {
+          objects.push(cad2mesh(geom, FONT_MATERIAL, `die:${options.name}:face:${faceIndex}:${geomIndex}`))
+        })
+      })
+    })
+
+    const result = new Group()
+    result.add(...objects)
+
+    return result
+  }, cleanupObject)
 
   const $alignMatrix = computed(() => {
     const out = mat4.create()
@@ -66,54 +111,21 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
     return new Matrix4().fromArray(out)
   })
 
-  const $finalObject = computed((): Object3D | undefined => {
-    if (!$visible.get()) return
-
+  const $finalObject = computed<Object3D | undefined>(() => {
     const objects: Object3D[] = []
 
-    const baseGeom = $baseGeom.get()
-    const blankGeom = $blankGeom.get()
+    const dieObject = $dieObject.get()
+    const blankObject = $blankObject.get()
 
-    if (blankGeom) {
-      // Blank mesh
-      objects.push(cad2mesh(blankGeom, BLANK_MATERIAL, `die:${options.name}:blank`))
-    }
+    if (dieObject) objects.push(dieObject)
+    if (blankObject) objects.push(blankObject)
 
-    if ($enableDice.get()) {
-      if ($enableRender.get()) {
-        const faceGeoms = $faceGeoms.get().flat(2)
-        const flatFilteredFaceGeoms = faceGeoms.filter(geom => geom !== undefined)
-        const evaluated = evaluate($renderEngine.get(), baseGeom, flatFilteredFaceGeoms, $renderOperation.get(), `die:${options.name}:evaluated`)
-
-        if (evaluated) objects.push(evaluated)
-      } else {
-      // Base mesh
-        objects.push(cad2mesh(baseGeom, BASE_MATERIAL, `die:${options.name}:base`))
-
-        // Face meshes
-        $faceGeoms.get().forEach((face, faceIndex) => {
-          face.forEach((geoms) => {
-            if (!geoms) return
-
-            // It's not guaranteed that geoms is an array
-            [geoms].flat().forEach((geom, geomIndex) => {
-              objects.push(cad2mesh(geom, FONT_MATERIAL, `die:${options.name}:face:${faceIndex}:${geomIndex}`))
-            })
-          })
-        })
-      }
-    }
+    if (!objects.length) return
 
     const result = new Group()
     result.add(...objects)
 
     return result
-  }, (object) => {
-    object?.traverse((object) => {
-      if (object instanceof Mesh && object.geometry instanceof BufferGeometry) {
-        object.geometry.dispose()
-      }
-    })
   })
 
   const $output = computed(() => {
