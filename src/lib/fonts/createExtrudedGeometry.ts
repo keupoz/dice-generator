@@ -3,7 +3,7 @@ import type { Path } from 'three'
 import { manifold2cad } from '../converters/manifold2cad'
 import { getManifold } from '../manifold'
 
-export function createExtrudeGeometry(paths: Path[], segments: number) {
+export function createExtrudedGeometry(paths: Path[], segments: number) {
   const { CrossSection } = getManifold()
 
   const polygons = paths.map(path => path.getPoints(segments).map<Vec2>(({ x, y }) => ([x, y])))

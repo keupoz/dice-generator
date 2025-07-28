@@ -1,7 +1,7 @@
 import type { Geom3 } from '@jscad/modeling/src/geometries/types'
 import type { Glyph } from 'fontkit'
 import type { Path } from 'three'
-import { createExtrudeGeometry } from './createExtrudeGeometry'
+import { createExtrudedGeometry } from './createExtrudedGeometry'
 import { glyph2paths } from './glyph2paths'
 
 export interface GlyphCache {
@@ -21,7 +21,7 @@ export function getGlyphGeometry(glyph: Glyph, segments: number) {
     cache = {
       segments,
       paths,
-      geometry: createExtrudeGeometry(paths, segments),
+      geometry: createExtrudedGeometry(paths, segments),
     }
 
     cacheMap.set(glyph, cache)

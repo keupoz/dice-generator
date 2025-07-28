@@ -1,6 +1,6 @@
 import type { Geom3 } from '@jscad/modeling/src/geometries/types'
 import type { Path } from 'three'
-import { createExtrudeGeometry } from './createExtrudeGeometry'
+import { createExtrudedGeometry } from './createExtrudedGeometry'
 
 export interface SVGCache {
   segments: number
@@ -15,7 +15,7 @@ export function getSVGGeometry(paths: Path[], segments: number) {
   if (cache === undefined || cache.segments !== segments) {
     cache = {
       segments,
-      geometry: createExtrudeGeometry(paths, segments),
+      geometry: createExtrudedGeometry(paths, segments),
     }
 
     cacheMap.set(paths, cache)
