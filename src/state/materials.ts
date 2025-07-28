@@ -20,6 +20,7 @@ effect(() => {
   const enableWireframe = $enableWireframe.get()
 
   BASE_MATERIAL.wireframe = enableWireframe
+  BLANK_MATERIAL.wireframe = enableWireframe
   FONT_MATERIAL.wireframe = enableWireframe
 
   invalidate()
