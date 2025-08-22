@@ -14,9 +14,9 @@ function exportObject(object: Object3D | undefined, name: string, extraName?: st
 
   object = object.clone()
 
-  object.rotation.x = Math.PI / 2
+  object.rotation.x += Math.PI / 2
   object.position.set(0, 0, 0)
-  object.updateWorldMatrix(true, true)
+  object.updateMatrixWorld(true)
 
   const result = exporter.parse(object, { binary: true })
   const filename = generateFilename(name, 'stl', extraName)
