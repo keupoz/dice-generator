@@ -4,6 +4,7 @@ import type { DieFaceResult } from '~/dice/utils/createDieFace'
 import type { CurrentFontAtoms } from '~/state/fonts'
 import { List, ListItem, Stack, Text } from '@mantine/core'
 import { modals } from '@mantine/modals'
+import { batchAsync } from 'atomous'
 import { objectify } from 'radashi'
 import { DICE } from '~/dice/allDice'
 import { $blanksGap } from '~/state/dice'
@@ -76,46 +77,48 @@ export async function applyPreset(preset: InferOutput<typeof PresetSchema>) {
       onConfirm: () => applyPreset(preset),
     })
   } else {
-    const svgs = preset.general.svgs.map(svg => new File([svg.content], svg.name, { lastModified: svg.lastModified }))
-    await loadSVGs(svgs)
+    await batchAsync(async () => {
+      const svgs = preset.general.svgs.map(svg => new File([svg.content], svg.name, { lastModified: svg.lastModified }))
+      await loadSVGs(svgs)
 
-    $blanksGap.set(preset.general.blanksGap)
+      $blanksGap.set(preset.general.blanksGap)
 
-    $renderEngine.set(preset.general.renderEngine)
-    $renderOperation.set(preset.general.renderOperation)
+      $renderEngine.set(preset.general.renderEngine)
+      $renderOperation.set(preset.general.renderOperation)
 
-    applyCurrentFontPreset(preset.general.textFont, currentTextFont)
-    applyCurrentFontPreset(preset.general.markFont, currentMarkFont)
+      applyCurrentFontPreset(preset.general.textFont, currentTextFont)
+      applyCurrentFontPreset(preset.general.markFont, currentMarkFont)
 
-    $segments.set(preset.general.segments)
-    $fontScale.set(preset.general.fontScale)
-    $svgScale.set(preset.general.svgScale)
-    $extrusionDepth.set(preset.general.extrusionDepth)
+      $segments.set(preset.general.segments)
+      $fontScale.set(preset.general.fontScale)
+      $svgScale.set(preset.general.svgScale)
+      $extrusionDepth.set(preset.general.extrusionDepth)
 
-    for (const diePreset of preset.dice) {
-      const die = DICE[diePreset.name]
-      if (!die) continue
+      for (const diePreset of preset.dice) {
+        const die = DICE[diePreset.name]
+        if (!die) continue
 
-      die.$visible.set(diePreset.visible)
-      die.$fontScale.set(diePreset.fontScale)
-      die.$svgScale.set(diePreset.svgScale ?? preset.general.svgScale)
-      die.$inputs.set(diePreset.inputs)
+        die.$visible.set(diePreset.visible)
+        die.$fontScale.set(diePreset.fontScale)
+        die.$svgScale.set(diePreset.svgScale ?? preset.general.svgScale)
+        die.$inputs.set(diePreset.inputs)
 
-      const dieFaces = objectify(die.faces, face => face.name)
+        const dieFaces = objectify(die.faces, face => face.name)
 
-      for (const facePreset of diePreset.faces) {
-        const face = dieFaces[facePreset.name]
-        if (!face) continue
+        for (const facePreset of diePreset.faces) {
+          const face = dieFaces[facePreset.name]
+          if (!face) continue
 
-        applyFaceText(facePreset.text, face.$text)
-        applyFaceText(facePreset.mark, face.$mark)
+          applyFaceText(facePreset.text, face.$text)
+          applyFaceText(facePreset.mark, face.$mark)
 
-        face.$isUnderscore.set(facePreset.isUnderscore)
-        face.$markGap.set(facePreset.markGap)
-        face.$rotation.set(facePreset.rotation)
-        face.$offsetX.set(facePreset.offsetX)
-        face.$offsetY.set(facePreset.offsetY)
+          face.$isUnderscore.set(facePreset.isUnderscore)
+          face.$markGap.set(facePreset.markGap)
+          face.$rotation.set(facePreset.rotation)
+          face.$offsetX.set(facePreset.offsetX)
+          face.$offsetY.set(facePreset.offsetY)
+        }
       }
-    }
+    })
   }
 }

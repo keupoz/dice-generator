@@ -3,7 +3,7 @@ import { ModalsProvider } from '@mantine/modals'
 import { Notifications } from '@mantine/notifications'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { AppInitializer } from './components/AppInitializer'
+import { AppLoader } from './components/AppLoader'
 import { AppShell } from './components/AppShell'
 import { AppDropzone } from './components/dropzone/AppDropzone'
 import { Scene } from './components/scene/Scene'
@@ -15,7 +15,7 @@ createRoot(document.getElementById('root')!).render(
     <MantineProvider theme={theme} defaultColorScheme="auto">
       <ModalsProvider>
         <AppShell>
-          <AppInitializer>
+          <AppLoader>
             <AppShellAside>
               <ScrollArea>
                 <Settings />
@@ -25,7 +25,7 @@ createRoot(document.getElementById('root')!).render(
             <AppShellMain h="100dvh">
               <Scene />
             </AppShellMain>
-          </AppInitializer>
+          </AppLoader>
         </AppShell>
 
         <Notifications />

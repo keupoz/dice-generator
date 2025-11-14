@@ -1,13 +1,12 @@
 import type { Geom3 } from '@jscad/modeling/src/geometries/types'
+import type { Atom } from 'atomous'
 import type { DieFaceOptions } from './types'
-import type { ReadableAtom } from '~/atoms/types'
 import type { CurrentFontAtoms } from '~/state/fonts'
 import type { SVGResult } from '~/state/svgs'
 import { measureAggregateBoundingBox } from '@jscad/modeling/src/measurements'
 import { align, rotateZ, scale, transform, translate } from '@jscad/modeling/src/operations/transforms'
+import { atom, computed } from 'atomous'
 import { degToRad } from 'three/src/math/MathUtils.js'
-import { atom } from '~/atoms/atom'
-import { computed } from '~/atoms/computed'
 import { createTextObject } from '~/lib/fonts/createTextObject'
 import { $extrusionDepth, $segments } from '~/state/faces'
 import { $fontScale, currentMarkFont, currentTextFont } from '~/state/fonts'
@@ -16,7 +15,7 @@ import { createDieFaceInstance } from './createDieFaceInstance'
 
 export type DieFaceResult = ReturnType<typeof createDieFace>
 
-function createTextObjectAtom({ $currentFont, $features }: CurrentFontAtoms, $text: ReadableAtom<string | SVGResult>) {
+function createTextObjectAtom({ $currentFont, $features }: CurrentFontAtoms, $text: Atom<string | SVGResult>) {
   return computed(() => {
     const text = $text.get()
     const segments = $segments.get()
@@ -33,7 +32,7 @@ function createTextObjectAtom({ $currentFont, $features }: CurrentFontAtoms, $te
   })
 }
 
-export function createDieFace($facesBaseGeom: ReadableAtom<Geom3>, $localFontScale: ReadableAtom<number>, $localSVGScale: ReadableAtom<number>, options: DieFaceOptions, index: number) {
+export function createDieFace($facesBaseGeom: Atom<Geom3>, $localFontScale: Atom<number>, $localSVGScale: Atom<number>, options: DieFaceOptions, index: number) {
   const defaultText = options.text ?? `${index + 1}`
   const defaultMark = defaultText === '6' || defaultText === '9' ? '_' : ''
   const name = `Face ${defaultText}`

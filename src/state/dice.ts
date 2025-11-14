@@ -1,5 +1,4 @@
-import { atom } from '~/atoms/atom'
-import { computed } from '~/atoms/computed'
+import { atom, computed } from 'atomous'
 import { $extrusionDepth } from './faces'
 
 export const $enableDice = atom(true)

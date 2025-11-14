@@ -1,11 +1,11 @@
+import { useAtomValue } from '@atomous/react'
 import { Select } from '@mantine/core'
-import { useAtom } from '~/atoms/useAtom'
 import { DICE, DIE_NAMES } from '~/dice/allDice'
 import { focusObject } from '~/state/controls'
 import { $currentDie, $currentDieFace } from '~/state/settings'
 
 export function DieSelect() {
-  const currentDie = useAtom($currentDie)
+  const currentDie = useAtomValue($currentDie)
 
   function onChange(value: string | null) {
     if (value === null) return

@@ -1,13 +1,12 @@
 import type { Geom3 } from '@jscad/modeling/src/geometries/types'
+import type { Atom, ComputedAtom } from 'atomous'
 import type { Path } from 'three'
 import type { SVGResult as ThreeSVGResult } from 'three/addons/loaders/SVGLoader.js'
-import type { ReadableAtom, WritableAtom } from '~/atoms/types'
 import { measureDimensions } from '@jscad/modeling/src/measurements'
 import { mirrorY, scale } from '@jscad/modeling/src/operations/transforms'
+import { atom, computed } from 'atomous'
 import { objectify } from 'radashi'
 import { SVGLoader } from 'three/addons/loaders/SVGLoader.js'
-import { atom } from '~/atoms/atom'
-import { computed } from '~/atoms/computed'
 import { getSVGGeometry } from '~/lib/fonts/getSVGGeometry'
 import { $segments } from './faces'
 
@@ -19,8 +18,8 @@ export interface SVGResult {
   raw: string
   paths: Path[]
   viewboxScale: number | null
-  $scaleByViewBox: WritableAtom<boolean>
-  $geom: ReadableAtom<Geom3>
+  $scaleByViewBox: Atom<boolean>
+  $geom: ComputedAtom<Geom3>
 }
 
 export const $svgs = atom<Record<string, SVGResult>>({})

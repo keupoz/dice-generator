@@ -11,6 +11,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@atomous/persistent": "^0.1.0",
+    "@atomous/react": "^0.1.1",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
@@ -23,6 +25,7 @@
     "@mantine/notifications": "^8.2.1",
     "@react-three/drei": "^10.5.1",
     "@react-three/fiber": "^9.2.0",
+    "atomous": "^0.1.0",
     "camera-controls": "^2.10.1",
     "file-saver": "^2.0.5",
     "fontkit": "^2.0.4",

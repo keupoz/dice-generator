@@ -1,5 +1,5 @@
+import { useAtomValue } from '@atomous/react'
 import { Button, Divider, Group, SimpleGrid, Text } from '@mantine/core'
-import { useAtom } from '~/atoms/useAtom'
 import { AtomSlider } from '~/components/inputs/AtomSlider'
 import { AtomSwitch } from '~/components/inputs/AtomSwitch'
 import { $currentDie } from '~/state/settings'
@@ -10,13 +10,12 @@ import { DieInputs } from './DieInputs'
 import { FocusButton } from './FocusButton'
 
 export function DieSettings() {
-  const die = useAtom($currentDie)
+  const die = useAtomValue($currentDie)
 
   if (!die) return <Text c="dimmed" ta="center">No die selected</Text>
 
   return (
     <>
-
       <SimpleGrid cols={2} spacing="xs">
         <Button onClick={() => exportSTL(die.$output, false, die.name)}>Export die</Button>
         <Button onClick={() => exportSTL(die.$output, true, die.name)}>Export blank</Button>

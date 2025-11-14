@@ -1,5 +1,5 @@
+import { useAtomValue } from '@atomous/react'
 import { Divider, Text, Title } from '@mantine/core'
-import { useAtom } from '~/atoms/useAtom'
 import { FontCard } from '~/components/FontCard'
 import { PresetCard } from '~/components/PresetCard'
 import { SVGCard } from '~/components/svg-card/SVGCard'
@@ -8,9 +8,9 @@ import { $presets } from '~/state/presets'
 import { $svgs } from '~/state/svgs'
 
 export function FilesTab() {
-  const presetsObject = useAtom($presets)
-  const fontsObject = useAtom($userFonts)
-  const svgsObject = useAtom($svgs)
+  const presetsObject = useAtomValue($presets)
+  const fontsObject = useAtomValue($userFonts)
+  const svgsObject = useAtomValue($svgs)
 
   const presets = Object.values(presetsObject)
   const fonts = Object.values(fontsObject)

@@ -1,14 +1,14 @@
 import type { SelectProps } from '@mantine/core'
-import type { WritableAtom } from '~/atoms/types'
+import type { Atom } from 'atomous'
+import { useAtomValue } from '@atomous/react'
 import { Select } from '@mantine/core'
-import { useAtom } from '~/atoms/useAtom'
 
 export interface AtomSelectProps<T extends string> extends SelectProps {
-  atom: WritableAtom<T>
+  atom: Atom<T>
 }
 
 export function AtomSelect<T extends string>({ atom, ...props }: AtomSelectProps<T>) {
-  const value = useAtom(atom)
+  const value = useAtomValue(atom)
 
   function onChange(value: string | null) {
     if (value === null) return

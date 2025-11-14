@@ -1,8 +1,8 @@
 import type { DieFaceResult } from '~/dice/utils/createDieFace'
+import { useAtomValue } from '@atomous/react'
 import { Select } from '@mantine/core'
 import { objectify } from 'radashi'
 import { useMemo } from 'react'
-import { useAtom } from '~/atoms/useAtom'
 import { $currentDieFace } from '~/state/settings'
 
 export interface DieFacesSelectProps {
@@ -14,7 +14,7 @@ export function DieFaceSelect({ faces }: DieFacesSelectProps) {
     return objectify(faces, face => face.name)
   }, [faces])
 
-  const currentFace = useAtom($currentDieFace)
+  const currentFace = useAtomValue($currentDieFace)
 
   function onChange(value: string | null) {
     if (value === null) return

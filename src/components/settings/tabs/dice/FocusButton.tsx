@@ -1,6 +1,6 @@
 import type { DieResult } from '~/dice/utils/createDie'
+import { useAtomValue } from '@atomous/react'
 import { Button } from '@mantine/core'
-import { useAtom } from '~/atoms/useAtom'
 import { focusObject } from '~/state/controls'
 
 export interface FocusButtonProps {
@@ -8,7 +8,7 @@ export interface FocusButtonProps {
 }
 
 export function FocusButton({ die }: FocusButtonProps) {
-  const disabled = !useAtom(die.$visible)
+  const disabled = !useAtomValue(die.$visible)
 
   return <Button disabled={disabled} onClick={() => focusObject(die.$output.get())}>Focus</Button>
 }

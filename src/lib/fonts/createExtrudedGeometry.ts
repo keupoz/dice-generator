@@ -1,7 +1,7 @@
 import type { Vec2 } from 'manifold-3d'
 import type { Path } from 'three'
+import { getManifold } from '~/state/resources'
 import { manifold2cad } from '../converters/manifold2cad'
-import { getManifold } from '../manifold'
 
 export function createExtrudedGeometry(paths: Path[], segments: number) {
   const { CrossSection } = getManifold()

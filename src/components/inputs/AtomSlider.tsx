@@ -1,14 +1,14 @@
+import type { Atom } from 'atomous'
 import type { SliderProps } from './slider/Slider'
-import type { WritableAtom } from '~/atoms/types'
-import { useAtom } from '~/atoms/useAtom'
+import { useAtomValue } from '@atomous/react'
 import { Slider } from './slider/Slider'
 
 export interface AtomSliderProps extends Omit<SliderProps, 'value' | 'onChange'> {
-  atom: WritableAtom<number>
+  atom: Atom<number>
 }
 
 export function AtomSlider({ atom, ...props }: AtomSliderProps) {
-  const value = useAtom(atom)
+  const value = useAtomValue(atom)
 
   return <Slider value={value} onChange={atom.set} {...props} />
 }

@@ -4,9 +4,9 @@ import type { RenderOperation } from '~/state/render'
 import { range } from 'radashi'
 import { Mesh as ThreeMesh } from 'three'
 import { BASE_MATERIAL, FONT_MATERIAL } from '~/state/materials'
+import { getManifold } from '~/state/resources'
 import { cad2manifold } from '../converters/jscad2manifold'
 import { manifold2three } from '../converters/manifold2three'
-import { getManifold } from '../manifold'
 
 type ManifoldOperation = (M: typeof Manifold, base: Manifold, face: Manifold) => Manifold
 

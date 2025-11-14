@@ -1,8 +1,8 @@
+import type { Atom } from 'atomous'
 import type { Object3D } from 'three'
-import type { ReadableAtom } from '~/atoms/types'
+import { batch } from 'atomous'
 import saveAs from 'file-saver'
 import { STLExporter } from 'three/addons/exporters/STLExporter.js'
-import { flush } from '~/atoms/scheduler'
 import { $enableBlanks, $enableDice } from '~/state/dice'
 import { $enableAlign, $enableRender } from '~/state/render'
 import { generateFilename } from '../generateFilename'
@@ -24,7 +24,7 @@ function exportObject(object: Object3D | undefined, name: string, extraName?: st
   saveAs(new Blob([result]), filename)
 }
 
-export function exportSTL($object: ReadableAtom<Object3D | undefined>, exportBlanks: boolean, dieName?: string) {
+export function exportSTL($object: Pick<Atom<Object3D | undefined>, 'get'>, exportBlanks: boolean, dieName?: string) {
   const enableDice = $enableDice.get()
   const enableBlanks = $enableBlanks.get()
   const enableAlign = $enableAlign.get()
@@ -34,16 +34,19 @@ export function exportSTL($object: ReadableAtom<Object3D | undefined>, exportBla
     ? dieName ? 'blank' : 'blanks'
     : dieName ? 'die' : 'dice'
 
-  $enableDice.set(!exportBlanks)
-  $enableBlanks.set(exportBlanks)
-  $enableAlign.set(true)
-  $enableRender.set(true)
+  batch(() => {
+    $enableDice.set(!exportBlanks)
+    $enableBlanks.set(exportBlanks)
+    $enableAlign.set(true)
+    $enableRender.set(true)
+  })
 
-  flush()
   exportObject($object.get(), name, dieName)
 
-  $enableDice.set(enableDice)
-  $enableBlanks.set(enableBlanks)
-  $enableAlign.set(enableAlign)
-  $enableRender.set(enableRender)
+  batch(() => {
+    $enableDice.set(enableDice)
+    $enableBlanks.set(enableBlanks)
+    $enableAlign.set(enableAlign)
+    $enableRender.set(enableRender)
+  })
 }

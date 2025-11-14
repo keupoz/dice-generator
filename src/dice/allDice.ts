@@ -1,8 +1,8 @@
 import type { Object3D } from 'three'
 import type { DieResult } from './utils/createDie'
+import { computed } from 'atomous'
 import { cluster, mapKeys } from 'radashi'
 import { Box3, Group, Vector3 } from 'three'
-import { computed } from '~/atoms/computed'
 import { alphabetical } from '~/utils/array/alphabetical'
 
 function toSortedArray(object: Record<string, DieResult>) {

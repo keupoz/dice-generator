@@ -1,5 +1,5 @@
+import { useAtomValue } from '@atomous/react'
 import { SimpleGrid, Text } from '@mantine/core'
-import { useAtom } from '~/atoms/useAtom'
 import { AtomSlider } from '~/components/inputs/AtomSlider'
 import { AtomSVGSelect } from '~/components/inputs/AtomSVGSelect'
 import { AtomSwitch } from '~/components/inputs/AtomSwitch'
@@ -7,7 +7,7 @@ import { SUFFIX_DEG, SUFFIX_EM } from '~/consts'
 import { $currentDieFace } from '~/state/settings'
 
 export function DieFaceSettings() {
-  const face = useAtom($currentDieFace)
+  const face = useAtomValue($currentDieFace)
 
   if (!face) return <Text c="dimmed" ta="center">No face selected</Text>
 

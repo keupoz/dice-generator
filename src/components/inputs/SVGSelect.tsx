@@ -1,9 +1,9 @@
 import type { SVGResult } from '~/state/svgs'
+import { useAtomValue } from '@atomous/react'
 import { faImage } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ActionIcon, Menu, MenuDropdown, MenuItem, MenuTarget, TextInput } from '@mantine/core'
 import { useMemo } from 'react'
-import { useAtom } from '~/atoms/useAtom'
 import { $svgs } from '~/state/svgs'
 
 export interface SVGSelectProps {
@@ -13,7 +13,7 @@ export interface SVGSelectProps {
 }
 
 export function SVGSelect({ label, value, onChange }: SVGSelectProps) {
-  const svgs = useAtom($svgs)
+  const svgs = useAtomValue($svgs)
   const svgsEntries = useMemo(() => Object.entries(svgs), [svgs])
 
   const placeholder = typeof value === 'string' ? 'Enter text' : value.fileName ?? 'SVG selected'

@@ -1,7 +1,7 @@
 import type { InferOutput } from 'valibot'
+import { atom } from 'atomous'
 import { objectify } from 'radashi'
 import { parse } from 'valibot'
-import { atom } from '~/atoms/atom'
 import { PresetSchema } from '~/utils/presets/schema'
 
 export const $presets = atom<Record<string, InferOutput<typeof PresetSchema>>>({})

@@ -1,16 +1,16 @@
-import type { WritableAtom } from '~/atoms/types'
+import type { Atom } from 'atomous'
+import { useAtomValue } from '@atomous/react'
 import { Stack, Switch } from '@mantine/core'
 import { memo } from 'react'
-import { useAtom } from '~/atoms/useAtom'
 import { CollapseButton } from '~/components/CollapseButton'
 
 export interface FontFeaturesProps {
-  atom: WritableAtom<Record<string, boolean>>
+  atom: Atom<Record<string, boolean>>
   options: string[]
 }
 
 export const FontFeatures = memo<FontFeaturesProps>(({ atom, options }) => {
-  const values = useAtom(atom)
+  const values = useAtomValue(atom)
 
   if (!options.length) return null
 

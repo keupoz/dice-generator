@@ -1,8 +1,7 @@
-import { boolean, number } from 'valibot'
-import { atom } from '~/atoms/atom'
-import { persistent } from '~/atoms/persistent'
+import { BooleanStorage, NumberStorage, persistent } from '@atomous/persistent'
+import { atom } from 'atomous'
 
-export const $showGrid = persistent('show-grid', true, boolean())
-export const $smoothCamera = persistent('smooth-camera', true, boolean())
-export const $baseOpacity = persistent('dice:base-opacity', 0.8, number())
+export const $showGrid = persistent(true, new BooleanStorage('show-grid'))
+export const $smoothCamera = persistent(true, new BooleanStorage('smooth-camera'))
+export const $baseOpacity = persistent(0.8, new NumberStorage('dice:base-opacity'))
 export const $enableWireframe = atom(false)

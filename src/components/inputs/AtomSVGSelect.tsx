@@ -1,15 +1,15 @@
+import type { Atom } from 'atomous'
 import type { SVGSelectProps } from './SVGSelect'
-import type { WritableAtom } from '~/atoms/types'
 import type { SVGResult } from '~/state/svgs'
-import { useAtom } from '~/atoms/useAtom'
+import { useAtomValue } from '@atomous/react'
 import { SVGSelect } from './SVGSelect'
 
 export interface AtomSVGSelectProps extends Omit<SVGSelectProps, 'value' | 'onChange'> {
-  atom: WritableAtom<string | SVGResult>
+  atom: Atom<string | SVGResult>
 }
 
 export function AtomSVGSelect({ atom, ...props }: AtomSVGSelectProps) {
-  const value = useAtom(atom)
+  const value = useAtomValue(atom)
 
   return <SVGSelect value={value} onChange={atom.set} {...props} />
 }

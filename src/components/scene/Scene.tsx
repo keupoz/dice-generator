@@ -1,16 +1,16 @@
 import type { Object3D } from 'three'
+import { useAtomValue } from '@atomous/react'
 import { CameraControls, Canvas, FocusControls, Lights } from '@keupoz/r3f-utils'
 import { Center, PerspectiveCamera } from '@react-three/drei'
-import { useAtom } from '~/atoms/useAtom'
-import { $diceOutput, DICE } from '~/dice/allDice'
+import { DICE } from '~/dice/allDice'
 import { $currentDie, $currentDieFace } from '~/state/settings'
 import { $smoothCamera } from '~/state/viewport'
-import { AtomPrimitive } from './AtomPrimitive'
+import { DiceOutput } from './DiceOutput'
 import { Grid } from './Grid'
 import { SceneHooks } from './SceneHooks'
 
 export function Scene() {
-  const smoothCamera = useAtom($smoothCamera)
+  const smoothCamera = useAtomValue($smoothCamera)
 
   function onFocus(object: Object3D | null) {
     if (!object) return
@@ -46,7 +46,7 @@ export function Scene() {
 
       <FocusControls enableTransition={smoothCamera} resetToChildren onFocus={onFocus}>
         <Center disableY>
-          <AtomPrimitive atom={$diceOutput} />
+          <DiceOutput />
         </Center>
       </FocusControls>
     </Canvas>

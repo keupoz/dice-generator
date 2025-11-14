@@ -1,9 +1,9 @@
 import type { ComboboxData } from '@mantine/core'
 import type { ReactNode } from 'react'
 import type { CurrentFontAtoms } from '~/state/fonts'
+import { useAtomValue } from '@atomous/react'
 import { Button, Menu, MenuDropdown, MenuItem, MenuTarget, Select, Stack } from '@mantine/core'
 import { useMemo } from 'react'
-import { useAtom } from '~/atoms/useAtom'
 import { $builtinFonts, $userFonts } from '~/state/fonts'
 import { alphabetical } from '~/utils/array/alphabetical'
 import { Slider } from '../slider/Slider'
@@ -17,11 +17,11 @@ export interface FontSelectProps {
 }
 
 export function FontSelect({ atoms, label }: FontSelectProps) {
-  const currentBaseFont = useAtom(atoms.$baseFont)
-  const settings = useAtom(atoms.$variationSettings)
+  const currentBaseFont = useAtomValue(atoms.$baseFont)
+  const settings = useAtomValue(atoms.$variationSettings)
 
-  const builtinFonts = useAtom($builtinFonts)
-  const userFonts = useAtom($userFonts)
+  const builtinFonts = useAtomValue($builtinFonts)
+  const userFonts = useAtomValue($userFonts)
   const data = useMemo<ComboboxData>(() => {
     return [
       { group: 'Built-in fonts', items: alphabetical(Object.keys(builtinFonts), key => key) },

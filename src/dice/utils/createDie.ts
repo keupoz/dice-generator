@@ -1,10 +1,9 @@
 import type { Object3D } from 'three'
 import type { DieInputOptions, DieOptions } from './types'
 import mat4 from '@jscad/modeling/src/maths/mat4'
+import { atom, computed } from 'atomous'
 import { mapValues } from 'radashi'
 import { BufferGeometry, Group, Matrix4, Mesh } from 'three'
-import { atom } from '~/atoms/atom'
-import { computed } from '~/atoms/computed'
 import { cad2mesh } from '~/lib/converters/jscad2three'
 import { evaluate } from '~/lib/evaluators/evaluate'
 import { $blanksDelta, $enableBlanks, $enableDice } from '~/state/dice'
@@ -44,7 +43,7 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
     return faces.map(face => face.instanceAtoms.map(atom => atom.get()))
   })
 
-  const $blankObject = computed<Object3D | undefined>(() => {
+  const $blankObject = computed(() => {
     if (!$visible.get() || !$enableBlanks.get()) return
 
     const delta = $blanksDelta.get()
@@ -52,9 +51,9 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
     const blankGeom = createBlank(baseGeom, delta)
 
     return cad2mesh(blankGeom, BLANK_MATERIAL, `die:${options.name}:blank`)
-  }, cleanupObject)
+  }, { cleanup: cleanupObject })
 
-  const $dieObject = computed<Object3D | undefined>(() => {
+  const $dieObject = computed(() => {
     if (!$visible.get() || !$enableDice.get()) return
 
     const baseGeom = $baseGeom.get()
@@ -88,7 +87,7 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
     result.add(...objects)
 
     return result
-  }, cleanupObject)
+  }, { cleanup: cleanupObject })
 
   const $alignMatrix = computed(() => {
     const out = mat4.create()
@@ -111,7 +110,7 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
     return new Matrix4().fromArray(out)
   })
 
-  const $finalObject = computed<Object3D | undefined>(() => {
+  const $finalObject = computed(() => {
     const objects: Object3D[] = []
 
     const dieObject = $dieObject.get()

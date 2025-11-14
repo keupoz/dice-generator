@@ -1,6 +1,5 @@
-import { boolean, enum_ } from 'valibot'
-import { atom } from '~/atoms/atom'
-import { persistent } from '~/atoms/persistent'
+import { BooleanStorage, EnumStorage, persistent } from '@atomous/persistent'
+import { atom } from 'atomous'
 
 export enum RenderOperation {
   Subtract = 'subtract',
@@ -13,7 +12,7 @@ export enum RenderEngine {
   JSCAD = 'jscad',
 }
 
-export const $enableAlign = persistent('dice:enable-align', true, boolean())
+export const $enableAlign = persistent(true, new BooleanStorage('dice:enable-align'))
 export const $enableRender = atom(false)
-export const $renderEngine = persistent('dice:render-engine', RenderEngine.Manifold, enum_(RenderEngine))
-export const $renderOperation = persistent('dice:render-operation', RenderOperation.Subtract, enum_(RenderOperation))
+export const $renderEngine = persistent(RenderEngine.Manifold, new EnumStorage('dice:render-engine', RenderEngine))
+export const $renderOperation = persistent(RenderOperation.Subtract, new EnumStorage('dice:render-operation', RenderOperation))

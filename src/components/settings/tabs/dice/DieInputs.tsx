@@ -1,5 +1,5 @@
 import type { DieResult } from '~/dice/utils/createDie'
-import { useAtom } from '~/atoms/useAtom'
+import { useAtomValue } from '@atomous/react'
 import { Slider } from '~/components/inputs/slider/Slider'
 
 export interface DieInputsProps {
@@ -7,7 +7,7 @@ export interface DieInputsProps {
 }
 
 export function DieInputs({ die }: DieInputsProps) {
-  const value = useAtom(die.$inputs)
+  const value = useAtomValue(die.$inputs)
 
   return Object.entries(die.inputs).map(([name, input]) => (
     <Slider
