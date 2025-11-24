@@ -40,6 +40,7 @@ export const $builtinFonts = computed(() => {
 
 export const $userFonts = atom<Record<string, FontResult>>({})
 export const $fontScale = atom(0.75)
+export const $markScale = atom(1)
 
 function createCurrentFontAtom() {
   const $baseFontName = atom('Roboto')

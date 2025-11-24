@@ -3,7 +3,7 @@ import { AtomSlider } from '~/components/inputs/AtomSlider'
 import { FontSelect } from '~/components/inputs/fonts/FontSelect'
 import { SUFFIX_MM } from '~/consts'
 import { $extrusionDepth, $segments } from '~/state/faces'
-import { $fontScale, currentMarkFont, currentTextFont } from '~/state/fonts'
+import { $fontScale, $markScale, currentMarkFont, currentTextFont } from '~/state/fonts'
 import { $svgScale } from '~/state/svgs'
 
 export function FontsTab() {
@@ -30,8 +30,10 @@ export function FontsTab() {
 
       <SimpleGrid cols={2} spacing="xs">
         <AtomSlider atom={$fontScale} label="Font scale" min={0.05} max={2} step={0.05} />
-        <AtomSlider atom={$svgScale} label="SVG scale" min={0.05} max={2} step={0.05} />
+        <AtomSlider atom={$markScale} label="Mark scale" min={0.05} max={2} step={0.05} />
       </SimpleGrid>
+
+      <AtomSlider atom={$svgScale} label="SVG scale" min={0.05} max={2} step={0.05} />
 
       <AtomSlider atom={$extrusionDepth} label="Text depth" min={0.05} max={2} step={0.05} suffix={SUFFIX_MM} />
     </>

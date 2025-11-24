@@ -35,9 +35,10 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
 
   const $visible = atom(true)
   const $fontScale = atom(options.defaultFontScale ?? 1)
+  const $markScale = atom(1)
   const $svgScale = atom(options.defaultFontScale ?? 1)
 
-  const faces = options.faces.map(createDieFace.bind(null, $facesBaseGeom, $fontScale, $svgScale))
+  const faces = options.faces.map(createDieFace.bind(null, $facesBaseGeom, $fontScale, $markScale, $svgScale))
 
   const $faceGeoms = computed(() => {
     return faces.map(face => face.instanceAtoms.map(atom => atom.get()))
@@ -151,6 +152,7 @@ export function createDie<TInputs extends Record<string, DieInputOptions>>(optio
     inputs: options.inputs,
     $visible,
     $fontScale,
+    $markScale,
     $svgScale,
     $inputs,
     $output,

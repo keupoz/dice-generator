@@ -33,6 +33,7 @@ export const DieSchema = object({
   name: string(),
   visible: boolean(),
   fontScale: number(),
+  markScale: optional(number()),
   svgScale: optional(number()),
   inputs: record(string(), number()),
   faces: array(DieFaceSchema),
@@ -49,6 +50,7 @@ export const PresetGeneralSchema = object({
 
   segments: number(),
   fontScale: number(),
+  markScale: optional(number(), 1),
   svgScale: number(),
   extrusionDepth: number(),
 

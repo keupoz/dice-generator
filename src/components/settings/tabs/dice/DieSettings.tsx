@@ -26,7 +26,11 @@ export function DieSettings() {
         <FocusButton die={die} />
       </Group>
 
-      <AtomSlider atom={die.$fontScale} label="Font scale" min={0.05} max={2} step={0.05} />
+      <SimpleGrid cols={2} spacing="xs">
+        <AtomSlider atom={die.$fontScale} label="Font scale" min={0.05} max={2} step={0.05} />
+        <AtomSlider atom={die.$markScale} label="Mark scale" min={0.05} max={2} step={0.05} />
+      </SimpleGrid>
+
       <AtomSlider atom={die.$svgScale} label="SVG scale" min={0.05} max={2} step={0.05} />
 
       <Divider />

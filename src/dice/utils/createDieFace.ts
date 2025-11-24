@@ -9,14 +9,14 @@ import { atom, computed } from 'atomous'
 import { degToRad } from 'three/src/math/MathUtils.js'
 import { createTextObject } from '~/lib/fonts/createTextObject'
 import { $extrusionDepth, $segments } from '~/state/faces'
-import { $fontScale, currentMarkFont, currentTextFont } from '~/state/fonts'
+import { $fontScale, $markScale, currentMarkFont, currentTextFont } from '~/state/fonts'
 import { $svgScale } from '~/state/svgs'
 import { createDieFaceInstance } from './createDieFaceInstance'
 
 export type DieFaceResult = ReturnType<typeof createDieFace>
 
-function createTextObjectAtom({ $currentFont, $features }: CurrentFontAtoms, $text: Atom<string | SVGResult>) {
-  return computed(() => {
+function createTextObjectAtom({ $currentFont, $features }: CurrentFontAtoms, $text: Atom<string | SVGResult>, $localMarkScale?: Atom<number>) {
+  const $geom = computed(() => {
     const text = $text.get()
     const segments = $segments.get()
 
@@ -30,9 +30,21 @@ function createTextObjectAtom({ $currentFont, $features }: CurrentFontAtoms, $te
 
     return text.$geom.get()
   })
+
+  if (!$localMarkScale) return $geom
+
+  return computed(() => {
+    const geom = $geom.get()
+
+    if (!geom) return
+
+    const scaleValue = $markScale.get() * $localMarkScale.get()
+
+    return scale([scaleValue, scaleValue], geom)
+  })
 }
 
-export function createDieFace($facesBaseGeom: Atom<Geom3>, $localFontScale: Atom<number>, $localSVGScale: Atom<number>, options: DieFaceOptions, index: number) {
+export function createDieFace($facesBaseGeom: Atom<Geom3>, $localFontScale: Atom<number>, $localMarkScale: Atom<number>, $localSVGScale: Atom<number>, options: DieFaceOptions, index: number) {
   const defaultText = options.text ?? `${index + 1}`
   const defaultMark = defaultText === '6' || defaultText === '9' ? '_' : ''
   const name = `Face ${defaultText}`
@@ -46,7 +58,7 @@ export function createDieFace($facesBaseGeom: Atom<Geom3>, $localFontScale: Atom
   const $offsetY = atom(0)
 
   const $textGeoms = createTextObjectAtom(currentTextFont, $text)
-  const $markGeoms = createTextObjectAtom(currentMarkFont, $mark)
+  const $markGeoms = createTextObjectAtom(currentMarkFont, $mark, $localMarkScale)
 
   const $faceLayout = computed(() => {
     let markGeoms = $markGeoms.get()

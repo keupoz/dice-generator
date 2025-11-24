@@ -7,7 +7,7 @@ import { saveAs } from 'file-saver'
 import { DICE_SORTED } from '~/dice/allDice'
 import { $blanksGap } from '~/state/dice'
 import { $extrusionDepth, $segments } from '~/state/faces'
-import { $fontScale, currentMarkFont, currentTextFont } from '~/state/fonts'
+import { $fontScale, $markScale, currentMarkFont, currentTextFont } from '~/state/fonts'
 import { $renderEngine, $renderOperation } from '~/state/render'
 import { $svgScale } from '~/state/svgs'
 import { generateFilename } from '../generateFilename'
@@ -48,6 +48,7 @@ export function exportPreset(name: string) {
     name: die.name,
     visible: die.$visible.get(),
     fontScale: die.$fontScale.get(),
+    markScale: die.$markScale.get(),
     svgScale: die.$svgScale.get(),
     inputs: die.$inputs.get(),
     faces: die.faces.map(face => ({
@@ -75,6 +76,7 @@ export function exportPreset(name: string) {
 
       segments: $segments.get(),
       fontScale: $fontScale.get(),
+      markScale: $markScale.get(),
       svgScale: $svgScale.get(),
       extrusionDepth: $extrusionDepth.get(),
 

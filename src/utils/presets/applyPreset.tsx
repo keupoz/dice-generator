@@ -9,7 +9,7 @@ import { objectify } from 'radashi'
 import { DICE } from '~/dice/allDice'
 import { $blanksGap } from '~/state/dice'
 import { $extrusionDepth, $segments } from '~/state/faces'
-import { $builtinFonts, $fontScale, $userFonts, currentMarkFont, currentTextFont } from '~/state/fonts'
+import { $builtinFonts, $fontScale, $markScale, $userFonts, currentMarkFont, currentTextFont } from '~/state/fonts'
 import { $renderEngine, $renderOperation } from '~/state/render'
 import { $svgs, $svgScale, loadSVGs } from '~/state/svgs'
 
@@ -91,6 +91,7 @@ export async function applyPreset(preset: InferOutput<typeof PresetSchema>) {
 
       $segments.set(preset.general.segments)
       $fontScale.set(preset.general.fontScale)
+      $markScale.set(preset.general.markScale)
       $svgScale.set(preset.general.svgScale)
       $extrusionDepth.set(preset.general.extrusionDepth)
 
@@ -100,6 +101,7 @@ export async function applyPreset(preset: InferOutput<typeof PresetSchema>) {
 
         die.$visible.set(diePreset.visible)
         die.$fontScale.set(diePreset.fontScale)
+        die.$markScale.set(diePreset.markScale ?? preset.general.markScale)
         die.$svgScale.set(diePreset.svgScale ?? preset.general.svgScale)
         die.$inputs.set(diePreset.inputs)
 
