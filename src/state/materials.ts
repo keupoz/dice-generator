@@ -8,7 +8,6 @@ export const FONT_MATERIAL = new MeshNormalMaterial()
 
 $baseOpacity.subscribe((baseOpacity) => {
   BASE_MATERIAL.opacity = baseOpacity
-  BASE_MATERIAL.transparent = baseOpacity < 1
 
   invalidate()
 })
