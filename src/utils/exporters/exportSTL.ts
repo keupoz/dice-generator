@@ -18,7 +18,7 @@ function exportObject(object: Object3D | undefined, name: string, extraName?: st
   object.position.set(0, 0, 0)
   object.updateMatrixWorld(true)
 
-  const result = exporter.parse(object, { binary: true })
+  const result = exporter.parse(object, { binary: true }) as DataView<ArrayBuffer>
   const filename = generateFilename(name, 'stl', extraName)
 
   saveAs(new Blob([result]), filename)

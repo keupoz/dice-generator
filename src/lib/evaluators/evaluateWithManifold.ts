@@ -1,4 +1,4 @@
-import type { Manifold } from 'manifold-3d/manifold-encapsulated-types'
+import type { Manifold, ManifoldToplevel } from 'manifold-3d'
 import type { RenderEvaluator } from './evaluate'
 import type { RenderOperation } from '~/state/render'
 import { range } from 'radashi'
@@ -8,7 +8,7 @@ import { getManifold } from '~/state/resources'
 import { cad2manifold } from '../converters/jscad2manifold'
 import { manifold2three } from '../converters/manifold2three'
 
-type ManifoldOperation = (M: typeof Manifold, base: Manifold, face: Manifold) => Manifold
+type ManifoldOperation = (M: ManifoldToplevel['Manifold'], base: Manifold, face: Manifold) => Manifold
 
 const OPERATIONS = {
   subtract: ({ difference }, base, face) => difference(base, face),
